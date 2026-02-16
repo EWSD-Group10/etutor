@@ -8,6 +8,7 @@ services:
       POSTGRES_USER: etutor_user
       POSTGRES_PASSWORD: etutor_password
       POSTGRES_DB: etutor_db
+      JWT_SECRET: change-this-secret-in-production
     ports:
       - "5432:5432"
     volumes:
@@ -19,6 +20,25 @@ services:
       timeout: 5s
       retries: 5
 
+  seeder:
+    build: ./backend
+    container_name: etutor_seeder
+    environment:
+      DB_USER: etutor_user
+      DB_PASSWORD: etutor_password
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: etutor_db
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - backend_node_modules:/app/node_modules
+      - ./data:/app/data
+    command: node scripts/seed-users.js ./data/users.csv
+    restart: no
+
   backend:
     build: ./backend
     container_name: etutor_backend
@@ -26,6 +46,7 @@ services:
       DATABASE_URL: postgresql://etutor_user:etutor_password@postgres:5432/etutor_db
       PORT: 3000
       NODE_ENV: development
+      JWT_SECRET: change-this-secret-in-production
     ports:
       - "3000:3000"
     depends_on:
@@ -33,8 +54,9 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app
-      - /app/node_modules
+      - backend_node_modules:/app/node_modules
     command: npm run dev
 
 volumes:
   postgres_data:
+  backend_node_modules:

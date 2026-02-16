@@ -1,23 +1,18 @@
-require("dotenv").config()
-const express = require("express")
-const { Pool } = require("pg")
-const { sendEmail } = require("./utils/mailer")
+import dotenv from "dotenv"
+import express from "express"
+import cookieParser from "cookie-parser"
+import { pool } from "./utils/db.js"
+import { sendEmail } from "./utils/mailer.js"
+import { login, currentUser } from "./controllers/auth.js"
+import { requireSignin } from "./middleware/auth.js"
+
+dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3000
 
-// PostgreSQL connection pool
-const pool = new Pool({
-  connectionString:
-    process.env.DATABASE_URL ||
-    "postgresql://etutor_user:etutor_password@localhost:5432/etutor_db",
-})
-
-pool.on("error", (err) => {
-  console.error("Unexpected error on idle client", err)
-})
-
 app.use(express.json())
+app.use(cookieParser())
 
 // Test database connection endpoint
 app.get("/", async (req, res) => {
@@ -48,18 +43,11 @@ app.get("/health", async (req, res) => {
   }
 })
 
-// Get all users endpoint
-app.get("/api/users", async (req, res) => {
-  try {
-    const result = await pool.query(
-      "SELECT id, email, first_name, last_name, role FROM users",
-    )
-    res.json(result.rows)
-  } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: err.message })
-  }
-})
+// login endpoint
+app.post("/api/login", login)
+
+// Get current user endpoint
+app.get("/api/current-user", requireSignin, currentUser)
 
 // Example usage of sendEmail function
 app.get("/api/send-email", async (req, res) => {

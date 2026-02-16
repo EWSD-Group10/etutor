@@ -1,0 +1,6 @@
+email,password,name,role,degree_program,department
+student1@university.edu,password123,Alice Johnson,student,Computer Science,
+student2@university.edu,password123,Bob Smith,student,Mathematics,
+tutor1@university.edu,tutor_pass123,Dr. Sarah Wilson,tutor,,Computer Science
+tutor2@university.edu,tutor_pass123,Dr. John Brown,tutor,,Mathematics
+admin@university.edu,admin_pass123,Admin User,admin,,

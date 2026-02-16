@@ -1,5 +1,7 @@
-const { SESClient, SendEmailCommand } = require("@aws-sdk/client-ses")
-require("dotenv").config()
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 const sesClient = new SESClient({
   region: process.env.AWS_REGION || "ap-southeast-1",
@@ -46,4 +48,4 @@ async function sendEmail(to, subject, body) {
   }
 }
 
-module.exports = { sendEmail }
+export { sendEmail }
