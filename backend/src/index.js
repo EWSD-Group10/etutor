@@ -1,6 +1,7 @@
 require("dotenv").config()
 const express = require("express")
 const { Pool } = require("pg")
+const { sendEmail } = require("./utils/mailer")
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -54,6 +55,21 @@ app.get("/api/users", async (req, res) => {
       "SELECT id, email, first_name, last_name, role FROM users",
     )
     res.json(result.rows)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// Example usage of sendEmail function
+app.get("/api/send-email", async (req, res) => {
+  try {
+    await sendEmail(
+      "sawwinnnaung@gmail.com",
+      "Test Email from eTutor",
+      "<h1>Hello from eTutor!</h1><p>This is a test email sent using AWS SES.</p>",
+    )
+    res.json({ message: "Email sent successfully" })
   } catch (err) {
     console.error(err)
     res.status(500).json({ error: err.message })
