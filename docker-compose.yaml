@@ -8,7 +8,6 @@ services:
       POSTGRES_USER: etutor_user
       POSTGRES_PASSWORD: etutor_password
       POSTGRES_DB: etutor_db
-      JWT_SECRET: change-this-secret-in-production
     ports:
       - "5432:5432"
     volumes:
