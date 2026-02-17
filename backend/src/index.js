@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser"
 import { pool } from "./utils/db.js"
 import { sendEmail } from "./utils/mailer.js"
 import { login, currentUser } from "./controllers/auth.js"
+import { listStudents, getStudent, createStudent, updateStudent, deleteStudent } from "./controllers/students.js"
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js"
 
 dotenv.config()
@@ -57,6 +58,13 @@ app.get("/api/tutor-only", requireSignin, isTutor, (req, res) => {
 app.get("/api/admin-only", requireSignin, isAdmin, (req, res) => {
   res.json({ message: "Welcome, Admin!" })
 })
+
+// Student CRUD endpoints (admin only)
+app.get("/api/students", requireSignin, isAdmin, listStudents)
+app.get("/api/students/:id", requireSignin, isAdmin, getStudent)
+app.post("/api/students", requireSignin, isAdmin, createStudent)
+app.put("/api/students/:id", requireSignin, isAdmin, updateStudent)
+app.delete("/api/students/:id", requireSignin, isAdmin, deleteStudent)
 
 // Example usage of sendEmail function
 app.get("/api/send-email", async (req, res) => {

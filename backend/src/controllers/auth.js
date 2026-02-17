@@ -36,7 +36,7 @@ export const login = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true, //secure: true
     })
-    res.json({ message: "Login successful" })
+    res.json({ message: "Login successful", token })
   } catch (err) {
     console.error(err)
     res.status(500).json({ error: err.message })
