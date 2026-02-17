@@ -1,0 +1,193 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// -------------------- ENUMS --------------------
+
+enum UserRole {
+  student
+  tutor
+  admin
+}
+
+enum MeetingType {
+  in_person
+  virtual
+}
+
+enum MeetingStatus {
+  scheduled
+  completed
+  cancelled
+}
+
+enum NotificationType {
+  tutor_assigned
+  tutor_reallocated
+  meeting_scheduled
+  new_document
+}
+
+// -------------------- USERS --------------------
+
+model User {
+  id            String   @id @default(uuid()) @db.Uuid
+  email         String   @unique @db.VarChar(255)
+  passwordHash  String   @map("password_hash") @db.VarChar(255)
+  name          String?  @db.VarChar(100)
+  role          UserRole
+  degreeProgram String?  @map("degree_program") @db.VarChar(100)
+  department    String?  @db.VarChar(100)
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // Relations
+  studentAllocations    Allocation[]  @relation("AllocationStudent")
+  tutorAllocations      Allocation[]  @relation("AllocationTutor")
+  reallocatedAllocations Allocation[] @relation("AllocationReallocatedBy")
+
+  sentMessages     Message[] @relation("MessageSender")
+  receivedMessages Message[] @relation("MessageRecipient")
+
+  tutorBlogPosts   BlogPost[] @relation("BlogPostTutor")
+  studentBlogPosts BlogPost[] @relation("BlogPostStudent")
+
+  documents Document[]
+  comments  Comment[]
+
+  createdMeetings Meeting[] @relation("MeetingCreator")
+  tutorMeetings   Meeting[] @relation("MeetingTutor")
+
+  @@index([name])
+  @@map("users")
+}
+
+// -------------------- TUTOR ALLOCATIONS --------------------
+
+model Allocation {
+  id            String   @id @default(uuid()) @db.Uuid
+  studentId     String   @unique @map("student_id") @db.Uuid
+  tutorId       String   @map("tutor_id") @db.Uuid
+  allocatedAt   DateTime @default(now()) @map("allocated_at")
+  reallocatedBy String?  @map("reallocated_by") @db.Uuid
+  reason        String?
+  notes         String?
+
+  // Relations
+  student       User @relation("AllocationStudent", fields: [studentId], references: [id])
+  tutor         User @relation("AllocationTutor", fields: [tutorId], references: [id])
+  reallocatedByUser User? @relation("AllocationReallocatedBy", fields: [reallocatedBy], references: [id])
+
+  @@index([tutorId])
+  @@map("allocations")
+}
+
+// -------------------- MESSAGES --------------------
+
+model Message {
+  id          String   @id @default(uuid()) @db.Uuid
+  senderId    String   @map("sender_id") @db.Uuid
+  recipientId String   @map("recipient_id") @db.Uuid
+  messageBody String   @map("message_body")
+  isRead      Boolean  @default(false) @map("is_read")
+  sentAt      DateTime @default(now()) @map("sent_at")
+
+  // Relations
+  sender    User @relation("MessageSender", fields: [senderId], references: [id])
+  recipient User @relation("MessageRecipient", fields: [recipientId], references: [id])
+
+  @@map("messages")
+}
+
+// -------------------- BLOG POSTS --------------------
+
+model BlogPost {
+  id        String   @id @default(uuid()) @db.Uuid
+  tutorId   String   @map("tutor_id") @db.Uuid
+  studentId String   @map("student_id") @db.Uuid
+  title     String?  @db.VarChar(255)
+  content   String
+  sorting   Int?
+  createdAt DateTime @default(now()) @map("created_at")
+  createdBy String?  @map("created_by") @db.Uuid
+
+  // Relations
+  tutor    User @relation("BlogPostTutor", fields: [tutorId], references: [id])
+  student  User @relation("BlogPostStudent", fields: [studentId], references: [id])
+  comments Comment[]
+
+  @@index([title])
+  @@map("blog_posts")
+}
+
+// -------------------- DOCUMENTS --------------------
+
+model Document {
+  id         String   @id @default(uuid()) @db.Uuid
+  uploaderId String   @map("uploader_id") @db.Uuid
+  fileName   String?  @map("file_name") @db.VarChar(255)
+  filePath   String?  @map("file_path") @db.VarChar(500)
+  fileSize   Int?     @map("file_size")
+  fileFormat String?  @map("file_format") @db.VarChar(100)
+  sorting    Int?
+  uploadedAt DateTime @default(now()) @map("uploaded_at")
+
+  // Relations
+  uploader User      @relation(fields: [uploaderId], references: [id])
+  comments Comment[]
+
+  @@index([fileName])
+  @@map("documents")
+}
+
+// -------------------- COMMENTS --------------------
+
+model Comment {
+  id          String   @id @default(uuid()) @db.Uuid
+  documentId  String?  @map("document_id") @db.Uuid
+  blogId      String?  @map("blog_id") @db.Uuid
+  commenterId String   @map("commenter_id") @db.Uuid
+  commentText String   @map("comment_text")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  document  Document? @relation(fields: [documentId], references: [id])
+  blogPost  BlogPost? @relation(fields: [blogId], references: [id])
+  commenter User      @relation(fields: [commenterId], references: [id])
+
+  @@map("comments")
+}
+
+// -------------------- MEETINGS --------------------
+
+model Meeting {
+  id              String        @id @default(uuid()) @db.Uuid
+  meetingName     String?       @map("meeting_name") @db.VarChar(255)
+  meetingCreator  String        @map("meeting_creator") @db.Uuid
+  tutorId         String?       @map("tutor_id") @db.Uuid
+  meetingType     MeetingType   @map("meeting_type")
+  meetingStatus   MeetingStatus @default(scheduled) @map("meeting_status")
+  scheduledDate   DateTime      @map("scheduled_date")
+  durationMinutes Int           @default(30) @map("duration_minutes")
+  location        String?       @db.VarChar(255)
+  meetingLink     String?       @map("meeting_link") @db.VarChar(500)
+  createdAt       DateTime      @default(now()) @map("created_at")
+
+  // Relations
+  creator User  @relation("MeetingCreator", fields: [meetingCreator], references: [id])
+  tutor   User? @relation("MeetingTutor", fields: [tutorId], references: [id])
+
+  @@index([meetingName])
+  @@map("meetings")
+}
