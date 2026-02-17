@@ -22,13 +22,13 @@ export const requireSignin = (req, res, next) => {
   }
 }
 
-export const isInstructor = async (req, res, next) => {
+export const isTutor = async (req, res, next) => {
   try {
     const result = await pool.query("SELECT role FROM users WHERE id = $1", [
       req.auth._id,
     ])
     const user = result.rows[0]
-    if (!user || !user.role.includes("Instructor")) {
+    if (!user || !user.role.includes("Tutor".toLowerCase())) {
       return res.sendStatus(403)
     } else {
       next()
@@ -44,7 +44,7 @@ export const isAdmin = async (req, res, next) => {
       req.auth._id,
     ])
     const user = result.rows[0]
-    if (!user || !user.role.includes("Admin")) {
+    if (!user || !user.role.includes("Admin".toLowerCase())) {
       return res.sendStatus(403)
     } else {
       next()

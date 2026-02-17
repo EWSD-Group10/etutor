@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser"
 import { pool } from "./utils/db.js"
 import { sendEmail } from "./utils/mailer.js"
 import { login, currentUser } from "./controllers/auth.js"
-import { requireSignin } from "./middleware/auth.js"
+import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js"
 
 dotenv.config()
 
@@ -48,6 +48,15 @@ app.post("/api/login", login)
 
 // Get current user endpoint
 app.get("/api/current-user", requireSignin, currentUser)
+
+// testing for admin and tutor role
+app.get("/api/tutor-only", requireSignin, isTutor, (req, res) => {
+  res.json({ message: "Welcome, Tutor!" })
+})
+
+app.get("/api/admin-only", requireSignin, isAdmin, (req, res) => {
+  res.json({ message: "Welcome, Admin!" })
+})
 
 // Example usage of sendEmail function
 app.get("/api/send-email", async (req, res) => {
