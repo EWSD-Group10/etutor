@@ -13,7 +13,6 @@ export const requireSignin = (req, res, next) => {
       token,
       process.env.JWT_SECRET || "your-secret-key-change-in-production",
     )
-    req.auth = { _id: decoded.userId }
     req.user = { id: decoded.userId, role: decoded.role }
     next()
   } catch (err) {
@@ -25,10 +24,10 @@ export const requireSignin = (req, res, next) => {
 export const isTutor = async (req, res, next) => {
   try {
     const result = await pool.query("SELECT role FROM users WHERE id = $1", [
-      req.auth._id,
+      req.user.id,
     ])
     const user = result.rows[0]
-    if (!user || !user.role.includes("Tutor".toLowerCase())) {
+    if (!user || user.role !== "tutor") {
       return res.sendStatus(403)
     } else {
       next()
@@ -41,10 +40,10 @@ export const isTutor = async (req, res, next) => {
 export const isAdmin = async (req, res, next) => {
   try {
     const result = await pool.query("SELECT role FROM users WHERE id = $1", [
-      req.auth._id,
+      req.user.id,
     ])
     const user = result.rows[0]
-    if (!user || !user.role.includes("Admin".toLowerCase())) {
+    if (!user || user.role !== "admin") {
       return res.sendStatus(403)
     } else {
       next()

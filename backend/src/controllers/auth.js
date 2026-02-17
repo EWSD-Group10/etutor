@@ -46,7 +46,7 @@ export const login = async (req, res) => {
 export const currentUser = async (req, res) => {
   try {
     // Get userId from the authenticated request (set by requireSignin middleware)
-    const userId = req.auth._id || req.user?.id
+    const userId = req.user?.id
 
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized" })
