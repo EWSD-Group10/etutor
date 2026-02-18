@@ -15,8 +15,8 @@ const teacherSelect = {
   createdAt: true,
 }
 
-// GET /api/teachers?page=1&limit=10&search=
-export const listTeachers = async (req, res) => {
+// GET /api/tutors?page=1&limit=10&search=
+export const listTutors = async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page) || 1)
     const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 10))
@@ -58,8 +58,8 @@ export const listTeachers = async (req, res) => {
   }
 }
 
-// GET /api/teachers/:id
-export const getTeacher = async (req, res) => {
+// GET /api/tutors/:id
+export const getTutor = async (req, res) => {
   try {
     const { id } = req.params
     if (!UUID_REGEX.test(id)) {
@@ -82,8 +82,8 @@ export const getTeacher = async (req, res) => {
   }
 }
 
-// POST /api/teachers
-export const createTeacher = async (req, res) => {
+// POST /api/tutors
+export const createTutor = async (req, res) => {
   try {
     const { email, name, degreeProgram, department } = req.body
     const errors = []
@@ -123,8 +123,8 @@ export const createTeacher = async (req, res) => {
   }
 }
 
-// PUT /api/teachers/:id
-export const updateTeacher = async (req, res) => {
+// PUT /api/tutors/:id
+export const updateTutor = async (req, res) => {
   try {
     const { id } = req.params
     if (!UUID_REGEX.test(id)) {
@@ -177,8 +177,8 @@ export const updateTeacher = async (req, res) => {
   }
 }
 
-// DELETE /api/teachers/:id (soft delete)
-export const deleteTeacher = async (req, res) => {
+// DELETE /api/tutors/:id (soft delete)
+export const deleteTutors = async (req, res) => {
   try {
     const { id } = req.params
     if (!UUID_REGEX.test(id)) {

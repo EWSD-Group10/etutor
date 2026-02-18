@@ -5,7 +5,7 @@ import { pool } from "./utils/db.js"
 import { sendEmail } from "./utils/mailer.js"
 import { login, currentUser } from "./controllers/auth.js"
 import { listStudents, getStudent, createStudent, updateStudent, deleteStudent } from "./controllers/students.js"
-import { listTeachers, getTeacher, createTeacher, updateTeacher, deleteTeacher } from "./controllers/teachers.js"
+import { listTutors, getTutor, createTutor, updateTutor, deleteTutors } from "./controllers/teachers.js"
 import { listAllocations, getAllocation, createAllocation, bulkCreateAllocations, updateAllocation, deleteAllocation } from "./controllers/allocations.js"
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js"
 
@@ -69,11 +69,11 @@ app.put("/api/students/:id", requireSignin, isAdmin, updateStudent)
 app.delete("/api/students/:id", requireSignin, isAdmin, deleteStudent)
 
 // Teacher CRUD endpoints (admin only)
-app.get("/api/teachers", requireSignin, isAdmin, listTeachers)
-app.get("/api/teachers/:id", requireSignin, isAdmin, getTeacher)
-app.post("/api/teachers", requireSignin, isAdmin, createTeacher)
-app.put("/api/teachers/:id", requireSignin, isAdmin, updateTeacher)
-app.delete("/api/teachers/:id", requireSignin, isAdmin, deleteTeacher)
+app.get("/api/tutors", requireSignin, isAdmin, listTutors)
+app.get("/api/tutors/:id", requireSignin, isAdmin, getTutor)
+app.post("/api/tutors", requireSignin, isAdmin, createTutor)
+app.put("/api/tutors/:id", requireSignin, isAdmin, updateTutor)
+app.delete("/api/tutors/:id", requireSignin, isAdmin, deleteTutors)
 
 // Allocation CRUD endpoints (admin only)
 app.get("/api/allocations", requireSignin, isAdmin, listAllocations)
