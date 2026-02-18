@@ -1,0 +1,203 @@
+import { prisma } from "../utils/prisma.js"
+import { hashPassword } from "../utils/auth.js"
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+const teacherSelect = {
+  id: true,
+  email: true,
+  name: true,
+  role: true,
+  degreeProgram: true,
+  department: true,
+  isActive: true,
+  createdAt: true,
+}
+
+// GET /api/teachers?page=1&limit=10&search=
+export const listTeachers = async (req, res) => {
+  try {
+    const page = Math.max(1, parseInt(req.query.page) || 1)
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 10))
+    const search = req.query.search?.trim() || ""
+
+    const where = {
+      role: "tutor",
+      ...(search && {
+        OR: [
+          { name: { contains: search, mode: "insensitive" } },
+          { email: { contains: search, mode: "insensitive" } },
+        ],
+      }),
+    }
+
+    const [data, total] = await Promise.all([
+      prisma.user.findMany({
+        where,
+        select: teacherSelect,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.user.count({ where }),
+    ])
+
+    res.json({
+      data,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: "Internal server error" })
+  }
+}
+
+// GET /api/teachers/:id
+export const getTeacher = async (req, res) => {
+  try {
+    const { id } = req.params
+    if (!UUID_REGEX.test(id)) {
+      return res.status(400).json({ error: "Invalid teacher ID format" })
+    }
+
+    const teacher = await prisma.user.findFirst({
+      where: { id, role: "tutor" },
+      select: teacherSelect,
+    })
+
+    if (!teacher) {
+      return res.status(404).json({ error: "Teacher not found" })
+    }
+
+    res.json({ data: teacher })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: "Internal server error" })
+  }
+}
+
+// POST /api/teachers
+export const createTeacher = async (req, res) => {
+  try {
+    const { email, name, degreeProgram, department } = req.body
+    const errors = []
+
+    if (!email) errors.push("Email is required")
+    else if (!EMAIL_REGEX.test(email)) errors.push("Invalid email format")
+
+    if (!name) errors.push("Name is required")
+    if (!degreeProgram) errors.push("Degree program is required")
+    if (!department) errors.push("Department is required")
+
+    if (errors.length > 0) {
+      return res.status(400).json({ errors })
+    }
+
+    const existing = await prisma.user.findUnique({ where: { email } })
+    if (existing) {
+      return res.status(409).json({ error: "Email already exists" })
+    }
+
+    const teacher = await prisma.user.create({
+      data: {
+        email,
+        passwordHash: await hashPassword("123456"),
+        name,
+        role: "tutor",
+        degreeProgram,
+        department,
+      },
+      select: teacherSelect,
+    })
+
+    res.status(201).json({ data: teacher })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: "Internal server error" })
+  }
+}
+
+// PUT /api/teachers/:id
+export const updateTeacher = async (req, res) => {
+  try {
+    const { id } = req.params
+    if (!UUID_REGEX.test(id)) {
+      return res.status(400).json({ error: "Invalid teacher ID format" })
+    }
+
+    const { email, name, degreeProgram, department } = req.body
+    const errors = []
+    const data = {}
+
+    if (email !== undefined) {
+      if (!EMAIL_REGEX.test(email)) errors.push("Invalid email format")
+      else data.email = email
+    }
+
+    if (name !== undefined) data.name = name
+    if (degreeProgram !== undefined) data.degreeProgram = degreeProgram
+    if (department !== undefined) data.department = department
+
+    if (errors.length > 0) {
+      return res.status(400).json({ errors })
+    }
+
+    if (Object.keys(data).length === 0) {
+      return res.status(400).json({ error: "At least one field is required to update" })
+    }
+
+    const existing = await prisma.user.findFirst({ where: { id, role: "tutor" } })
+    if (!existing) {
+      return res.status(404).json({ error: "Teacher not found" })
+    }
+
+    if (data.email && data.email !== existing.email) {
+      const emailTaken = await prisma.user.findUnique({ where: { email: data.email } })
+      if (emailTaken) {
+        return res.status(409).json({ error: "Email already exists" })
+      }
+    }
+
+    const teacher = await prisma.user.update({
+      where: { id },
+      data,
+      select: teacherSelect,
+    })
+
+    res.json({ data: teacher })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: "Internal server error" })
+  }
+}
+
+// DELETE /api/teachers/:id (soft delete)
+export const deleteTeacher = async (req, res) => {
+  try {
+    const { id } = req.params
+    if (!UUID_REGEX.test(id)) {
+      return res.status(400).json({ error: "Invalid teacher ID format" })
+    }
+
+    const existing = await prisma.user.findFirst({ where: { id, role: "tutor" } })
+    if (!existing) {
+      return res.status(404).json({ error: "Teacher not found" })
+    }
+
+    await prisma.user.update({
+      where: { id },
+      data: { isActive: false },
+    })
+
+    res.json({ message: "Teacher deactivated successfully" })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ error: "Internal server error" })
+  }
+}
