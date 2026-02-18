@@ -84,14 +84,11 @@ export const getStudent = async (req, res) => {
 // POST /api/students
 export const createStudent = async (req, res) => {
   try {
-    const { email, password, name, degreeProgram } = req.body
+    const { email, name, degreeProgram } = req.body
     const errors = []
 
     if (!email) errors.push("Email is required")
     else if (!EMAIL_REGEX.test(email)) errors.push("Invalid email format")
-
-    if (!password) errors.push("Password is required")
-    else if (password.length < 6) errors.push("Password must be at least 6 characters")
 
     if (!name) errors.push("Name is required")
 
@@ -107,7 +104,7 @@ export const createStudent = async (req, res) => {
     const student = await prisma.user.create({
       data: {
         email,
-        passwordHash: await hashPassword(password),
+        passwordHash: await hashPassword('123456'),
         name,
         role: "student",
         degreeProgram: degreeProgram || null,
@@ -130,7 +127,7 @@ export const updateStudent = async (req, res) => {
       return res.status(400).json({ error: "Invalid student ID format" })
     }
 
-    const { email, password, name, degreeProgram, isActive } = req.body
+    const { email, name, degreeProgram } = req.body
     const errors = []
     const data = {}
 
@@ -138,13 +135,10 @@ export const updateStudent = async (req, res) => {
       if (!EMAIL_REGEX.test(email)) errors.push("Invalid email format")
       else data.email = email
     }
-    if (password !== undefined) {
-      if (password.length < 6) errors.push("Password must be at least 6 characters")
-      else data.passwordHash = await hashPassword(password)
-    }
+
     if (name !== undefined) data.name = name
+    
     if (degreeProgram !== undefined) data.degreeProgram = degreeProgram
-    if (isActive !== undefined) data.isActive = isActive
 
     if (errors.length > 0) {
       return res.status(400).json({ errors })
