@@ -6,6 +6,7 @@ import { sendEmail } from "./utils/mailer.js"
 import { login, currentUser } from "./controllers/auth.js"
 import { listStudents, getStudent, createStudent, updateStudent, deleteStudent } from "./controllers/students.js"
 import { listTeachers, getTeacher, createTeacher, updateTeacher, deleteTeacher } from "./controllers/teachers.js"
+import { listAllocations, getAllocation, createAllocation, bulkCreateAllocations, updateAllocation, deleteAllocation } from "./controllers/allocations.js"
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js"
 
 dotenv.config()
@@ -73,6 +74,14 @@ app.get("/api/teachers/:id", requireSignin, isAdmin, getTeacher)
 app.post("/api/teachers", requireSignin, isAdmin, createTeacher)
 app.put("/api/teachers/:id", requireSignin, isAdmin, updateTeacher)
 app.delete("/api/teachers/:id", requireSignin, isAdmin, deleteTeacher)
+
+// Allocation CRUD endpoints (admin only)
+app.get("/api/allocations", requireSignin, isAdmin, listAllocations)
+app.get("/api/allocations/:id", requireSignin, isAdmin, getAllocation)
+app.post("/api/allocations/bulk", requireSignin, isAdmin, bulkCreateAllocations)
+app.post("/api/allocations", requireSignin, isAdmin, createAllocation)
+app.put("/api/allocations/:id", requireSignin, isAdmin, updateAllocation)
+app.delete("/api/allocations/:id", requireSignin, isAdmin, deleteAllocation)
 
 // Example usage of sendEmail function
 app.get("/api/send-email", async (req, res) => {
