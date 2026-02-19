@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --primary: #2563eb;
+  --success: #10b981;
+  --error: #ef4444;
+  --icon: #64748b;
+  --warning: #d97706;
+}
+
+body {
+  font-family: "Trebuchet MS", Verdana, sans-serif;
+  background: #f7f9fc;
+  min-height: 100vh;
+}
+
+.panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+
+.btn-primary {
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.btn-secondary {
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+}
+
+.tab-btn {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  color: var(--icon);
+  border: 1px solid transparent;
+}
+
+.tab-btn.active {
+  background: #ffffff;
+  border-color: #e2e8f0;
+  color: #0f172a;
+}
+
+.icon-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  color: var(--icon);
+}

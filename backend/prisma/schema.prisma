@@ -1,0 +1,175 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  student
+  tutor
+  admin
+}
+
+enum MeetingType {
+  in_person
+  virtual
+}
+
+enum MeetingStatus {
+  scheduled
+  completed
+  cancelled
+}
+
+model User {
+  id             String  @id @default(uuid()) @db.Uuid
+  email          String  @unique
+  passwordHash   String  @map("password_hash")
+  name           String
+  role           Role
+  degreeProgram  String? @map("degree_program")
+  department     String?
+  yearLevel      Int?    @map("year_level")
+  maxStudents    Int?    @map("max_students")
+  isActive       Boolean @default(true) @map("is_active")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  tutorAssignments  TutorStudentAssignment[] @relation("TutorAssignments")
+  studentAssignment TutorStudentAssignment?  @relation("StudentAssignment")
+
+  sentMessages      Message[] @relation("MessageSender")
+  receivedMessages  Message[] @relation("MessageRecipient")
+  blogPosts         BlogPost[]
+  blogComments      BlogComment[]
+  documents         Document[]
+  documentComments  DocumentComment[]
+  meetingsAsStudent Meeting[] @relation("MeetingStudent")
+  meetingsAsTutor   Meeting[] @relation("MeetingTutor")
+  meetingsCreated   Meeting[] @relation("MeetingCreator")
+
+  @@map("users")
+}
+
+model TutorStudentAssignment {
+  id         String   @id @default(uuid()) @db.Uuid
+  tutorId    String   @db.Uuid
+  studentId  String   @unique @db.Uuid
+  assignedAt DateTime @default(now()) @map("assigned_at")
+
+  tutor   User @relation("TutorAssignments", fields: [tutorId], references: [id])
+  student User @relation("StudentAssignment", fields: [studentId], references: [id])
+
+  @@index([tutorId])
+  @@map("tutor_student_assignments")
+}
+
+model Message {
+  id          String    @id @default(uuid()) @db.Uuid
+  senderId    String    @map("sender_id") @db.Uuid
+  recipientId String    @map("recipient_id") @db.Uuid
+  content     String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  readAt      DateTime? @map("read_at")
+
+  sender    User @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient User @relation("MessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([senderId, recipientId, createdAt])
+  @@index([recipientId, readAt])
+  @@map("messages")
+}
+
+model BlogPost {
+  id        String   @id @default(uuid()) @db.Uuid
+  authorId  String   @map("author_id") @db.Uuid
+  title     String
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  author   User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments BlogComment[]
+
+  @@index([authorId, createdAt])
+  @@map("blog_posts")
+}
+
+model BlogComment {
+  id        String   @id @default(uuid()) @db.Uuid
+  postId    String   @map("post_id") @db.Uuid
+  authorId  String   @map("author_id") @db.Uuid
+  parentId  String?  @map("parent_id") @db.Uuid
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  post   BlogPost      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent BlogComment?  @relation("BlogCommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies BlogComment[] @relation("BlogCommentReplies")
+
+  @@index([postId, createdAt])
+  @@index([parentId])
+  @@map("blog_comments")
+}
+
+model Document {
+  id         String   @id @default(uuid()) @db.Uuid
+  uploaderId String   @map("uploader_id") @db.Uuid
+  title      String
+  fileName   String   @map("file_name")
+  fileUrl    String   @map("file_url")
+  fileType   String?  @map("file_type")
+  fileSize   Int?     @map("file_size")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  uploader User              @relation(fields: [uploaderId], references: [id], onDelete: Cascade)
+  comments DocumentComment[]
+
+  @@index([uploaderId, createdAt])
+  @@map("documents")
+}
+
+model DocumentComment {
+  id         String   @id @default(uuid()) @db.Uuid
+  documentId String   @map("document_id") @db.Uuid
+  authorId   String   @map("author_id") @db.Uuid
+  parentId   String?  @map("parent_id") @db.Uuid
+  content    String
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  document Document          @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  author   User              @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent   DocumentComment?  @relation("DocumentCommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  DocumentComment[] @relation("DocumentCommentReplies")
+
+  @@index([documentId, createdAt])
+  @@index([parentId])
+  @@map("document_comments")
+}
+
+model Meeting {
+  id              String        @id @default(uuid()) @db.Uuid
+  studentId       String        @map("student_id") @db.Uuid
+  tutorId         String        @map("tutor_id") @db.Uuid
+  createdById     String        @map("created_by_id") @db.Uuid
+  meetingType     MeetingType   @default(virtual) @map("meeting_type")
+  meetingStatus   MeetingStatus @default(scheduled) @map("meeting_status")
+  scheduledAt     DateTime      @map("scheduled_at")
+  durationMinutes Int           @default(30) @map("duration_minutes")
+  location        String?
+  meetingLink     String?       @map("meeting_link")
+  notes           String?
+  createdAt       DateTime      @default(now()) @map("created_at")
+
+  student   User @relation("MeetingStudent", fields: [studentId], references: [id], onDelete: Cascade)
+  tutor     User @relation("MeetingTutor", fields: [tutorId], references: [id], onDelete: Cascade)
+  createdBy User @relation("MeetingCreator", fields: [createdById], references: [id], onDelete: Cascade)
+
+  @@index([studentId, scheduledAt])
+  @@index([tutorId, scheduledAt])
+  @@map("meetings")
+}
