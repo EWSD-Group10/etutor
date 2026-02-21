@@ -1,56 +1,36 @@
-# Dependencies
-node_modules/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
 /.pnp
 .pnp.js
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+.yarn/install-state.gz
 
-# Testing
+# testing
+/coverage
+
+# next.js
 /.next/
 /out/
-/.jest-cache
 
-# Production
+# production
 /build
-/.next/
-/out/
 
-# Environment
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# OS
+# misc
 .DS_Store
-Thumbs.db
-*.log
+*.pem
+
+# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
 
-# IDE
-.vscode/
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-*.swp
-*.swo
-*~
-.env.*.local
+# local env files
+.env*.local
 
-# Misc
-.cache/
-temp/
-tmp/
-.turbo/
+# vercel
+.vercel
 
-# Storybook
-storybook-static/
+# typescript
+*.tsbuildinfo
+next-env.d.ts
