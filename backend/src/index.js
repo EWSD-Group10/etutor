@@ -1,9 +1,10 @@
 import dotenv from "dotenv"
 import express from "express"
 import cookieParser from "cookie-parser"
+import cors from "cors"
 import { pool } from "./utils/db.js"
 import { sendEmail } from "./utils/mailer.js"
-import { login, currentUser } from "./controllers/auth.js"
+import { login, currentUser, refresh } from "./controllers/auth.js"
 import { listStudents, getStudent, createStudent, updateStudent, deleteStudent } from "./controllers/students.js"
 import { listTutors, getTutor, createTutor, updateTutor, deleteTutors } from "./controllers/teachers.js"
 import { listAllocations, getAllocation, createAllocation, bulkCreateAllocations, updateAllocation, deleteAllocation } from "./controllers/allocations.js"
@@ -16,6 +17,12 @@ const PORT = process.env.PORT || 3000
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+)
 
 // Test database connection endpoint
 app.get("/", async (req, res) => {
@@ -48,6 +55,9 @@ app.get("/health", async (req, res) => {
 
 // login endpoint
 app.post("/api/login", login)
+
+// Refresh token endpoint
+app.post("/api/refresh", refresh)
 
 // Get current user endpoint
 app.get("/api/current-user", requireSignin, currentUser)
