@@ -5,21 +5,40 @@ import cors from "cors"
 import { pool } from "./utils/db.js"
 import { sendEmail } from "./utils/mailer.js"
 import { login, currentUser, refresh } from "./controllers/auth.js"
-import { listStudents, getStudent, createStudent, updateStudent, deleteStudent } from "./controllers/students.js"
-import { listTutors, getTutor, createTutor, updateTutor, deleteTutors } from "./controllers/teachers.js"
-import { listAllocations, getAllocation, createAllocation, bulkCreateAllocations, updateAllocation, deleteAllocation } from "./controllers/allocations.js"
+import {
+  listStudents,
+  getStudent,
+  createStudent,
+  updateStudent,
+  deleteStudent,
+} from "./controllers/students.js"
+import {
+  listTutors,
+  getTutor,
+  createTutor,
+  updateTutor,
+  deleteTutors,
+} from "./controllers/teachers.js"
+import {
+  listAllocations,
+  getAllocation,
+  createAllocation,
+  bulkCreateAllocations,
+  updateAllocation,
+  deleteAllocation,
+} from "./controllers/allocations.js"
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js"
 
 dotenv.config()
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8080
 
 app.use(express.json())
 app.use(cookieParser())
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:8080",
     credentials: true,
   }),
 )
