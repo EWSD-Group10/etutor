@@ -48,17 +48,16 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const accessToken = request.cookies.get("accessToken")?.value;
-  const refreshToken = request.cookies.get("refreshToken")?.value;
 
   let userRole: string | null = null;
   let isAuthenticated = false;
 
   if (accessToken && isTokenValid(accessToken)) {
-    userRole = getUserRoleFromToken(accessToken);
-    isAuthenticated = !!userRole;
-  } else if (refreshToken) {
-    userRole = getUserRoleFromToken(refreshToken);
-    isAuthenticated = !!userRole;
+    const role = getUserRoleFromToken(accessToken);
+    if (role) {
+      userRole = role.toLowerCase();
+      isAuthenticated = true;
+    }
   }
 
   // Define route types
