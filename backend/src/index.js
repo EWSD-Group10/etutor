@@ -1,18 +1,47 @@
 import dotenv from "dotenv"
 import express from "express"
 import cookieParser from "cookie-parser"
+import cors from "cors"
 import { pool } from "./utils/db.js"
 import { sendEmail } from "./utils/mailer.js"
-import { login, currentUser } from "./controllers/auth.js"
+import { login, currentUser, refresh } from "./controllers/auth.js"
+import {
+  listStudents,
+  getStudent,
+  createStudent,
+  updateStudent,
+  deleteStudent,
+} from "./controllers/students.js"
+import {
+  listTutors,
+  getTutor,
+  createTutor,
+  updateTutor,
+  deleteTutors,
+} from "./controllers/teachers.js"
+import {
+  listAllocations,
+  getAllocation,
+  createAllocation,
+  bulkCreateAllocations,
+  updateAllocation,
+  deleteAllocation,
+} from "./controllers/allocations.js"
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js"
 
 dotenv.config()
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8080
 
 app.use(express.json())
 app.use(cookieParser())
+app.use(
+  cors({
+    origin: "http://localhost:8080",
+    credentials: true,
+  }),
+)
 
 // Test database connection endpoint
 app.get("/", async (req, res) => {
@@ -46,6 +75,9 @@ app.get("/health", async (req, res) => {
 // login endpoint
 app.post("/api/login", login)
 
+// Refresh token endpoint
+app.post("/api/refresh", refresh)
+
 // Get current user endpoint
 app.get("/api/current-user", requireSignin, currentUser)
 
@@ -57,6 +89,28 @@ app.get("/api/tutor-only", requireSignin, isTutor, (req, res) => {
 app.get("/api/admin-only", requireSignin, isAdmin, (req, res) => {
   res.json({ message: "Welcome, Admin!" })
 })
+
+// Student CRUD endpoints (admin only)
+app.get("/api/students", requireSignin, isAdmin, listStudents)
+app.get("/api/students/:id", requireSignin, isAdmin, getStudent)
+app.post("/api/students", requireSignin, isAdmin, createStudent)
+app.put("/api/students/:id", requireSignin, isAdmin, updateStudent)
+app.delete("/api/students/:id", requireSignin, isAdmin, deleteStudent)
+
+// Teacher CRUD endpoints (admin only)
+app.get("/api/tutors", requireSignin, isAdmin, listTutors)
+app.get("/api/tutors/:id", requireSignin, isAdmin, getTutor)
+app.post("/api/tutors", requireSignin, isAdmin, createTutor)
+app.put("/api/tutors/:id", requireSignin, isAdmin, updateTutor)
+app.delete("/api/tutors/:id", requireSignin, isAdmin, deleteTutors)
+
+// Allocation CRUD endpoints (admin only)
+app.get("/api/allocations", requireSignin, isAdmin, listAllocations)
+app.get("/api/allocations/:id", requireSignin, isAdmin, getAllocation)
+app.post("/api/allocations/bulk", requireSignin, isAdmin, bulkCreateAllocations)
+app.post("/api/allocations", requireSignin, isAdmin, createAllocation)
+app.put("/api/allocations/:id", requireSignin, isAdmin, updateAllocation)
+app.delete("/api/allocations/:id", requireSignin, isAdmin, deleteAllocation)
 
 // Example usage of sendEmail function
 app.get("/api/send-email", async (req, res) => {
