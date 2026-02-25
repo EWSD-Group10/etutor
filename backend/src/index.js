@@ -7,6 +7,8 @@ import { sendEmail } from "./utils/mailer.js";
 import { login, currentUser, refresh, logout } from "./controllers/auth.js";
 import {
   listStudents,
+  listUnassignedStudents,
+  listAssignedStudents,
   getStudent,
   createStudent,
   updateStudent,
@@ -26,6 +28,7 @@ import {
   bulkCreateAllocations,
   updateAllocation,
   deleteAllocation,
+  getAllocationStats,
 } from "./controllers/allocations.js";
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js";
 
@@ -95,6 +98,13 @@ app.get("/api/admin-only", requireSignin, isAdmin, (req, res) => {
 
 // Student CRUD endpoints (admin only)
 app.get("/api/students", requireSignin, isAdmin, listStudents);
+app.get(
+  "/api/students/unassigned",
+  requireSignin,
+  isAdmin,
+  listUnassignedStudents,
+);
+app.get("/api/students/assigned", requireSignin, isAdmin, listAssignedStudents);
 app.get("/api/students/:id", requireSignin, isAdmin, getStudent);
 app.post("/api/students", requireSignin, isAdmin, createStudent);
 app.put("/api/students/:id", requireSignin, isAdmin, updateStudent);
@@ -109,13 +119,14 @@ app.delete("/api/tutors/:id", requireSignin, isAdmin, deleteTutors);
 
 // Allocation CRUD endpoints (admin only)
 app.get("/api/allocations", requireSignin, isAdmin, listAllocations);
-app.get("/api/allocations/:id", requireSignin, isAdmin, getAllocation);
+app.get("/api/allocations/stats", requireSignin, isAdmin, getAllocationStats);
 app.post(
   "/api/allocations/bulk",
   requireSignin,
   isAdmin,
   bulkCreateAllocations,
 );
+app.get("/api/allocations/:id", requireSignin, isAdmin, getAllocation);
 app.post("/api/allocations", requireSignin, isAdmin, createAllocation);
 app.put("/api/allocations/:id", requireSignin, isAdmin, updateAllocation);
 app.delete("/api/allocations/:id", requireSignin, isAdmin, deleteAllocation);
