@@ -46,12 +46,9 @@ function isTokenValid(token: string): boolean {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
   const accessToken = request.cookies.get("accessToken")?.value;
-
   let userRole: string | null = null;
   let isAuthenticated = false;
-
   if (accessToken && isTokenValid(accessToken)) {
     const role = getUserRoleFromToken(accessToken);
     if (role) {
@@ -59,12 +56,10 @@ export function middleware(request: NextRequest) {
       isAuthenticated = true;
     }
   }
-
   // Define route types
   const isAuthPage = pathname === "/login" || pathname === "/register";
   const isAdminRoute = pathname.startsWith("/admin");
   const isTutorRoute = pathname.startsWith("/tutor");
-
   // 1. Auth pages (/login, /register) - ALWAYS PUBLIC
   if (isAuthPage) {
     if (!isAuthenticated) {
@@ -82,28 +77,23 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }
-
   // 2. Home page (/) - ALWAYS PUBLIC
   if (pathname === "/") {
     return NextResponse.next();
   }
-
   // 3. If user is not authenticated (no valid token) and trying to access protected route
   if (!isAuthenticated) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
-
   // 4. If user is authenticated, check role-based access
   // Admin routes - only admin allowed
   if (isAdminRoute && userRole !== "admin") {
     return NextResponse.redirect(new URL("/", request.url));
   }
-
   // Tutor routes - only tutor allowed
-  if (isTutorRoute && userRole !== "tutor") {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-
+  // if (isTutorRoute && userRole !== "tutor") {
+  //   return NextResponse.redirect(new URL("/", request.url));
+  // }
   return NextResponse.next();
 }
 
