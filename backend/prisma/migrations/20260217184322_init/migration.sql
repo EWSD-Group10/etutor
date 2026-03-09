@@ -43,9 +43,9 @@ CREATE TABLE "messages" (
     "id" UUID NOT NULL,
     "sender_id" UUID NOT NULL,
     "recipient_id" UUID NOT NULL,
-    "message_body" TEXT NOT NULL,
-    "is_read" BOOLEAN NOT NULL DEFAULT false,
-    "sent_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "content" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "read_at" TIMESTAMP(3),
 
     CONSTRAINT "messages_pkey" PRIMARY KEY ("id")
 );
@@ -93,15 +93,16 @@ CREATE TABLE "comments" (
 -- CreateTable
 CREATE TABLE "meetings" (
     "id" UUID NOT NULL,
-    "meeting_name" VARCHAR(255),
-    "meeting_creator" UUID NOT NULL,
-    "tutor_id" UUID,
-    "meeting_type" "MeetingType" NOT NULL,
+    "student_id" UUID NOT NULL,
+    "tutor_id" UUID NOT NULL,
+    "created_by_id" UUID NOT NULL,
+    "meeting_type" "MeetingType" NOT NULL DEFAULT 'virtual',
     "meeting_status" "MeetingStatus" NOT NULL DEFAULT 'scheduled',
-    "scheduled_date" TIMESTAMP(3) NOT NULL,
+    "scheduled_at" TIMESTAMP(3) NOT NULL,
     "duration_minutes" INTEGER NOT NULL DEFAULT 30,
     "location" VARCHAR(255),
     "meeting_link" VARCHAR(500),
+    "notes" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "meetings_pkey" PRIMARY KEY ("id")
@@ -126,7 +127,13 @@ CREATE INDEX "blog_posts_title_idx" ON "blog_posts"("title");
 CREATE INDEX "documents_file_name_idx" ON "documents"("file_name");
 
 -- CreateIndex
-CREATE INDEX "meetings_meeting_name_idx" ON "meetings"("meeting_name");
+CREATE INDEX "meetings_student_id_idx" ON "meetings"("student_id");
+
+-- CreateIndex
+CREATE INDEX "meetings_tutor_id_idx" ON "meetings"("tutor_id");
+
+-- CreateIndex
+CREATE INDEX "meetings_scheduled_at_idx" ON "meetings"("scheduled_at");
 
 -- AddForeignKey
 ALTER TABLE "allocations" ADD CONSTRAINT "allocations_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -162,7 +169,11 @@ ALTER TABLE "comments" ADD CONSTRAINT "comments_blog_id_fkey" FOREIGN KEY ("blog
 ALTER TABLE "comments" ADD CONSTRAINT "comments_commenter_id_fkey" FOREIGN KEY ("commenter_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "meetings" ADD CONSTRAINT "meetings_meeting_creator_fkey" FOREIGN KEY ("meeting_creator") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "meetings" ADD CONSTRAINT "meetings_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "meetings" ADD CONSTRAINT "meetings_tutor_id_fkey" FOREIGN KEY ("tutor_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "meetings" ADD CONSTRAINT "meetings_tutor_id_fkey" FOREIGN KEY ("tutor_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "meetings" ADD CONSTRAINT "meetings_created_by_id_fkey" FOREIGN KEY ("created_by_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+

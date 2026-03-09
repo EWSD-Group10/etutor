@@ -27,9 +27,23 @@ import {
   updateAllocation,
   deleteAllocation,
 } from "./controllers/allocations.js"
+
+import {
+    listInbox,
+    listMessages,
+    sendMessage,
+    listMessageContacts,
+} from "./controllers/messages.js"
+
+import {
+    listMeetings,
+    createMeeting,
+    updateMeetingStatus,
+} from "./controllers/meetings.js"
+
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js"
 
-dotenv.config()
+dotenv.config({ override: true })
 
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -111,6 +125,17 @@ app.post("/api/allocations/bulk", requireSignin, isAdmin, bulkCreateAllocations)
 app.post("/api/allocations", requireSignin, isAdmin, createAllocation)
 app.put("/api/allocations/:id", requireSignin, isAdmin, updateAllocation)
 app.delete("/api/allocations/:id", requireSignin, isAdmin, deleteAllocation)
+
+// Messaging endpoints between the assign tutor and student
+app.get("/api/messages/inbox", requireSignin, listInbox)
+app.get("/api/messages/contacts", requireSignin, listMessageContacts)
+app.get("/api/messages", requireSignin, listMessages)
+app.post("/api/messages", requireSignin, sendMessage)
+
+// Meeting endpoints between the assign tutor and student
+app.get("/api/meetings", requireSignin, listMeetings)
+app.post("/api/meetings", requireSignin, createMeeting)
+app.patch("/api/meetings/:id/status", requireSignin, updateMeetingStatus)
 
 // Example usage of sendEmail function
 app.get("/api/send-email", async (req, res) => {

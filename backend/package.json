@@ -1,34 +1,37 @@
 {
-  "name": "etutor-backend",
-  "version": "1.0.0",
-  "description": "ETutor backend server",
-  "type": "module",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "seed": "node scripts/seed.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@aws-sdk/client-ses": "^3.379.0",
-    "@prisma/adapter-pg": "^7.4.0",
-    "@prisma/client": "^7.4.0",
-    "bcrypt": "^6.0.0",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.6",
-    "csv-parser": "^3.0.0",
-    "dotenv": "^17.3.1",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "pg": "^8.18.0"
-  },
-  "devDependencies": {
-    "@types/node": "^25.2.3",
-    "@types/pg": "^8.16.0",
-    "nodemon": "^3.0.1",
-    "prisma": "^7.4.0"
-  }
+    "name":  "etutor-backend",
+    "version":  "1.0.0",
+    "description":  "ETutor backend server",
+    "type":  "module",
+    "main":  "src/index.js",
+    "scripts":  {
+                    "start":  "node src/index.js",
+                    "dev":  "nodemon src/index.js",
+                    "seed":  "node scripts/seed.js",
+                    "db:repair-meeting-message":  "prisma db execute --schema prisma/schema.prisma --file ../db/repair_meeting_message.sql"
+                },
+    "keywords":  [
+
+                 ],
+    "author":  "",
+    "license":  "ISC",
+    "dependencies":  {
+                         "@aws-sdk/client-ses":  "^3.379.0",
+                         "@prisma/adapter-pg":  "^7.4.0",
+                         "@prisma/client":  "^7.4.2",
+                         "bcrypt":  "^6.0.0",
+                         "cookie-parser":  "^1.4.6",
+                         "cors":  "^2.8.6",
+                         "csv-parser":  "^3.0.0",
+                         "dotenv":  "^17.3.1",
+                         "express":  "^5.2.1",
+                         "jsonwebtoken":  "^9.0.3",
+                         "pg":  "^8.18.0"
+                     },
+    "devDependencies":  {
+                            "@types/node":  "^25.2.3",
+                            "@types/pg":  "^8.16.0",
+                            "nodemon":  "^3.0.1",
+                            "prisma":  "^7.4.2"
+                        }
 }

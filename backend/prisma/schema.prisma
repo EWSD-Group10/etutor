@@ -68,6 +68,7 @@ model User {
 
   createdMeetings Meeting[] @relation("MeetingCreator")
   tutorMeetings   Meeting[] @relation("MeetingTutor")
+  studentMeetings Meeting[] @relation("MeetingStudent")
 
   @@index([name])
   @@map("users")
@@ -96,17 +97,20 @@ model Allocation {
 // -------------------- MESSAGES --------------------
 
 model Message {
-  id          String   @id @default(uuid()) @db.Uuid
-  senderId    String   @map("sender_id") @db.Uuid
-  recipientId String   @map("recipient_id") @db.Uuid
-  messageBody String   @map("message_body")
-  isRead      Boolean  @default(false) @map("is_read")
-  sentAt      DateTime @default(now()) @map("sent_at")
+  id          String    @id @default(uuid()) @db.Uuid
+  senderId    String    @map("sender_id") @db.Uuid
+  recipientId String    @map("recipient_id") @db.Uuid
+  content     String    @map("content")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  readAt      DateTime? @map("read_at")
 
   // Relations
   sender    User @relation("MessageSender", fields: [senderId], references: [id])
   recipient User @relation("MessageRecipient", fields: [recipientId], references: [id])
 
+  @@index([senderId])
+  @@index([recipientId])
+  @@index([createdAt])
   @@map("messages")
 }
 
@@ -173,21 +177,26 @@ model Comment {
 
 model Meeting {
   id              String        @id @default(uuid()) @db.Uuid
-  meetingName     String?       @map("meeting_name") @db.VarChar(255)
-  meetingCreator  String        @map("meeting_creator") @db.Uuid
-  tutorId         String?       @map("tutor_id") @db.Uuid
-  meetingType     MeetingType   @map("meeting_type")
+  studentId       String        @map("student_id") @db.Uuid
+  tutorId         String        @map("tutor_id") @db.Uuid
+  createdById     String        @map("created_by_id") @db.Uuid
+  meetingType     MeetingType   @default(virtual) @map("meeting_type")
   meetingStatus   MeetingStatus @default(scheduled) @map("meeting_status")
-  scheduledDate   DateTime      @map("scheduled_date")
+  scheduledAt     DateTime      @map("scheduled_at")
   durationMinutes Int           @default(30) @map("duration_minutes")
   location        String?       @db.VarChar(255)
   meetingLink     String?       @map("meeting_link") @db.VarChar(500)
+  notes           String?
   createdAt       DateTime      @default(now()) @map("created_at")
 
   // Relations
-  creator User  @relation("MeetingCreator", fields: [meetingCreator], references: [id])
-  tutor   User? @relation("MeetingTutor", fields: [tutorId], references: [id])
+  student   User @relation("MeetingStudent", fields: [studentId], references: [id])
+  tutor     User @relation("MeetingTutor", fields: [tutorId], references: [id])
+  createdBy User @relation("MeetingCreator", fields: [createdById], references: [id])
 
-  @@index([meetingName])
+  @@index([studentId])
+  @@index([tutorId])
+  @@index([scheduledAt])
   @@map("meetings")
 }
+
