@@ -59,7 +59,7 @@ export function middleware(request: NextRequest) {
   // Define route types
   const isAuthPage = pathname === "/login" || pathname === "/register";
   const isAdminRoute = pathname.startsWith("/admin");
-  const isTutorRoute = pathname.startsWith("/tutors");
+  const isTutorRoute = pathname.startsWith("/tutor");
   // 1. Auth pages (/login, /register) - ALWAYS PUBLIC
   if (isAuthPage) {
     if (!isAuthenticated) {
@@ -70,7 +70,7 @@ export function middleware(request: NextRequest) {
       if (userRole === "student") {
         return NextResponse.redirect(new URL("/", request.url));
       } else if (userRole === "tutor") {
-        return NextResponse.redirect(new URL("/tutors/dashboard", request.url));
+        return NextResponse.redirect(new URL("/tutor/dashboard", request.url));
       } else if (userRole === "admin") {
         return NextResponse.redirect(new URL("/admin/dashboard", request.url));
       }

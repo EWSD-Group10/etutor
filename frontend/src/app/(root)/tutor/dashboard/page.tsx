@@ -39,17 +39,17 @@ export default function TutorDashboard() {
   ];
 
   return (
-    <Box sx={{ p: 4, bgcolor: "#f8f9fa", minHeight: "100vh" }}>
-      <Box sx={{ mb: 4 }}>
+    <Box sx={{ p: { xs: 1, md: 2 }, bgcolor: "#f8f9fa", minHeight: "100vh" }}>
+      <Box sx={{ mb: 4, px: { xs: 1, md: 2 } }}>
         <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-          Welcome back, {user?.name || "Dr. Jenkins"}
+          Welcome back, {user?.name || "Dr. Sarah Chen"}
         </Typography>
         <Typography variant="body1" color="text.secondary">
           Here's what's happening with your students today.
         </Typography>
       </Box>
 
-      <Grid container spacing={3} sx={{ mb: 4 }}>
+      <Grid container spacing={2} sx={{ mb: 4 }}>
         <Grid item xs={12} sm={6} md={3}>
           <DashboardStatsCard
             label="My Students"
@@ -83,11 +83,11 @@ export default function TutorDashboard() {
         </Grid>
       </Grid>
 
-      <Grid container spacing={4}>
+      <Grid container spacing={3}>
         {/* Left Column - My Students */}
-        <Grid item xs={12} md={8}>
-          <DashboardSection title="My Students" viewAllHref="/tutors/students">
-            <Stack spacing={0}>
+        <Grid item xs={12} md={7} lg={8}>
+          <DashboardSection title="My Students" viewAllHref="/tutor/student">
+            <Stack spacing={1}>
               {students.map((student) => (
                 <StudentListItem
                   key={student.id}
@@ -101,9 +101,9 @@ export default function TutorDashboard() {
         </Grid>
 
         {/* Right Column - Schedule and Messages */}
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={5} lg={4}>
           <DashboardSection title="Today's Schedule">
-            <Stack spacing={0}>
+            <Stack spacing={1}>
               {schedule.map((item) => (
                 <ScheduleItem
                   key={item.id}
@@ -118,7 +118,7 @@ export default function TutorDashboard() {
           </DashboardSection>
 
           <DashboardSection title="Recent Messages">
-            <Stack spacing={0}>
+            <Stack spacing={1}>
               {messages.map((message) => (
                 <MessageItem
                   key={message.id}

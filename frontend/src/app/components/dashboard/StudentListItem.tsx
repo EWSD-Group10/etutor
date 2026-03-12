@@ -46,10 +46,12 @@ const StudentListItem: React.FC<StudentListItemProps> = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        borderRadius: 2,
-        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.05)",
+        borderRadius: 3,
+        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.03)",
+        border: "1px solid",
+        borderColor: alpha("#000", 0.05),
         "&:hover": {
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.08)",
           transition: "boxShadow 0.3s ease-in-out",
         },
       }}
@@ -57,25 +59,27 @@ const StudentListItem: React.FC<StudentListItemProps> = ({
       <Stack direction="row" spacing={2} alignItems="center">
         <Avatar
           sx={{
-            bgcolor: alpha("#1976d2", 0.1),
+            bgcolor: alpha("#1976d2", 0.08),
             color: "primary.main",
-            fontWeight: 600,
-            fontSize: "0.875rem",
+            fontWeight: 700,
+            fontSize: "0.75rem",
+            width: 44,
+            height: 44,
           }}
         >
           {initials || getInitials(name)}
         </Avatar>
-        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.primary" }}>
           {name}
         </Typography>
       </Stack>
       <Box sx={{ textAlign: "right" }}>
-        <Typography variant="caption" color="textSecondary" sx={{ display: "block" }}>
+        <Typography variant="caption" color="textSecondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 600, mb: 0.2 }}>
           Engagement
         </Typography>
         <Typography
           variant="subtitle2"
-          sx={{ fontWeight: 700, color: getEngagementColor(engagement) }}
+          sx={{ fontWeight: 800, color: getEngagementColor(engagement) }}
         >
           {engagement} %
         </Typography>

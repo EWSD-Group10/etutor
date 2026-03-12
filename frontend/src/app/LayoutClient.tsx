@@ -11,7 +11,7 @@ export default function LayoutClient({
   return (
     <>
       <Sidebar />
-      <Box component="main" sx={{ marginLeft: "240px", minHeight: "100vh" }}>
+      <Box component="main" sx={{ marginLeft: "240px", minHeight: "100vh", width: "calc(100% - 240px)" }}>
         {children}
       </Box>
     </>

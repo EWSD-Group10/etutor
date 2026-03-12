@@ -13,6 +13,7 @@ import {
   Typography,
   Button,
   CircularProgress,
+  alpha,
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SchoolIcon from "@mui/icons-material/School";
@@ -61,13 +62,13 @@ export const Sidebar: React.FC = () => {
   ];
 
   const tutorItems = [
-    { label: "Dashboard", href: "/tutors/dashboard", icon: <DashboardIcon /> },
-    { label: "Students", href: "/tutors/students", icon: <PeopleIcon /> },
-    { label: "Messages", href: "/tutors/messages", icon: <MessageIcon /> },
-    { label: "Meetings", href: "/tutors/meetings", icon: <EventIcon /> },
-    { label: "Documents", href: "/tutors/documents", icon: <DescriptionIcon /> },
-    { label: "Blog", href: "/tutors/blog", icon: <ArticleIcon /> },
-    { label: "Settings", href: "/tutors/settings", icon: <SettingsIcon /> },
+    { label: "Dashboard", href: "/tutor/dashboard", icon: <DashboardIcon /> },
+    { label: "Students", href: "/tutor/student", icon: <PeopleIcon /> },
+    { label: "Messages", href: "/tutor/messages", icon: <MessageIcon /> },
+    { label: "Meetings", href: "/tutor/meetings", icon: <EventIcon /> },
+    { label: "Documents", href: "/tutor/documents", icon: <DescriptionIcon /> },
+    { label: "Blog", href: "/tutor/blog", icon: <ArticleIcon /> },
+    { label: "Settings", href: "/tutor/settings", icon: <SettingsIcon /> },
   ];
 
   const items = user?.role?.toUpperCase() === "ADMIN" ? adminItems : tutorItems;
@@ -91,42 +92,90 @@ export const Sidebar: React.FC = () => {
         left: 0,
         top: 0,
         height: "100vh",
-        bgcolor: "background.paper",
+        bgcolor: "white",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         borderRight: 1,
-        borderColor: "divider",
+        borderColor: alpha("#000", 0.05),
         zIndex: 1000,
         overflowY: "auto",
+        boxShadow: "2px 0px 8px rgba(0, 0, 0, 0.02)",
       }}
     >
-      <List>
-        {items.map((item) => (
-          <ListItemButton
-            key={item.href}
-            component={Link}
-            href={item.href}
-            selected={pathname === item.href}
-          >
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.label} />
-          </ListItemButton>
-        ))}
-      </List>
+      <Box>
+        <Box sx={{ p: 3, display: "flex", alignItems: "center", gap: 1 }}>
+          <Box sx={{ bgcolor: "primary.main", p: 0.5, borderRadius: 1, color: "white" }}>
+            <SchoolIcon fontSize="small" />
+          </Box>
+          <Typography variant="h6" sx={{ fontWeight: 800, color: "primary.main", letterSpacing: -0.5 }}>
+            eTutor
+          </Typography>
+        </Box>
+        <List sx={{ px: 1.5 }}>
+          {items.map((item) => (
+            <ListItemButton
+              key={item.href}
+              component={Link}
+              href={item.href}
+              selected={pathname === item.href}
+              sx={{
+                borderRadius: 2,
+                mb: 0.5,
+                color: pathname === item.href ? "primary.main" : "text.secondary",
+                bgcolor: pathname === item.href ? alpha("#1976d2", 0.08) : "transparent",
+                "&.Mui-selected": {
+                  bgcolor: alpha("#1976d2", 0.08),
+                  color: "primary.main",
+                  "&:hover": {
+                    bgcolor: alpha("#1976d2", 0.12),
+                  },
+                },
+                "&:hover": {
+                  bgcolor: alpha("#000", 0.03),
+                },
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 40, color: "inherit" }}>
+                {React.cloneElement(item.icon as React.ReactElement, { fontSize: "small" })}
+              </ListItemIcon>
+              <ListItemText 
+                primary={item.label} 
+                primaryTypographyProps={{ 
+                  variant: "body2", 
+                  sx: { fontWeight: pathname === item.href ? 700 : 500 } 
+                }} 
+              />
+            </ListItemButton>
+          ))}
+        </List>
+      </Box>
 
-      <Box sx={{ p: 2, borderTop: 1, borderColor: "divider" }}>
+      <Box sx={{ p: 2, borderTop: 1, borderColor: alpha("#000", 0.05) }}>
         <Box sx={{ textAlign: "center", mb: 2 }}>
           {isLoading ? (
             <CircularProgress size={40} sx={{ mx: "auto", mb: 1 }} />
           ) : (
             <>
-              <Avatar sx={{ mx: "auto", mb: 1 }}>
+              <Avatar 
+                sx={{ 
+                  mx: "auto", 
+                  mb: 1, 
+                  width: 52, 
+                  height: 52, 
+                  bgcolor: alpha("#000", 0.05), 
+                  color: "text.secondary",
+                  fontSize: "1rem",
+                  fontWeight: 700
+                }}
+              >
                 {getInitials(user?.name)}
               </Avatar>
-              <Typography variant="subtitle2">{user?.name || "Unknown"}</Typography>
-              <Typography variant="caption" color="text.secondary">
-                {user?.role?.toLowerCase() || "guest"}
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.primary" }}>
+                {user?.name || "Dr. Sarah Chen"}
+              </Typography>
+              <Typography variant="caption" sx={{ color: "text.secondary", fontWeight: 500, textTransform: "lowercase" }}>
+                {user?.role || "tutor"}
               </Typography>
             </>
           )}
@@ -140,7 +189,14 @@ export const Sidebar: React.FC = () => {
           disabled={logoutMutation.isPending}
           sx={{
             textTransform: "none",
-            fontWeight: 500,
+            fontWeight: 700,
+            borderRadius: 2,
+            py: 1,
+            borderColor: alpha("#d32f2f", 0.2),
+            "&:hover": {
+              bgcolor: alpha("#d32f2f", 0.04),
+              borderColor: "#d32f2f",
+            }
           }}
         >
           {logoutMutation.isPending ? "Signing out..." : "Sign Out"}

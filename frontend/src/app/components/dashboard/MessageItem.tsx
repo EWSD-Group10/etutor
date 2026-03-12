@@ -40,10 +40,12 @@ const MessageItem: React.FC<MessageItemProps> = ({
       sx={{
         p: 2,
         mb: 2,
-        borderRadius: 2,
-        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.05)",
+        borderRadius: 3,
+        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.03)",
+        border: "1px solid",
+        borderColor: alpha("#000", 0.05),
         "&:hover": {
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.08)",
           transition: "boxShadow 0.3s ease-in-out",
         },
       }}
@@ -52,41 +54,48 @@ const MessageItem: React.FC<MessageItemProps> = ({
         <Stack direction="row" spacing={2} alignItems="center">
           <Avatar
             sx={{
-              bgcolor: alpha("#1976d2", 0.1),
+              bgcolor: alpha("#1976d2", 0.08),
               color: "primary.main",
-              fontWeight: 600,
-              fontSize: "0.875rem",
+              fontWeight: 700,
+              fontSize: "0.75rem",
+              width: 44,
+              height: 44,
             }}
           >
             {initials || getInitials(sender)}
           </Avatar>
           <Box sx={{ maxWidth: 180 }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.primary" }}>
               {sender}
             </Typography>
             <Typography
               variant="caption"
               color="text.secondary"
               noWrap
-              sx={{ display: "block" }}
+              sx={{ display: "block", fontWeight: 500 }}
             >
               {message}
             </Typography>
           </Box>
         </Stack>
         {unreadCount > 0 && (
-          <Badge
-            badgeContent={unreadCount}
-            color="primary"
+          <Box
             sx={{
-              "& .MuiBadge-badge": {
-                fontWeight: 700,
-                minWidth: 20,
-                height: 20,
-                borderRadius: "50%",
-              },
+              width: 20,
+              height: 20,
+              borderRadius: "50%",
+              bgcolor: "primary.main",
+              color: "white",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "0.65rem",
+              fontWeight: 800,
+              boxShadow: "0px 2px 4px rgba(25, 118, 210, 0.3)",
             }}
-          />
+          >
+            {unreadCount}
+          </Box>
         )}
       </Stack>
     </Card>
