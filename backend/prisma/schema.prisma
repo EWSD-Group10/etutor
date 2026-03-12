@@ -5,8 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"//"prisma-client"
-  // output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -53,8 +52,8 @@ model User {
   createdAt     DateTime @default(now()) @map("created_at")
 
   // Relations
-  studentAllocations    Allocation[]  @relation("AllocationStudent")
-  tutorAllocations      Allocation[]  @relation("AllocationTutor")
+  studentAllocations     Allocation[] @relation("AllocationStudent")
+  tutorAllocations       Allocation[] @relation("AllocationTutor")
   reallocatedAllocations Allocation[] @relation("AllocationReallocatedBy")
 
   sentMessages     Message[] @relation("MessageSender")
@@ -85,8 +84,8 @@ model Allocation {
   notes         String?
 
   // Relations
-  student       User @relation("AllocationStudent", fields: [studentId], references: [id])
-  tutor         User @relation("AllocationTutor", fields: [tutorId], references: [id])
+  student           User  @relation("AllocationStudent", fields: [studentId], references: [id])
+  tutor             User  @relation("AllocationTutor", fields: [tutorId], references: [id])
   reallocatedByUser User? @relation("AllocationReallocatedBy", fields: [reallocatedBy], references: [id])
 
   @@index([tutorId])
@@ -123,8 +122,8 @@ model BlogPost {
   createdBy String?  @map("created_by") @db.Uuid
 
   // Relations
-  tutor    User @relation("BlogPostTutor", fields: [tutorId], references: [id])
-  student  User @relation("BlogPostStudent", fields: [studentId], references: [id])
+  tutor    User      @relation("BlogPostTutor", fields: [tutorId], references: [id])
+  student  User      @relation("BlogPostStudent", fields: [studentId], references: [id])
   comments Comment[]
 
   @@index([title])

@@ -1,32 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "../../../lib/axios";
+import { fetchStudents, StudentsResponse } from "./query";
 
-interface Student {
-  id: string;
-  email: string;
-  name: string;
-  role: string;
-  degreeProgram: string;
-  isActive: boolean;
-  createdAt: string;
-}
-
-interface StudentsResponse {
-  data: Student[];
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-}
-
-export const useStudents = () => {
-  return useQuery({
-    queryKey: ["students"],
-    queryFn: async () => {
-      const response = await axios.get<StudentsResponse>("/api/students", {});
-      return response.data;
-    },
+export const useStudents = (page: number = 1, limit: number = 20) => {
+  return useQuery<StudentsResponse>({
+    queryKey: ["students", page, limit],
+    queryFn: () => fetchStudents(page, limit),
   });
 };

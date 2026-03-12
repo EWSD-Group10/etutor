@@ -6,8 +6,10 @@ COPY package*.json ./
 
 RUN npm install --legacy-peer-deps
 
+RUN npm rebuild --build-from-source
+
 COPY . .
 
-EXPOSE 8080
+EXPOSE 3000
 
-CMD ["node", "src/index.js"]
+CMD ["npm", "run", "dev"]

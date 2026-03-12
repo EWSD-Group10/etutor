@@ -1,0 +1,481 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "eTutor API Documentation",
+    "version": "1.0.0",
+    "description": "OpenAPI documentation for eTutor backend API"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Test database connection",
+        "tags": ["Health"],
+        "responses": {
+          "200": {
+            "description": "Database connection successful"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "tags": ["Health"],
+        "responses": {
+          "200": {
+            "description": "Server is healthy"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "summary": "Login user",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful"
+          }
+        }
+      }
+    },
+    "/api/refresh": {
+      "post": {
+        "summary": "Refresh authentication token",
+        "tags": ["Auth"],
+        "responses": {
+          "200": {
+            "description": "Token refreshed successfully"
+          }
+        }
+      }
+    },
+    "/api/current-user": {
+      "get": {
+        "summary": "Get current authenticated user",
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current user information"
+          }
+        }
+      }
+    },
+    "/api/tutor-only": {
+      "get": {
+        "summary": "Test endpoint for tutors only",
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Access granted to tutors"
+          }
+        }
+      }
+    },
+    "/api/admin-only": {
+      "get": {
+        "summary": "Test endpoint for admins only",
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Access granted to admins"
+          }
+        }
+      }
+    },
+    "/api/students": {
+      "get": {
+        "summary": "List all students",
+        "tags": ["Students"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of students"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new student",
+        "tags": ["Students"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Student created successfully"
+          }
+        }
+      }
+    },
+    "/api/students/{id}": {
+      "get": {
+        "summary": "Get student by ID",
+        "tags": ["Students"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student details"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update student",
+        "tags": ["Students"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete student",
+        "tags": ["Students"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/tutors/{id}": {
+      "get": {
+        "summary": "Get tutor by ID",
+        "tags": ["Tutors"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tutor details"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update tutor",
+        "tags": ["Tutors"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tutor updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete tutor",
+        "tags": ["Tutors"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tutor deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/tutors": {
+      "post": {
+        "summary": "Create a new tutor",
+        "tags": ["Tutors"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tutor created successfully"
+          }
+        }
+      }
+    },
+    "/api/allocations/{id}": {
+      "get": {
+        "summary": "Get allocation by ID",
+        "tags": ["Allocations"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Allocation details"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update allocation",
+        "tags": ["Allocations"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Allocation updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete allocation",
+        "tags": ["Allocations"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Allocation deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/allocations/bulk": {
+      "post": {
+        "summary": "Create multiple allocations",
+        "tags": ["Allocations"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Allocations created successfully"
+          }
+        }
+      }
+    },
+    "/api/allocations": {
+      "post": {
+        "summary": "Create a new allocation",
+        "tags": ["Allocations"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Allocation created successfully"
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
