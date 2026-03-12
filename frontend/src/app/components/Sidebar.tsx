@@ -18,6 +18,11 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import SchoolIcon from "@mui/icons-material/School";
 import PeopleIcon from "@mui/icons-material/People";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import MessageIcon from "@mui/icons-material/Message";
+import EventIcon from "@mui/icons-material/Event";
+import DescriptionIcon from "@mui/icons-material/Description";
+import ArticleIcon from "@mui/icons-material/Article";
+import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useLogout } from "@/app/hooks/auth/useLogout";
 import { useAuth } from "@/app/context/AuthContext";
@@ -48,12 +53,24 @@ export const Sidebar: React.FC = () => {
     }
   }, [user, setUser]);
 
-  const items = [
+  const adminItems = [
     { label: "Dashboard", href: "/admin/dashboard", icon: <DashboardIcon /> },
     { label: "Tutors", href: "/admin/tutors", icon: <SchoolIcon /> },
     { label: "Students", href: "/admin/students", icon: <PeopleIcon /> },
     { label: "Allocation", href: "/admin/allocations", icon: <AssignmentIcon /> },
   ];
+
+  const tutorItems = [
+    { label: "Dashboard", href: "/tutors/dashboard", icon: <DashboardIcon /> },
+    { label: "Students", href: "/tutors/students", icon: <PeopleIcon /> },
+    { label: "Messages", href: "/tutors/messages", icon: <MessageIcon /> },
+    { label: "Meetings", href: "/tutors/meetings", icon: <EventIcon /> },
+    { label: "Documents", href: "/tutors/documents", icon: <DescriptionIcon /> },
+    { label: "Blog", href: "/tutors/blog", icon: <ArticleIcon /> },
+    { label: "Settings", href: "/tutors/settings", icon: <SettingsIcon /> },
+  ];
+
+  const items = user?.role?.toUpperCase() === "ADMIN" ? adminItems : tutorItems;
 
   // Get initials for avatar
   const getInitials = (name: string | null | undefined) => {
