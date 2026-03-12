@@ -1,14 +1,8 @@
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@prisma/client";
-import { Pool } from "pg";
 import { hashPassword } from "../src/utils/auth.js";
 import dotenv from "dotenv";
+import { prisma } from "../src/utils/prisma.js";
 
 dotenv.config();
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
 
 // -------------------- DATA --------------------
 

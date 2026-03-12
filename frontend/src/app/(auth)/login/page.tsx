@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useLogin } from "../hooks/auth/useLogin";
+import { useLogin } from "@/app/hooks/auth/useLogin";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -16,11 +16,16 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6 text-black">Login</h1>
+        <h1 className="text-2xl font-bold text-center mb-6 text-black">
+          Login
+        </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Email
             </label>
             <input
@@ -35,7 +40,10 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Password
             </label>
             <input

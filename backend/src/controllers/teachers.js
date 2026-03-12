@@ -2,7 +2,8 @@ import { prisma } from "../utils/prisma.js"
 import { hashPassword } from "../utils/auth.js"
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
 const teacherSelect = {
   id: true,
@@ -92,7 +93,7 @@ export const createTutor = async (req, res) => {
     else if (!EMAIL_REGEX.test(email)) errors.push("Invalid email format")
 
     if (!name) errors.push("Name is required")
-    if (!degreeProgram) errors.push("Degree program is required")
+    // if (!degreeProgram) errors.push("Degree program is required")
     if (!department) errors.push("Department is required")
 
     if (errors.length > 0) {
@@ -149,16 +150,22 @@ export const updateTutor = async (req, res) => {
     }
 
     if (Object.keys(data).length === 0) {
-      return res.status(400).json({ error: "At least one field is required to update" })
+      return res
+        .status(400)
+        .json({ error: "At least one field is required to update" })
     }
 
-    const existing = await prisma.user.findFirst({ where: { id, role: "tutor" } })
+    const existing = await prisma.user.findFirst({
+      where: { id, role: "tutor" },
+    })
     if (!existing) {
       return res.status(404).json({ error: "Teacher not found" })
     }
 
     if (data.email && data.email !== existing.email) {
-      const emailTaken = await prisma.user.findUnique({ where: { email: data.email } })
+      const emailTaken = await prisma.user.findUnique({
+        where: { email: data.email },
+      })
       if (emailTaken) {
         return res.status(409).json({ error: "Email already exists" })
       }
@@ -185,7 +192,9 @@ export const deleteTutors = async (req, res) => {
       return res.status(400).json({ error: "Invalid teacher ID format" })
     }
 
-    const existing = await prisma.user.findFirst({ where: { id, role: "tutor" } })
+    const existing = await prisma.user.findFirst({
+      where: { id, role: "tutor" },
+    })
     if (!existing) {
       return res.status(404).json({ error: "Teacher not found" })
     }
