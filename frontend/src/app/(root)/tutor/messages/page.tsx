@@ -65,19 +65,25 @@ export default function MessagesPage() {
   };
 
   return (
-    <Grid container sx={{ height: "100vh", width: "100%", bgcolor: "white", overflow: "hidden" }}>
+    <Box
+      sx={{
+        display: "flex",
+        height: "100vh",
+        width: "100%",
+        bgcolor: "white",
+        overflow: "hidden",
+      }}
+    >
       {/* Left Column - Chat List */}
-      <Grid
-        item
-        xs={12}
-        md={4}
-        lg={3}
+      <Box
         sx={{
+          width: { xs: "100%", md: "320px", lg: "360px" },
           borderRight: 1,
           borderColor: "divider",
           display: "flex",
           flexDirection: "column",
           height: "100%",
+          flexShrink: 0,
         }}
       >
         <Box sx={{ p: 3 }}>
@@ -126,18 +132,17 @@ export default function MessagesPage() {
               />
             ))}
         </List>
-      </Grid>
+      </Box>
 
       {/* Right Column - Chat Window */}
-      <Grid
-        item
-        xs={12}
-        md={8}
-        lg={9}
+      <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           height: "100%",
+          flexGrow: 1,
+          bgcolor: alpha("#f8f9fa", 0.2),
+          minWidth: 0, // Critical for flex children with overflow content
         }}
       >
         {currentChat ? (
@@ -151,7 +156,6 @@ export default function MessagesPage() {
                 flexGrow: 1,
                 overflowY: "auto",
                 py: 3,
-                bgcolor: alpha("#f8f9fa", 0.3),
                 display: "flex",
                 flexDirection: "column",
               }}
@@ -181,7 +185,7 @@ export default function MessagesPage() {
             <Typography>Select a conversation to start messaging</Typography>
           </Box>
         )}
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 }
