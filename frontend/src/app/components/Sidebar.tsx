@@ -14,6 +14,9 @@ import {
   Button,
   CircularProgress,
   alpha,
+  Drawer,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SchoolIcon from "@mui/icons-material/School";
@@ -35,10 +38,17 @@ interface User {
   role: string;
 }
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) => {
   const pathname = usePathname();
   const logoutMutation = useLogout();
   const { user, isLoading, setUser } = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   // Sync with localStorage on mount and when user changes
   useEffect(() => {
@@ -84,13 +94,10 @@ export const Sidebar: React.FC = () => {
       .slice(0, 2);
   };
 
-  return (
+  const sidebarContent = (
     <Box
       sx={{
         width: 240,
-        position: "fixed",
-        left: 0,
-        top: 0,
         height: "100vh",
         bgcolor: "white",
         display: "flex",
@@ -98,7 +105,6 @@ export const Sidebar: React.FC = () => {
         justifyContent: "space-between",
         borderRight: 1,
         borderColor: alpha("#000", 0.05),
-        zIndex: 1000,
         overflowY: "auto",
         boxShadow: "2px 0px 8px rgba(0, 0, 0, 0.02)",
       }}
@@ -119,6 +125,7 @@ export const Sidebar: React.FC = () => {
               component={Link}
               href={item.href}
               selected={pathname === item.href}
+              onClick={onMobileClose}
               sx={{
                 borderRadius: 2,
                 mb: 0.5,
@@ -185,7 +192,10 @@ export const Sidebar: React.FC = () => {
           variant="outlined"
           color="error"
           startIcon={logoutMutation.isPending ? <CircularProgress size={16} color="inherit" /> : <LogoutIcon />}
-          onClick={() => logoutMutation.mutate()}
+          onClick={() => {
+            onMobileClose?.();
+            logoutMutation.mutate();
+          }}
           disabled={logoutMutation.isPending}
           sx={{
             textTransform: "none",
@@ -202,6 +212,35 @@ export const Sidebar: React.FC = () => {
           {logoutMutation.isPending ? "Signing out..." : "Sign Out"}
         </Button>
       </Box>
+    </Box>
+  );
+
+  return (
+    <Box component="nav">
+      {isMobile ? (
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={onMobileClose}
+          ModalProps={{ keepMounted: true }}
+          sx={{
+            display: { xs: "block", md: "none" },
+            "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240, border: "none" },
+          }}
+        >
+          {sidebarContent}
+        </Drawer>
+      ) : (
+        <Box
+          sx={{
+            display: { xs: "none", md: "block" },
+            width: 240,
+            flexShrink: 0,
+          }}
+        >
+          {sidebarContent}
+        </Box>
+      )}
     </Box>
   );
 };
