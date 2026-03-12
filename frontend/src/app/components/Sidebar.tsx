@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -12,6 +12,7 @@ import {
   Avatar,
   Typography,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SchoolIcon from "@mui/icons-material/School";
@@ -19,17 +20,51 @@ import PeopleIcon from "@mui/icons-material/People";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useLogout } from "@/app/hooks/auth/useLogout";
+import { useAuth } from "@/app/context/AuthContext";
+
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+}
 
 export const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const logoutMutation = useLogout();
+  const { user, isLoading, setUser } = useAuth();
+
+  // Sync with localStorage on mount and when user changes
+  useEffect(() => {
+    if (!user) {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (error) {
+          console.error("Failed to parse stored user:", error);
+        }
+      }
+    }
+  }, [user, setUser]);
 
   const items = [
     { label: "Dashboard", href: "/admin/dashboard", icon: <DashboardIcon /> },
-    { label: "Tutors", href: "/tutors", icon: <SchoolIcon /> },
-    { label: "Students", href: "/students", icon: <PeopleIcon /> },
-    { label: "Allocation", href: "/allocation", icon: <AssignmentIcon /> },
+    { label: "Tutors", href: "/admin/tutors", icon: <SchoolIcon /> },
+    { label: "Students", href: "/admin/students", icon: <PeopleIcon /> },
+    { label: "Allocation", href: "/admin/allocations", icon: <AssignmentIcon /> },
   ];
+
+  // Get initials for avatar
+  const getInitials = (name: string | null | undefined) => {
+    if (!name) return "?";
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   return (
     <Box
@@ -65,17 +100,25 @@ export const Sidebar: React.FC = () => {
 
       <Box sx={{ p: 2, borderTop: 1, borderColor: "divider" }}>
         <Box sx={{ textAlign: "center", mb: 2 }}>
-          <Avatar sx={{ mx: "auto", mb: 1 }}>AD</Avatar>
-          <Typography variant="subtitle2">Admin User</Typography>
-          <Typography variant="caption" color="text.secondary">
-            admin
-          </Typography>
+          {isLoading ? (
+            <CircularProgress size={40} sx={{ mx: "auto", mb: 1 }} />
+          ) : (
+            <>
+              <Avatar sx={{ mx: "auto", mb: 1 }}>
+                {getInitials(user?.name)}
+              </Avatar>
+              <Typography variant="subtitle2">{user?.name || "Unknown"}</Typography>
+              <Typography variant="caption" color="text.secondary">
+                {user?.role?.toLowerCase() || "guest"}
+              </Typography>
+            </>
+          )}
         </Box>
         <Button
           fullWidth
           variant="outlined"
           color="error"
-          startIcon={<LogoutIcon />}
+          startIcon={logoutMutation.isPending ? <CircularProgress size={16} color="inherit" /> : <LogoutIcon />}
           onClick={() => logoutMutation.mutate()}
           disabled={logoutMutation.isPending}
           sx={{

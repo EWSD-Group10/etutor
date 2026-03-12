@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../../context/AuthContext";
 import api from "../../../lib/axios";
 
 interface LoginInput {
@@ -19,6 +20,7 @@ interface LoginResponse {
 
 export const useLogin = () => {
   const router = useRouter();
+  const { setUser } = useAuth();
 
   return useMutation({
     mutationFn: async (data: LoginInput): Promise<LoginResponse> => {
@@ -30,6 +32,9 @@ export const useLogin = () => {
     onSuccess: (data) => {
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("user", JSON.stringify(data.user));
+
+      // Update AuthContext
+      setUser(data.user);
 
       const isProduction = window.location.protocol === "https:";
       document.cookie = `accessToken=${data.accessToken}; path=/; max-age=900; SameSite=Lax${isProduction ? "; Secure" : ""}`;
