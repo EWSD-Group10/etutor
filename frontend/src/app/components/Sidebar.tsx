@@ -27,6 +27,7 @@ import EventIcon from "@mui/icons-material/Event";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ArticleIcon from "@mui/icons-material/Article";
 import SettingsIcon from "@mui/icons-material/Settings";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useLogout } from "@/app/hooks/auth/useLogout";
 import { useAuth } from "@/app/context/AuthContext";
@@ -81,7 +82,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
     { label: "Settings", href: "/tutor/settings", icon: <SettingsIcon /> },
   ];
 
-  const items = user?.role?.toUpperCase() === "ADMIN" ? adminItems : tutorItems;
+  const studentItems = [
+    { label: "Dashboard", href: "/student/dashboard", icon: <DashboardIcon /> },
+    { label: "Messages", href: "/student/messages", icon: <MessageIcon /> },
+    { label: "Meetings", href: "/student/meetings", icon: <EventIcon /> },
+    { label: "Documents", href: "/student/documents", icon: <DescriptionIcon /> },
+    { label: "Notifications", href: "/student/notifications", icon: <NotificationsIcon /> },
+    { label: "Settings", href: "/student/settings", icon: <SettingsIcon /> },
+  ];
+
+  const role = user?.role?.toUpperCase();
+  const items =
+    role === "ADMIN" ? adminItems : role === "STUDENT" ? studentItems : tutorItems;
 
   // Get initials for avatar
   const getInitials = (name: string | null | undefined) => {
@@ -182,7 +194,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
                 {user?.name || "Dr. Sarah Chen"}
               </Typography>
               <Typography variant="caption" sx={{ color: "text.secondary", fontWeight: 500, textTransform: "lowercase" }}>
-                {user?.role || "tutor"}
+                {user?.role || ""}
               </Typography>
             </>
           )}

@@ -44,6 +44,8 @@ export const useLogin = () => {
         router.push("/admin/dashboard");
       } else if (role === "tutor") {
         router.push("/tutor/dashboard");
+      } else if (role === "student") {
+        router.push("/student/dashboard");
       } else {
         router.push("/");
       }

@@ -60,6 +60,7 @@ export function middleware(request: NextRequest) {
   const isAuthPage = pathname === "/login" || pathname === "/register";
   const isAdminRoute = pathname.startsWith("/admin");
   const isTutorRoute = pathname.startsWith("/tutor");
+  const isStudentRoute = pathname.startsWith("/student");
   // 1. Auth pages (/login, /register) - ALWAYS PUBLIC
   if (isAuthPage) {
     if (!isAuthenticated) {
@@ -68,7 +69,7 @@ export function middleware(request: NextRequest) {
     } else {
       // Authenticated user accessing login/register - REDIRECT to their dashboard
       if (userRole === "student") {
-        return NextResponse.redirect(new URL("/", request.url));
+        return NextResponse.redirect(new URL("/student/dashboard", request.url));
       } else if (userRole === "tutor") {
         return NextResponse.redirect(new URL("/tutor/dashboard", request.url));
       } else if (userRole === "admin") {
@@ -88,6 +89,10 @@ export function middleware(request: NextRequest) {
   // 4. If user is authenticated, check role-based access
   // Admin routes - only admin allowed
   if (isAdminRoute && userRole !== "admin") {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+  // Student routes - only student allowed
+  if (isStudentRoute && userRole !== "student") {
     return NextResponse.redirect(new URL("/", request.url));
   }
   // Tutor routes - only tutor allowed
