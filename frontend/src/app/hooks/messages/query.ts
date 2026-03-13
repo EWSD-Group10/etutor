@@ -10,9 +10,9 @@ export interface Message {
   id: string;
   senderId: string;
   recipientId: string;
-  content: string;
-  createdAt: string;
-  readAt: string | null;
+  messageBody: string;
+  sentAt: string;
+  isRead: boolean;
   sender: MessageUser;
   recipient: MessageUser;
 }
@@ -31,9 +31,9 @@ export interface InboxItem {
   peer: MessageUser;
   lastMessage: {
     id: string;
-    content: string;
-    createdAt: string;
-    readAt: string | null;
+    messageBody: string;
+    sentAt: string;
+    isRead: boolean;
   };
   unreadCount: number;
 }

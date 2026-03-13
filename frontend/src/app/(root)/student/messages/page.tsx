@@ -197,8 +197,8 @@ export default function StudentMessagesPage() {
                   key={chat.peer.id}
                   id={chat.peer.id}
                   name={chat.peer.name || "Unknown"}
-                  lastMessage={chat.lastMessage?.content || ""}
-                  time={chat.lastMessage?.createdAt ? formatTime(chat.lastMessage.createdAt) : ""}
+                  lastMessage={chat.lastMessage?.messageBody || ""}
+                  time={chat.lastMessage?.sentAt ? formatTime(chat.lastMessage.sentAt) : ""}
                   unreadCount={chat.unreadCount}
                   isActive={activeChatId === chat.peer.id}
                   onClick={() => {
@@ -272,8 +272,8 @@ export default function StudentMessagesPage() {
                     <ChatMessage
                       key={msg.id}
                       id={msg.id}
-                      message={msg.content}
-                      time={formatTime(msg.createdAt)}
+                      message={msg.messageBody}
+                      time={formatTime(msg.sentAt)}
                       isSent={msg.senderId === user?.id}
                     />
                   ))
