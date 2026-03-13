@@ -51,17 +51,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  // Sync with localStorage on mount and when user changes
+  // Prefer localStorage so sidebar always shows the actual logged-in user (fixes student seeing wrong name/role)
+  const [displayUser, setDisplayUser] = useState<User | null>(user ?? null);
   useEffect(() => {
-    if (!user) {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        try {
-          setUser(JSON.parse(storedUser));
-        } catch (error) {
-          console.error("Failed to parse stored user:", error);
-        }
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        const parsed = JSON.parse(storedUser) as User;
+        setDisplayUser(parsed);
+        if (!user || user.id !== parsed.id) setUser(parsed);
+      } catch (error) {
+        console.error("Failed to parse stored user:", error);
+        setDisplayUser(user);
       }
+    } else {
+      setDisplayUser(user);
     }
   }, [user, setUser]);
 
@@ -91,7 +95,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
     { label: "Settings", href: "/student/settings", icon: <SettingsIcon /> },
   ];
 
-  const role = user?.role?.toUpperCase();
+  const role = displayUser?.role?.toUpperCase();
   const items =
     role === "ADMIN" ? adminItems : role === "STUDENT" ? studentItems : tutorItems;
 
@@ -188,13 +192,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
                   fontWeight: 700
                 }}
               >
-                {getInitials(user?.name)}
+                {getInitials(displayUser?.name)}
               </Avatar>
               <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.primary" }}>
-                {user?.name || "Dr. Sarah Chen"}
+                {displayUser?.name || "—"}
               </Typography>
               <Typography variant="caption" sx={{ color: "text.secondary", fontWeight: 500, textTransform: "lowercase" }}>
-                {user?.role || ""}
+                {displayUser?.role || ""}
               </Typography>
             </>
           )}
