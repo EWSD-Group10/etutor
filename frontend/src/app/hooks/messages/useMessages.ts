@@ -21,6 +21,9 @@ export interface MessagesResponse {
 // Cache time in milliseconds (5 minutes)
 const STALE_TIME = 5 * 60 * 1000;
 
+// Poll for new messages every 5 seconds
+const POLLING_INTERVAL = 5000;
+
 // Hook to fetch messages with a specific user (paginated)
 export const useMessages = (withUserId: string, page: number = 1, limit: number = 20) => {
   return useQuery({
@@ -28,6 +31,7 @@ export const useMessages = (withUserId: string, page: number = 1, limit: number 
     queryFn: () => fetchMessages(withUserId, page, limit),
     enabled: !!withUserId,
     staleTime: STALE_TIME,
+    refetchInterval: POLLING_INTERVAL, // Poll for new messages
   });
 };
 
@@ -37,6 +41,7 @@ export const useInbox = () => {
     queryKey: ["inbox"],
     queryFn: fetchInbox,
     staleTime: STALE_TIME,
+    refetchInterval: POLLING_INTERVAL, // Poll for new conversations
   });
 };
 
