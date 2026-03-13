@@ -103,7 +103,7 @@ export default function AllocationPage() {
   };
 
   return (
-    <Box sx={{ paddingX: 15, paddingY: 3 }}>
+    <Box sx={{ p: { xs: 2, md: 4 }, maxWidth: "1400px", mx: "auto" }}>
       <Stack spacing={4}>
         {/* Header */}
         <Box>

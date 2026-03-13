@@ -65,7 +65,7 @@ export default function TutorsPage() {
   };
 
   return (
-    <Box sx={{ paddingX: 15 }}>
+    <Box sx={{ p: { xs: 2, md: 4 }, maxWidth: "1400px", mx: "auto" }}>
       <Stack spacing={3}>
         <TutorTable
           data={data?.data || []}

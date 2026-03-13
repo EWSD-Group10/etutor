@@ -199,9 +199,6 @@ const statCards = [
 ];
 
 export default function AdminDashboard() {
-  const [collapsed, setCollapsed] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-GB", {
     weekday: "long",
@@ -211,58 +208,9 @@ export default function AdminDashboard() {
   });
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-gray-50 font-inter">
+    <div className="flex min-h-screen w-full bg-gray-50 font-inter">
       {/* Main content */}
       <main className="flex-1 overflow-y-auto">
-        {/* Mobile header */}
-        <div className="md:hidden flex items-center gap-3 px-4 py-3 bg-white border-b border-gray-200">
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="p-1.5 rounded-lg text-gray-500 hover:bg-gray-100"
-          >
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path
-                d="M2.5 5h15M2.5 10h15M2.5 15h15"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
-          <div className="flex items-center gap-2">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M28.56 14.5626C28.7987 14.4573 29.0012 14.2843 29.1426 14.065C29.2839 13.8457 29.3578 13.5898 29.3551 13.3289C29.3524 13.0681 29.2732 12.8137 29.1274 12.5974C28.9815 12.3811 28.7755 12.2123 28.5346 12.1119L17.1066 6.90661C16.7592 6.74815 16.3818 6.66614 16 6.66614C15.6181 6.66614 15.2407 6.74815 14.8933 6.90661L3.46664 12.1066C3.22927 12.2106 3.02733 12.3815 2.88553 12.5984C2.74373 12.8153 2.66821 13.0688 2.66821 13.3279C2.66821 13.5871 2.74373 13.8406 2.88553 14.0575C3.02733 14.2744 3.22927 14.4453 3.46664 14.5493L14.8933 19.7599C15.2407 19.9184 15.6181 20.0004 16 20.0004C16.3818 20.0004 16.7592 19.9184 17.1066 19.7599L28.56 14.5626Z"
-                stroke="#2563EB"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M29.3334 13.3334V21.3334"
-                stroke="#2563EB"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M8 16.6666V21.3333C8 22.3942 8.84286 23.4116 10.3431 24.1617C11.8434 24.9119 13.8783 25.3333 16 25.3333C18.1217 25.3333 20.1566 24.9119 21.6569 24.1617C23.1571 23.4116 24 22.3942 24 21.3333V16.6666"
-                stroke="#2563EB"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span className="font-bold text-gray-900 text-base">eTutor</span>
-          </div>
-        </div>
-
         <div className="p-6 md:p-8 max-w-[1200px] mx-auto">
           {/* Header */}
           <div className="mb-8">
