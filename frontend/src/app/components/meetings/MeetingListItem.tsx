@@ -43,6 +43,8 @@ interface MeetingListItemProps {
   onDelete?: (id: string) => void;
   onComplete?: (id: string) => void;
   onCancel?: (id: string) => void;
+  /** When true, only show View action (e.g. for student view). */
+  viewOnly?: boolean;
 }
 
 const MeetingListItem: React.FC<MeetingListItemProps> = ({
@@ -61,6 +63,7 @@ const MeetingListItem: React.FC<MeetingListItemProps> = ({
   onDelete,
   onComplete,
   onCancel,
+  viewOnly = false,
 }) => {
   const getStatusColor = (status: MeetingStatus) => {
     switch (status) {
@@ -190,7 +193,7 @@ const MeetingListItem: React.FC<MeetingListItemProps> = ({
         />
 
         <Stack direction="row" spacing={0.5}>
-          {status === "scheduled" && (
+          {!viewOnly && status === "scheduled" && (
             <>
               <Tooltip title="Mark Complete">
                 <IconButton size="small" onClick={() => onComplete?.(id)} sx={{ color: "success.main", "&:hover": { bgcolor: alpha("#2e7d32", 0.08) } }}>
@@ -209,16 +212,20 @@ const MeetingListItem: React.FC<MeetingListItemProps> = ({
               <VisibilityOutlinedIcon fontSize="small" />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Edit Meeting">
-            <IconButton size="small" onClick={() => onEdit?.(id)} sx={{ color: "text.secondary" }}>
-              <EditOutlinedIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Delete Meeting">
-            <IconButton size="small" onClick={() => onDelete?.(id)} sx={{ color: "text.secondary" }}>
-              <DeleteOutlineIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
+          {!viewOnly && (
+            <>
+              <Tooltip title="Edit Meeting">
+                <IconButton size="small" onClick={() => onEdit?.(id)} sx={{ color: "text.secondary" }}>
+                  <EditOutlinedIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete Meeting">
+                <IconButton size="small" onClick={() => onDelete?.(id)} sx={{ color: "text.secondary" }}>
+                  <DeleteOutlineIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </>
+          )}
         </Stack>
       </Stack>
     </Card>
