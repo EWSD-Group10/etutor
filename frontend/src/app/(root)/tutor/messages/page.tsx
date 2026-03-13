@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -18,6 +18,7 @@ import ChatInput from "@/app/components/messages/ChatInput";
 import { useInbox, useMessageContacts, useMessages } from "@/app/hooks/messages/useMessages";
 import { useSendMessage } from "@/app/hooks/messages/useSendMessage";
 import { useAuth } from "@/app/context/AuthContext";
+import { Message } from "@/app/hooks/messages/query";
 
 interface ChatPeer {
   id: string;
@@ -31,6 +32,7 @@ export default function TutorMessagesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [messagePage, setMessagePage] = useState(1);
   const [selectedPeer, setSelectedPeer] = useState<ChatPeer | null>(null);
+  const [accumulatedMessages, setAccumulatedMessages] = useState<Message[]>([]);
 
   // Fetch inbox (conversations)
   const { data: inboxData, isLoading: inboxLoading } = useInbox();
@@ -44,6 +46,29 @@ export default function TutorMessagesPage() {
     messagePage,
     20
   );
+
+  // Reset accumulated messages when chat changes
+  useEffect(() => {
+    setMessagePage(1);
+    setAccumulatedMessages([]);
+  }, [activeChatId]);
+
+  // Update accumulated messages when new data arrives
+  useEffect(() => {
+    if (messagesData?.data) {
+      if (messagePage === 1) {
+        // First page - just use the data
+        setAccumulatedMessages(messagesData.data);
+      } else {
+        // Older page - append to accumulated (filter out duplicates)
+        setAccumulatedMessages((prev) => {
+          const existingIds = new Set(prev.map((m) => m.id));
+          const newMessages = messagesData.data.filter((m) => !existingIds.has(m.id));
+          return [...prev, ...newMessages];
+        });
+      }
+    }
+  }, [messagesData, messagePage]);
 
   // Send message mutation
   const sendMessageMutation = useSendMessage();
@@ -105,7 +130,13 @@ export default function TutorMessagesPage() {
     setActiveChatId(contact.id);
     setSelectedPeer(contact);
     setMessagePage(1);
+    setAccumulatedMessages([]);
   };
+
+  // Check if there are more pages
+  const hasMore = messagesData?.pagination 
+    ? messagesData.pagination.page < messagesData.pagination.totalPages 
+    : false;
 
   if (inboxLoading) {
     return (
@@ -243,7 +274,7 @@ export default function TutorMessagesPage() {
               }}
             >
               {/* Load More Button */}
-              {messagesData?.pagination && messagesData.pagination.page < messagesData.pagination.totalPages && (
+              {hasMore && (
                 <Box sx={{ textAlign: "center", mb: 2 }}>
                   <Typography
                     variant="body2"
@@ -256,12 +287,12 @@ export default function TutorMessagesPage() {
                 </Box>
               )}
 
-              {messagesLoading ? (
+              {messagesLoading && messagePage > 1 ? (
                 <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
                   <CircularProgress size={24} />
                 </Box>
-              ) : messagesData?.data && messagesData.data.length > 0 ? (
-                messagesData.data
+              ) : accumulatedMessages.length > 0 ? (
+                accumulatedMessages
                   .slice()
                   .reverse()
                   .map((msg) => (
