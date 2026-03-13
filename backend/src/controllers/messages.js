@@ -1,11 +1,14 @@
 import { prisma } from "../utils/prisma.js"
 import { canDirectInteract, getUserBasic, getVisibleUserIds } from "../utils/relationship.js"
 
-// GET /api/messages?withUserId=
+// GET /api/messages?withUserId=&page=1&limit=20
 export const listMessages = async (req, res) => {
   try {
     const userId = req.user?.id
     const withUserId = req.query.withUserId
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 20
+    const skip = (page - 1) * limit
 
     if (!userId || !withUserId) {
       return res.status(400).json({ error: "withUserId is required" })
@@ -13,6 +16,16 @@ export const listMessages = async (req, res) => {
 
     const allowed = await canDirectInteract(userId, withUserId)
     if (!allowed) return res.status(403).json({ error: "Not allowed" })
+
+    // Get total count for pagination
+    const total = await prisma.message.count({
+      where: {
+        OR: [
+          { senderId: userId, recipientId: withUserId },
+          { senderId: withUserId, recipientId: userId },
+        ],
+      },
+    })
 
     const data = await prisma.message.findMany({
       where: {
@@ -25,10 +38,12 @@ export const listMessages = async (req, res) => {
         sender: { select: { id: true, name: true, role: true } },
         recipient: { select: { id: true, name: true, role: true } },
       },
-      orderBy: { createdAt: "asc" },
-      take: 500,
+      orderBy: { createdAt: "desc" },
+      skip,
+      take: limit,
     })
 
+    // Mark messages as read
     await prisma.message.updateMany({
       where: {
         senderId: withUserId,
@@ -38,7 +53,15 @@ export const listMessages = async (req, res) => {
       data: { readAt: new Date() },
     })
 
-    return res.json({ data })
+    return res.json({
+      data,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    })
   } catch (err) {
     console.error(err)
     return res.status(500).json({ error: "Internal server error" })
