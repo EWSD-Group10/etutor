@@ -21,7 +21,10 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import DashboardStatsCard from "@/app/components/dashboard/DashboardStatsCard";
 import MeetingListItem from "@/app/components/meetings/MeetingListItem";
+import { ScheduleMeetingDialog } from "@/app/components/meetings/ScheduleMeetingDialog";
 import { useMeetings, MeetingStatus } from "@/app/hooks/meetings/useMeetings";
+import { useCreateMeeting } from "@/app/hooks/meetings/useMeetingMutations";
+import { CreateMeetingInput } from "@/app/hooks/meetings/query";
 
 type TabValue = "all" | MeetingStatus;
 
@@ -29,6 +32,9 @@ export default function StudentMeetingsPage() {
   const [activeTab, setActiveTab] = useState<TabValue>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
+
+  const createMeeting = useCreateMeeting();
 
   // Determine status filter based on tab
   const statusFilter = activeTab === "all" ? undefined : activeTab;
@@ -93,11 +99,20 @@ export default function StudentMeetingsPage() {
         <Button
           variant="contained"
           startIcon={<AddIcon />}
+          onClick={() => setScheduleDialogOpen(true)}
           sx={{ textTransform: "none", fontWeight: 600 }}
         >
           Request Meeting
         </Button>
       </Box>
+
+      <ScheduleMeetingDialog
+        open={scheduleDialogOpen}
+        onClose={() => setScheduleDialogOpen(false)}
+        onSubmit={(data: CreateMeetingInput) => createMeeting.mutate(data)}
+        isLoading={createMeeting.isPending}
+        role="student"
+      />
 
       {/* Stats row */}
       <Grid container spacing={2} sx={{ mb: 4 }}>

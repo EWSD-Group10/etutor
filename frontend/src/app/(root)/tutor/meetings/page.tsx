@@ -21,7 +21,11 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import DashboardStatsCard from "@/app/components/dashboard/DashboardStatsCard";
 import MeetingListItem from "@/app/components/meetings/MeetingListItem";
+import { ScheduleMeetingDialog } from "@/app/components/meetings/ScheduleMeetingDialog";
 import { useMeetings, MeetingStatus } from "@/app/hooks/meetings/useMeetings";
+import { useCreateMeeting } from "@/app/hooks/meetings/useMeetingMutations";
+import { useTutorMyStudents } from "@/app/hooks/tutors/useTutors";
+import { CreateMeetingInput } from "@/app/hooks/meetings/query";
 
 type TabValue = "all" | MeetingStatus;
 
@@ -29,6 +33,10 @@ export default function TutorMeetingsPage() {
   const [activeTab, setActiveTab] = useState<TabValue>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
+
+  const createMeeting = useCreateMeeting();
+  const { data: tutorStudents = [], isLoading: tutorStudentsLoading } = useTutorMyStudents();
 
   // Determine status filter based on tab
   const statusFilter = activeTab === "all" ? undefined : activeTab;
@@ -79,6 +87,7 @@ export default function TutorMeetingsPage() {
         <Button
           variant="contained"
           startIcon={<AddIcon />}
+          onClick={() => setScheduleDialogOpen(true)}
           sx={{
             borderRadius: 2,
             textTransform: "none",
@@ -91,6 +100,16 @@ export default function TutorMeetingsPage() {
           Schedule Meeting
         </Button>
       </Box>
+
+      <ScheduleMeetingDialog
+        open={scheduleDialogOpen}
+        onClose={() => setScheduleDialogOpen(false)}
+        onSubmit={(data: CreateMeetingInput) => createMeeting.mutate(data)}
+        isLoading={createMeeting.isPending}
+        role="tutor"
+        tutorStudents={tutorStudents}
+        tutorStudentsLoading={tutorStudentsLoading}
+      />
 
       {/* Stats row */}
       <Grid container spacing={2} sx={{ mb: 4 }}>

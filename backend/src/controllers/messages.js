@@ -1,6 +1,17 @@
 import { prisma } from "../utils/prisma.js"
 import { canDirectInteract, getUserBasic } from "../utils/relationship.js"
 
+// Map DB fields (content, createdAt, readAt) to API shape (messageBody, sentAt, isRead) for frontend
+function toMessageApi(m) {
+  if (!m) return m
+  return {
+    ...m,
+    messageBody: m.content,
+    sentAt: m.createdAt,
+    isRead: !!m.readAt,
+  }
+}
+
 // GET /api/messages?withUserId=&page=1&limit=20
 export const listMessages = async (req, res) => {
   try {
@@ -44,7 +55,7 @@ export const listMessages = async (req, res) => {
         sender: { select: { id: true, name: true, role: true } },
         recipient: { select: { id: true, name: true, role: true } },
       },
-      orderBy: { sentAt: "desc" },
+      orderBy: { createdAt: "desc" },
       skip,
       take: limit,
     })
@@ -54,13 +65,13 @@ export const listMessages = async (req, res) => {
       where: {
         senderId: withUserId,
         recipientId: userId,
-        isRead: false,
+        readAt: null,
       },
-      data: { isRead: true },
+      data: { readAt: new Date() },
     })
 
     return res.json({
-      data,
+      data: data.map(toMessageApi),
       pagination: {
         page,
         limit,
@@ -100,7 +111,7 @@ export const sendMessage = async (req, res) => {
       data: {
         senderId: userId,
         recipientId,
-        messageBody: content.trim(),
+        content: content.trim(),
       },
       include: {
         sender: { select: { id: true, name: true, role: true } },
@@ -108,7 +119,7 @@ export const sendMessage = async (req, res) => {
       },
     })
 
-    return res.status(201).json({ data })
+    return res.status(201).json({ data: toMessageApi(data) })
   } catch (err) {
     console.error(err)
     return res.status(500).json({ error: "Internal server error" })
@@ -129,14 +140,14 @@ export const listInbox = async (req, res) => {
 
     const rows = await prisma.message.findMany({
       where: { OR: [{ senderId: userId }, { recipientId: userId }] },
-      orderBy: { sentAt: "desc" },
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
         senderId: true,
         recipientId: true,
-        messageBody: true,
-        sentAt: true,
-        isRead: true,
+        content: true,
+        createdAt: true,
+        readAt: true,
       },
       take: 1000,
     })
@@ -154,13 +165,16 @@ export const listInbox = async (req, res) => {
     })
     const userMap = new Map(users.map((u) => [u.id, u]))
 
-    const data = peerIds.map((peerId) => ({
-      peer: userMap.get(peerId) || { id: peerId, name: "Unknown" },
-      lastMessage: peers.get(peerId),
-      unreadCount: rows.filter(
-        (m) => m.senderId === peerId && m.recipientId === userId && !m.isRead,
-      ).length,
-    }))
+    const data = peerIds.map((peerId) => {
+      const last = peers.get(peerId)
+      return {
+        peer: userMap.get(peerId) || { id: peerId, name: "Unknown" },
+        lastMessage: last ? toMessageApi(last) : last,
+        unreadCount: rows.filter(
+          (m) => m.senderId === peerId && m.recipientId === userId && !m.readAt,
+        ).length,
+      }
+    })
 
     return res.json({ data })
   } catch (err) {

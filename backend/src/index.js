@@ -17,6 +17,7 @@ import {
 import {
   listTutors,
   getTutor,
+  listMyStudents,
   createTutor,
   updateTutor,
   deleteTutors,
@@ -124,6 +125,7 @@ app.delete("/api/students/:id", requireSignin, isAdmin, deleteStudent);
 
 // Teacher CRUD endpoints (admin only)
 app.get("/api/tutors", requireSignin, isAdmin, listTutors);
+app.get("/api/tutors/me/students", requireSignin, isTutor, listMyStudents);
 app.get("/api/tutors/:id", requireSignin, isAdmin, getTutor);
 app.post("/api/tutors", requireSignin, isAdmin, createTutor);
 app.put("/api/tutors/:id", requireSignin, isAdmin, updateTutor);

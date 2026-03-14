@@ -5,15 +5,25 @@ const meetingSelect = {
   id: true,
   meetingType: true,
   meetingStatus: true,
-  scheduledAt: true,
+  scheduledDate: true,
   durationMinutes: true,
   location: true,
   meetingLink: true,
-  notes: true,
+  meetingName: true,
   createdAt: true,
   student: { select: { id: true, name: true, email: true } },
   tutor: { select: { id: true, name: true, email: true } },
   createdBy: { select: { id: true, name: true, role: true } },
+}
+
+// Map to API shape (scheduledAt, notes) for frontend compatibility
+function toMeetingApi(m) {
+  if (!m) return m
+  return {
+    ...m,
+    scheduledAt: m.scheduledDate,
+    notes: m.meetingName ?? null,
+  }
 }
 
 const VALID_TYPES = new Set(["virtual", "in_person"])
@@ -54,13 +64,13 @@ export const listMeetings = async (req, res) => {
     const data = await prisma.meeting.findMany({
       where,
       select: meetingSelect,
-      orderBy: { scheduledAt: "desc" },
+      orderBy: { scheduledDate: "desc" },
       skip,
       take: limit,
     })
 
     return res.json({
-      data,
+      data: data.map(toMeetingApi),
       pagination: {
         page,
         limit,
@@ -135,19 +145,19 @@ export const createMeeting = async (req, res) => {
       data: {
         studentId,
         tutorId,
-        createdById: userId,
+        meetingCreator: userId,
         meetingType,
-        meetingStatus: "scheduled", // Default status
-        scheduledAt: new Date(scheduledAt),
+        meetingStatus: "scheduled",
+        scheduledDate: new Date(scheduledAt),
         durationMinutes,
         location,
         meetingLink,
-        notes,
+        meetingName: notes || null,
       },
       select: meetingSelect,
     })
 
-    return res.status(201).json({ data })
+    return res.status(201).json({ data: toMeetingApi(data) })
   } catch (err) {
     console.error(err)
     return res.status(500).json({ error: "Internal server error" })
@@ -186,7 +196,7 @@ export const updateMeetingStatus = async (req, res) => {
       select: meetingSelect,
     })
 
-    return res.json({ data })
+    return res.json({ data: toMeetingApi(data) })
   } catch (err) {
     console.error(err)
     return res.status(500).json({ error: "Internal server error" })
@@ -212,13 +222,13 @@ export const listAllMeetings = async (req, res) => {
 
     const data = await prisma.meeting.findMany({
       select: meetingSelect,
-      orderBy: { scheduledAt: "desc" },
+      orderBy: { scheduledDate: "desc" },
       skip,
       take: limit,
     })
 
     return res.json({
-      data,
+      data: data.map(toMeetingApi),
       pagination: {
         page,
         limit,

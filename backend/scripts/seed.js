@@ -303,8 +303,8 @@ async function seedMessages(users) {
       data: {
         senderId: msg.from.id,
         recipientId: msg.to.id,
-        messageBody: msg.body,
-        isRead: Math.random() > 0.5,
+        content: msg.body,
+        readAt: Math.random() > 0.5 ? new Date() : null,
       },
     });
     count++;
@@ -518,6 +518,7 @@ async function seedMeetings(users) {
     {
       name: "Weekly Check-in: Liam",
       creator: users.tutors[0],
+      studentId: users.students[0].id,
       tutorId: users.tutors[0].id,
       type: "virtual",
       date: new Date(now.getTime() + 2 * 86400000),
@@ -527,6 +528,7 @@ async function seedMeetings(users) {
     {
       name: "Dissertation Review: Emma",
       creator: users.tutors[0],
+      studentId: users.students[1].id,
       tutorId: users.tutors[0].id,
       type: "in_person",
       date: new Date(now.getTime() + 3 * 86400000),
@@ -536,6 +538,7 @@ async function seedMeetings(users) {
     {
       name: "Math Tutorial Group",
       creator: users.tutors[1],
+      studentId: users.students[2].id,
       tutorId: users.tutors[1].id,
       type: "in_person",
       date: new Date(now.getTime() + 1 * 86400000),
@@ -545,6 +548,7 @@ async function seedMeetings(users) {
     {
       name: "Project Demo: Oliver",
       creator: users.students[4],
+      studentId: users.students[4].id,
       tutorId: users.tutors[2].id,
       type: "virtual",
       date: new Date(now.getTime() + 5 * 86400000),
@@ -554,7 +558,8 @@ async function seedMeetings(users) {
     {
       name: "Staff Meeting",
       creator: users.admins[0],
-      tutorId: null,
+      studentId: users.students[0].id,
+      tutorId: users.tutors[0].id,
       type: "in_person",
       date: new Date(now.getTime() + 7 * 86400000),
       duration: 60,
@@ -563,6 +568,7 @@ async function seedMeetings(users) {
     {
       name: "Data Science Workshop",
       creator: users.tutors[4],
+      studentId: users.students[6].id,
       tutorId: users.tutors[4].id,
       type: "virtual",
       date: new Date(now.getTime() + 4 * 86400000),
@@ -572,6 +578,7 @@ async function seedMeetings(users) {
     {
       name: "Mid-term Review: Henry",
       creator: users.tutors[3],
+      studentId: users.students[10].id,
       tutorId: users.tutors[3].id,
       type: "in_person",
       date: new Date(now.getTime() - 3 * 86400000),
@@ -582,6 +589,7 @@ async function seedMeetings(users) {
     {
       name: "Cancelled: Group Session",
       creator: users.tutors[1],
+      studentId: users.students[2].id,
       tutorId: users.tutors[1].id,
       type: "virtual",
       date: new Date(now.getTime() - 1 * 86400000),
@@ -597,6 +605,7 @@ async function seedMeetings(users) {
       data: {
         meetingName: m.name,
         meetingCreator: m.creator.id,
+        studentId: m.studentId,
         tutorId: m.tutorId,
         meetingType: m.type,
         meetingStatus: m.status || "scheduled",
