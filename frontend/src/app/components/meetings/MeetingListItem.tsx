@@ -19,7 +19,6 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 export type MeetingStatus = "scheduled" | "completed" | "cancelled";
 export type MeetingType = "in person" | "virtual";
@@ -40,7 +39,6 @@ interface MeetingListItemProps {
   type: MeetingType;
   onView?: (id: string) => void;
   onEdit?: (id: string) => void;
-  onDelete?: (id: string) => void;
   onComplete?: (id: string) => void;
   onCancel?: (id: string) => void;
   /** When true, only show View action (e.g. for student view). */
@@ -60,7 +58,6 @@ const MeetingListItem: React.FC<MeetingListItemProps> = ({
   type,
   onView,
   onEdit,
-  onDelete,
   onComplete,
   onCancel,
   viewOnly = false,
@@ -217,11 +214,6 @@ const MeetingListItem: React.FC<MeetingListItemProps> = ({
               <Tooltip title="Edit Meeting">
                 <IconButton size="small" onClick={() => onEdit?.(id)} sx={{ color: "text.secondary" }}>
                   <EditOutlinedIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete Meeting">
-                <IconButton size="small" onClick={() => onDelete?.(id)} sx={{ color: "text.secondary" }}>
-                  <DeleteOutlineIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
             </>

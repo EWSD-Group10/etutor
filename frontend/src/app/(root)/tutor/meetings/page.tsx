@@ -12,6 +12,7 @@ import {
   InputAdornment,
   Stack,
   CircularProgress,
+  Pagination,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
@@ -62,8 +63,11 @@ export default function TutorMeetingsPage() {
     setPage(1); // Reset to first page when changing tabs
   };
 
-  const handleLoadMore = () => {
-    setPage((prev) => prev + 1);
+  const pagination = meetingsData?.pagination;
+  const totalPages = Math.max(1, pagination?.totalPages ?? 1);
+
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
   };
 
   // Filter by search query (client-side)
@@ -297,7 +301,6 @@ export default function TutorMeetingsPage() {
                   type={meeting.meetingType === "virtual" ? "virtual" : "in person"}
                   onView={handleViewMeeting}
                   onEdit={handleEditMeeting}
-                  onDelete={() => {}}
                   onComplete={(id) => {
                     if (typeof window !== "undefined" && window.confirm("Are you sure you want to mark this meeting as completed?")) {
                       updateMeeting.mutate({ meetingId: id, input: { meetingStatus: "completed" } });
@@ -310,16 +313,19 @@ export default function TutorMeetingsPage() {
                   }}
                 />
               ))}
-              
-              {/* Load More */}
-              {meetingsData?.pagination &&
-                meetingsData.pagination.page < meetingsData.pagination.totalPages && (
-                  <Box sx={{ textAlign: "center", mt: 2 }}>
-                    <Button onClick={handleLoadMore} variant="outlined">
-                      Load More
-                    </Button>
-                  </Box>
-                )}
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+                  <Pagination
+                    count={totalPages}
+                    page={page}
+                    onChange={handlePageChange}
+                    color="primary"
+                    showFirstButton
+                    showLastButton
+                  />
+                </Box>
+              )}
             </>
           ) : (
             <Box

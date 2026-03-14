@@ -194,7 +194,12 @@ export const updateMeeting = async (req, res) => {
     // Only update fields present in body (e.g. status-only update keeps name/location as record)
     const data = {}
     if (notes !== undefined) data.meetingName = notes || null
-    if (meetingType !== undefined && VALID_TYPES.has(meetingType)) data.meetingType = meetingType
+    if (meetingType !== undefined && VALID_TYPES.has(meetingType)) {
+      data.meetingType = meetingType
+      // Switching type: virtual → clear location; in_person → clear meeting link
+      if (meetingType === "virtual") data.location = null
+      else if (meetingType === "in_person") data.meetingLink = null
+    }
     if (scheduledAt !== undefined) data.scheduledDate = new Date(scheduledAt)
     if (durationMinutes !== undefined) data.durationMinutes = durationMinutes
     if (location !== undefined) data.location = location || null

@@ -11,7 +11,7 @@ import {
   InputAdornment,
   Stack,
   CircularProgress,
-  Button,
+  Pagination,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import EventIcon from "@mui/icons-material/Event";
@@ -60,8 +60,11 @@ export default function StudentMeetingsPage() {
     setPage(1); // Reset to first page when changing tabs
   };
 
-  const handleLoadMore = () => {
-    setPage((prev) => prev + 1);
+  const pagination = meetingsData?.pagination;
+  const totalPages = Math.max(1, pagination?.totalPages ?? 1);
+
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
   };
 
   // Filter by search query (client-side)
@@ -322,16 +325,19 @@ export default function StudentMeetingsPage() {
                   onCancel={handleCancelMeetingFromList}
                 />
               ))}
-              
-              {/* Load More */}
-              {meetingsData?.pagination &&
-                meetingsData.pagination.page < meetingsData.pagination.totalPages && (
-                  <Box sx={{ textAlign: "center", mt: 2 }}>
-                    <Button onClick={handleLoadMore} variant="outlined">
-                      Load More
-                    </Button>
-                  </Box>
-                )}
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+                  <Pagination
+                    count={totalPages}
+                    page={page}
+                    onChange={handlePageChange}
+                    color="primary"
+                    showFirstButton
+                    showLastButton
+                  />
+                </Box>
+              )}
             </>
           ) : (
             <Box
