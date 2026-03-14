@@ -11,7 +11,7 @@ import {
   TextField,
   InputAdornment,
   Stack,
-  alpha,
+  CircularProgress,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
@@ -20,59 +20,48 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import DashboardStatsCard from "@/app/components/dashboard/DashboardStatsCard";
-import MeetingListItem, { MeetingStatus, MeetingType } from "@/app/components/meetings/MeetingListItem";
+import MeetingListItem from "@/app/components/meetings/MeetingListItem";
+import { useMeetings, MeetingStatus } from "@/app/hooks/meetings/useMeetings";
 
-const meetingsData = [
-  {
-    id: "1",
-    title: "Weekly Progress Review",
-    date: { day: "13", month: "Mar" },
-    time: "03:06 PM",
-    duration: "30 min",
-    location: "Room 304",
-    participant: "Oliver Smith",
-    status: "scheduled" as MeetingStatus,
-    type: "in person" as MeetingType,
-  },
-  {
-    id: "2",
-    title: "Dissertation Discussion",
-    date: { day: "11", month: "Mar" },
-    time: "03:06 PM",
-    duration: "45 min",
-    location: "zoom.us/j/123456789",
-    link: "https://zoom.us/j/123456789",
-    participant: "Emma Jones",
-    status: "completed" as MeetingStatus,
-    type: "virtual" as MeetingType,
-  },
-  {
-    id: "3",
-    title: "Pastoral Care Check-in",
-    date: { day: "10", month: "Mar" },
-    time: "03:06 PM",
-    duration: "20 min",
-    location: "Office 101",
-    participant: "Harry Williams",
-    status: "cancelled" as MeetingStatus,
-    type: "in person" as MeetingType,
-  },
-];
+type TabValue = "all" | MeetingStatus;
 
-export default function MeetingsPage() {
-  const [activeTab, setActiveTab] = useState("all");
+export default function TutorMeetingsPage() {
+  const [activeTab, setActiveTab] = useState<TabValue>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+  // Determine status filter based on tab
+  const statusFilter = activeTab === "all" ? undefined : activeTab;
+
+  // Fetch meetings with pagination
+  const { data: meetingsData, isLoading } = useMeetings(page, 20, statusFilter);
+
+  // Calculate stats from data
+  const allMeetings = meetingsData?.data || [];
+  const totalMeetings = allMeetings.length;
+  const scheduledCount = allMeetings.filter((m) => m.meetingStatus === "scheduled").length;
+  const completedCount = allMeetings.filter((m) => m.meetingStatus === "completed").length;
+  const cancelledCount = allMeetings.filter((m) => m.meetingStatus === "cancelled").length;
+
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: TabValue) => {
     setActiveTab(newValue);
+    setPage(1); // Reset to first page when changing tabs
   };
 
-  const filteredMeetings = meetingsData.filter((meeting) => {
-    const matchesTab = activeTab === "all" || meeting.status === activeTab;
-    const matchesSearch =
-      meeting.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      meeting.participant.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesTab && matchesSearch;
+  const handleLoadMore = () => {
+    setPage((prev) => prev + 1);
+  };
+
+  // Filter by search query (client-side)
+  const filteredMeetings = allMeetings.filter((meeting) => {
+    const studentName = meeting.student?.name || "";
+    const tutorName = meeting.tutor?.name || "";
+    const searchLower = searchQuery.toLowerCase();
+    return (
+      studentName.toLowerCase().includes(searchLower) ||
+      tutorName.toLowerCase().includes(searchLower) ||
+      meeting.notes?.toLowerCase().includes(searchLower)
+    );
   });
 
   return (
@@ -108,7 +97,7 @@ export default function MeetingsPage() {
         <Grid item xs={12} sm={6} md={3}>
           <DashboardStatsCard
             label="Total Meetings"
-            value="3"
+            value={String(totalMeetings)}
             icon={<EventIcon />}
             color="#1976d2"
           />
@@ -116,7 +105,7 @@ export default function MeetingsPage() {
         <Grid item xs={12} sm={6} md={3}>
           <DashboardStatsCard
             label="Scheduled"
-            value="1"
+            value={String(scheduledCount)}
             icon={<AccessTimeIcon />}
             color="#ed6c02"
           />
@@ -124,7 +113,7 @@ export default function MeetingsPage() {
         <Grid item xs={12} sm={6} md={3}>
           <DashboardStatsCard
             label="Completed"
-            value="1"
+            value={String(completedCount)}
             icon={<CheckCircleOutlineIcon />}
             color="#2e7d32"
           />
@@ -132,7 +121,7 @@ export default function MeetingsPage() {
         <Grid item xs={12} sm={6} md={3}>
           <DashboardStatsCard
             label="Cancelled"
-            value="1"
+            value={String(cancelledCount)}
             icon={<CancelOutlinedIcon />}
             color="#d32f2f"
           />
@@ -151,7 +140,7 @@ export default function MeetingsPage() {
           borderRadius: 4,
           boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.02)",
           border: "1px solid",
-          borderColor: alpha("#000", 0.05),
+          borderColor: "#00000005",
         }}
       >
         <Tabs
@@ -171,7 +160,7 @@ export default function MeetingsPage() {
               color: "text.secondary",
               "&.Mui-selected": {
                 color: "primary.main",
-                bgcolor: alpha("#1976d2", 0.08),
+                bgcolor: "#1976d20d",
               },
             },
           }}
@@ -191,7 +180,7 @@ export default function MeetingsPage() {
             width: 300,
             "& .MuiOutlinedInput-root": {
               borderRadius: 2,
-              bgcolor: alpha("#000", 0.02),
+              bgcolor: "#00000005",
               "& fieldset": { borderColor: "transparent" },
               "&:hover fieldset": { borderColor: "transparent" },
               "&.Mui-focused fieldset": { borderColor: "transparent" },
@@ -208,39 +197,71 @@ export default function MeetingsPage() {
       </Box>
 
       {/* Meeting List */}
-      <Stack spacing={0}>
-        {filteredMeetings.length > 0 ? (
-          filteredMeetings.map((meeting) => (
-            <MeetingListItem
-              key={meeting.id}
-              {...meeting}
-              onView={(id) => console.log("View", id)}
-              onEdit={(id) => console.log("Edit", id)}
-              onDelete={(id) => console.log("Delete", id)}
-              onComplete={(id) => console.log("Complete", id)}
-              onCancel={(id) => console.log("Cancel", id)}
-            />
-          ))
-        ) : (
-          <Box
-            sx={{
-              p: 8,
-              textAlign: "center",
-              bgcolor: "white",
-              borderRadius: 4,
-              border: "1px dashed",
-              borderColor: alpha("#000", 0.1),
-            }}
-          >
-            <Typography variant="subtitle1" color="text.secondary" sx={{ fontWeight: 600 }}>
-              No meetings found
-            </Typography>
-            <Typography variant="body2" color="text.disabled">
-              Try adjusting your filters or search query
-            </Typography>
-          </Box>
-        )}
-      </Stack>
+      {isLoading ? (
+        <Box sx={{ display: "flex", justifyContent: "center", py: 8 }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Stack spacing={0}>
+          {filteredMeetings.length > 0 ? (
+            <>
+              {filteredMeetings.map((meeting) => (
+                <MeetingListItem
+                  key={meeting.id}
+                  id={meeting.id}
+                  title={meeting.notes || "Meeting"}
+                  date={{
+                    day: new Date(meeting.scheduledAt).getDate().toString(),
+                    month: new Date(meeting.scheduledAt).toLocaleString("default", { month: "short" }),
+                  }}
+                  time={new Date(meeting.scheduledAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                  duration={`${meeting.durationMinutes} min`}
+                  location={meeting.location || meeting.meetingLink || "No location"}
+                  participant={meeting.student?.name || "Unknown"}
+                  status={meeting.meetingStatus as MeetingStatus}
+                  type={meeting.meetingType === "virtual" ? "virtual" : "in person"}
+                  onView={(id) => console.log("View", id)}
+                  onEdit={(id) => console.log("Edit", id)}
+                  onDelete={(id) => console.log("Delete", id)}
+                  onComplete={(id) => console.log("Complete", id)}
+                  onCancel={(id) => console.log("Cancel", id)}
+                />
+              ))}
+              
+              {/* Load More */}
+              {meetingsData?.pagination &&
+                meetingsData.pagination.page < meetingsData.pagination.totalPages && (
+                  <Box sx={{ textAlign: "center", mt: 2 }}>
+                    <Button onClick={handleLoadMore} variant="outlined">
+                      Load More
+                    </Button>
+                  </Box>
+                )}
+            </>
+          ) : (
+            <Box
+              sx={{
+                p: 8,
+                textAlign: "center",
+                bgcolor: "white",
+                borderRadius: 4,
+                border: "1px dashed",
+                borderColor: "#0000001a",
+              }}
+            >
+              <Typography variant="subtitle1" color="text.secondary" sx={{ fontWeight: 600 }}>
+                No meetings found
+              </Typography>
+              <Typography variant="body2" color="text.disabled">
+                Try adjusting your filters or search query
+              </Typography>
+            </Box>
+          )}
+        </Stack>
+      )}
     </Box>
   );
 }

@@ -25,21 +25,49 @@ export const listMeetings = async (req, res) => {
     const userId = req.user?.id
     if (!userId) return res.status(401).json({ error: "Unauthorized" })
 
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 20
+    const status = req.query.status
+    const skip = (page - 1) * limit
+
     const me = await getUserBasic(userId)
     if (!me) return res.status(404).json({ error: "User not found" })
 
+    // Build where clause
     let where = {}
-    if (me.role === "student") where = { studentId: userId }
-    if (me.role === "tutor") where = { tutorId: userId }
+    if (me.role === "student") {
+      where = { studentId: userId }
+    } else if (me.role === "tutor") {
+      where = { tutorId: userId }
+    } else {
+      return res.status(403).json({ error: "Only students and tutors can view meetings" })
+    }
+
+    // Add status filter if provided
+    if (status && VALID_STATUSES.has(status)) {
+      where.meetingStatus = status
+    }
+
+    // Get total count
+    const total = await prisma.meeting.count({ where })
 
     const data = await prisma.meeting.findMany({
       where,
       select: meetingSelect,
       orderBy: { scheduledAt: "desc" },
-      take: 300,
+      skip,
+      take: limit,
     })
 
-    return res.json({ data })
+    return res.json({
+      data,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    })
   } catch (err) {
     console.error(err)
     return res.status(500).json({ error: "Internal server error" })
@@ -54,7 +82,6 @@ export const createMeeting = async (req, res) => {
       studentId: reqStudentId = null,
       tutorId: reqTutorId = null,
       meetingType = "virtual",
-      meetingStatus = "scheduled",
       scheduledAt,
       durationMinutes = 30,
       location = null,
@@ -68,10 +95,6 @@ export const createMeeting = async (req, res) => {
 
     if (!VALID_TYPES.has(meetingType)) {
       return res.status(400).json({ error: "Invalid meetingType" })
-    }
-
-    if (!VALID_STATUSES.has(meetingStatus)) {
-      return res.status(400).json({ error: "Invalid meetingStatus" })
     }
 
     const me = await getUserBasic(userId)
@@ -114,7 +137,7 @@ export const createMeeting = async (req, res) => {
         tutorId,
         createdById: userId,
         meetingType,
-        meetingStatus,
+        meetingStatus: "scheduled", // Default status
         scheduledAt: new Date(scheduledAt),
         durationMinutes,
         location,
@@ -152,6 +175,7 @@ export const updateMeetingStatus = async (req, res) => {
     })
     if (!existing) return res.status(404).json({ error: "Meeting not found" })
 
+    // Both student and tutor can update status
     if (existing.studentId !== userId && existing.tutorId !== userId) {
       return res.status(403).json({ error: "Not allowed" })
     }
@@ -163,6 +187,45 @@ export const updateMeetingStatus = async (req, res) => {
     })
 
     return res.json({ data })
+  } catch (err) {
+    console.error(err)
+    return res.status(500).json({ error: "Internal server error" })
+  }
+}
+
+// GET /api/admin/meetings (Admin only - optional)
+export const listAllMeetings = async (req, res) => {
+  try {
+    const userId = req.user?.id
+    if (!userId) return res.status(401).json({ error: "Unauthorized" })
+
+    const me = await getUserBasic(userId)
+    if (!me || me.role !== "admin") {
+      return res.status(403).json({ error: "Admin only" })
+    }
+
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 20
+    const skip = (page - 1) * limit
+
+    const total = await prisma.meeting.count()
+
+    const data = await prisma.meeting.findMany({
+      select: meetingSelect,
+      orderBy: { scheduledAt: "desc" },
+      skip,
+      take: limit,
+    })
+
+    return res.json({
+      data,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    })
   } catch (err) {
     console.error(err)
     return res.status(500).json({ error: "Internal server error" })

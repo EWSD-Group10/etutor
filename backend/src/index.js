@@ -40,6 +40,7 @@ import {
   listMeetings,
   createMeeting,
   updateMeetingStatus,
+  listAllMeetings,
 } from "./controllers/meetings.js";
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js";
 
@@ -152,6 +153,9 @@ app.post("/api/messages", requireSignin, sendMessage);
 app.get("/api/meetings", requireSignin, listMeetings);
 app.post("/api/meetings", requireSignin, createMeeting);
 app.patch("/api/meetings/:id/status", requireSignin, updateMeetingStatus);
+
+// Admin meeting endpoints
+app.get("/api/admin/meetings", requireSignin, isAdmin, listAllMeetings);
 
 // Example usage of sendEmail function
 app.get("/api/send-email", async (req, res) => {
