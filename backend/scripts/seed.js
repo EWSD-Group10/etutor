@@ -315,68 +315,80 @@ async function seedMessages(users) {
 }
 
 async function seedBlogPosts(users) {
-  console.log("Seeding blog posts...");
+  console.log("Seeding blog posts (new approach: master + copies)...");
 
-  const posts = [
+  // Create blog posts using the new approach:
+  // 1 master post (studentId = null) with groupId
+  // 1 copy per assigned student with same groupId
+  const blogTemplates = [
     {
       tutor: users.tutors[0],
-      student: users.students[0],
-      title: "Week 1 Progress - Liam",
-      content:
-        "Liam has completed the introductory module and shows strong understanding of core concepts.",
+      studentIds: [users.students[0].id, users.students[1].id, users.students[2].id],
+      title: "Welcome to the Course",
+      content: "Welcome to the new semester! I'm excited to guide you through this course. Here are some tips for success:\n\n1. Attend all sessions\n2. Complete assignments on time\n3. Don't hesitate to ask questions\n\nLooking forward to a great semester!",
       sorting: 1,
     },
     {
       tutor: users.tutors[0],
-      student: users.students[1],
-      title: "Week 1 Progress - Emma",
-      content:
-        "Emma has started working on her first programming assignment. Good initial progress.",
-      sorting: 1,
+      studentIds: [users.students[0].id, users.students[1].id],
+      title: "Assignment Guidelines",
+      content: "Here are the guidelines for your upcoming assignments:\n\n- Use proper citations\n- Follow the formatting guidelines\n- Submit through the portal before the deadline\n\nBest of luck!",
+      sorting: 2,
     },
     {
       tutor: users.tutors[1],
-      student: users.students[2],
-      title: "Research Proposal Review",
-      content:
-        "Noah submitted a solid research proposal on number theory. Minor revisions needed.",
+      studentIds: [users.students[3].id, users.students[4].id],
+      title: "Research Methodology",
+      content: "This week we're covering research methodology. Remember to:\n\n1. Define your research question clearly\n2. Review existing literature\n3. Choose appropriate methods\n\nSee you in class!",
       sorting: 1,
     },
     {
       tutor: users.tutors[2],
-      student: users.students[4],
-      title: "Project Milestone 1",
-      content:
-        "Oliver delivered the first milestone of his software engineering project ahead of schedule.",
-      sorting: 1,
-    },
-    {
-      tutor: users.tutors[4],
-      student: users.students[6],
-      title: "Data Science Fundamentals",
-      content:
-        "Elijah is progressing well through the statistics module. Recommended additional reading materials.",
+      studentIds: [users.students[5].id, users.students[6].id],
+      title: "Project Milestones",
+      content: "Great progress on your projects! Here are the upcoming milestones:\n\n- Week 4: Design review\n- Week 8: Implementation checkpoint\n- Week 12: Final presentation\n\nKeep up the excellent work!",
       sorting: 1,
     },
   ];
 
   const createdPosts = [];
-  for (const post of posts) {
-    const blogPost = await prisma.blogPost.create({
+  for (const template of blogTemplates) {
+    const { randomUUID } = await import("crypto");
+    const groupId = randomUUID();
+
+    // Create master post (no studentId)
+    const masterPost = await prisma.blogPost.create({
       data: {
-        tutorId: post.tutor.id,
-        studentId: post.student.id,
-        title: post.title,
-        content: post.content,
-        sorting: post.sorting,
-        createdBy: post.tutor.id,
+        groupId,
+        tutorId: template.tutor.id,
+        studentId: null, // Master post
+        title: template.title,
+        content: template.content,
+        sorting: template.sorting,
+        createdBy: template.tutor.id,
       },
     });
-    createdPosts.push(blogPost);
-    console.log(`  [POST] "${post.title}"`);
+    console.log(`  [MASTER] "${template.title}" (groupId: ${groupId.slice(0, 8)}...)`);
+
+    // Create a copy for each student
+    for (const studentId of template.studentIds) {
+      const copy = await prisma.blogPost.create({
+        data: {
+          groupId,
+          tutorId: template.tutor.id,
+          studentId,
+          title: template.title,
+          content: template.content,
+          sorting: template.sorting,
+          createdBy: template.tutor.id,
+        },
+      });
+      createdPosts.push(copy);
+    }
+    console.log(`  [COPIES] Created ${template.studentIds.length} copies for students`);
   }
 
-  console.log(`  Total: ${createdPosts.length} blog posts\n`);
+  console.log(`  Total: ${createdPosts.length} blog post copies (plus masters)\n`);
   return createdPosts;
 }
 
@@ -458,7 +470,8 @@ async function seedDocuments(users) {
 async function seedComments(users, blogPosts, documents) {
   console.log("Seeding comments...");
 
-  const comments = [
+  // Comments on documents
+  const documentComments = [
     {
       documentId: documents[0].id,
       commenterId: users.tutors[0].id,
@@ -475,35 +488,63 @@ async function seedComments(users, blogPosts, documents) {
       text: "The proposal is well-structured. Approved for next phase.",
     },
     {
-      blogId: blogPosts[0].id,
-      commenterId: users.students[0].id,
-      text: "Thank you for the feedback! I'll work on the next module.",
-    },
-    {
-      blogId: blogPosts[2].id,
-      commenterId: users.students[2].id,
-      text: "I've made the revisions you suggested. Please review when you can.",
-    },
-    {
       documentId: documents[5].id,
       commenterId: users.tutors[4].id,
       text: "Great use of pandas for the analysis. Consider adding visualizations.",
     },
   ];
 
+  // Comments on blog posts (now using the new student-specific copies)
+  // We need to find blog posts for specific students to add comments
+  const blogComments = [];
+
+  // Find blog copy for student[0] with title containing "Welcome"
+  const welcomePost0 = blogPosts.find(
+    (bp) => bp.studentId === users.students[0].id
+  );
+  if (welcomePost0) {
+    blogComments.push({
+      blogId: welcomePost0.id,
+      commenterId: users.students[0].id,
+      text: "Thank you for the welcome message! I'm excited for this course.",
+    });
+  }
+
+  // Find blog copy for student[2] with title containing "Research"
+  const researchPost = blogPosts.find(
+    (bp) => bp.studentId === users.students[2].id
+  );
+  if (researchPost) {
+    blogComments.push({
+      blogId: researchPost.id,
+      commenterId: users.students[2].id,
+      text: "I've made the revisions you suggested. Please review when you can.",
+    });
+  }
+
   let count = 0;
-  for (const comment of comments) {
+  for (const comment of documentComments) {
     await prisma.comment.create({
       data: {
-        documentId: comment.documentId || null,
-        blogId: comment.blogId || null,
+        documentId: comment.documentId,
         commenterId: comment.commenterId,
         commentText: comment.text,
       },
     });
     count++;
-    const target = comment.documentId ? "document" : "blog post";
-    console.log(`  [COMMENT] on ${target}`);
+    console.log(`  [COMMENT] on document`);
+  }
+
+  for (const comment of blogComments) {
+    await prisma.comment.create({
+      data: {
+        blogId: comment.blogId,
+        commenterId: comment.commenterId,
+        commentText: comment.text,
+      },
+    });
+    count++;
+    console.log(`  [COMMENT] on blog post`);
   }
 
   console.log(`  Total: ${count} comments\n`);
@@ -603,7 +644,6 @@ async function seedMeetings(users) {
   for (const m of meetings) {
     await prisma.meeting.create({
       data: {
-        meetingName: m.name,
         meetingCreator: m.creator.id,
         studentId: m.studentId,
         tutorId: m.tutorId,
