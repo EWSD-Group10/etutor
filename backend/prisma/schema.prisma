@@ -178,24 +178,24 @@ model Meeting {
   id              String        @id @default(uuid()) @db.Uuid
   studentId       String        @map("student_id") @db.Uuid
   tutorId         String        @map("tutor_id") @db.Uuid
-  createdById     String        @map("created_by_id") @db.Uuid
+  meetingName     String?       @map("notes") @db.Text
+  meetingCreator  String        @map("created_by_id") @db.Uuid
   meetingType     MeetingType   @default(virtual) @map("meeting_type")
   meetingStatus   MeetingStatus @default(scheduled) @map("meeting_status")
-  scheduledAt     DateTime      @map("scheduled_at")
+  scheduledDate   DateTime      @map("scheduled_at")
   durationMinutes Int           @default(30) @map("duration_minutes")
   location        String?       @db.VarChar(255)
   meetingLink     String?       @map("meeting_link") @db.VarChar(500)
-  notes           String?
   createdAt       DateTime      @default(now()) @map("created_at")
 
   // Relations
   student   User @relation("MeetingStudent", fields: [studentId], references: [id])
   tutor     User @relation("MeetingTutor", fields: [tutorId], references: [id])
-  createdBy User @relation("MeetingCreator", fields: [createdById], references: [id])
+  createdBy User @relation("MeetingCreator", fields: [meetingCreator], references: [id])
 
   @@index([studentId])
   @@index([tutorId])
-  @@index([scheduledAt])
+  @@index([scheduledDate])
   @@map("meetings")
 }
 

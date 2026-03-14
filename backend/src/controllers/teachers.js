@@ -59,6 +59,30 @@ export const listTutors = async (req, res) => {
   }
 }
 
+// GET /api/tutors/me/students - list students allocated to current tutor (for scheduling meetings)
+export const listMyStudents = async (req, res) => {
+  try {
+    const tutorId = req.user?.id
+    if (!tutorId) return res.status(401).json({ error: "Unauthorized" })
+
+    const allocations = await prisma.allocation.findMany({
+      where: { tutorId },
+      select: {
+        student: {
+          select: { id: true, name: true, email: true },
+        },
+      },
+    })
+
+    const data = allocations.map((a) => a.student).filter(Boolean)
+
+    return res.json({ data })
+  } catch (err) {
+    console.error(err)
+    return res.status(500).json({ error: "Internal server error" })
+  }
+}
+
 // GET /api/tutors/:id
 export const getTutor = async (req, res) => {
   try {

@@ -38,3 +38,18 @@ export const fetchTutor = async (id: string): Promise<Tutor> => {
   const response = await axios.get<TutorResponse>(`/api/tutors/${id}`);
   return response.data.data;
 };
+
+export interface TutorStudent {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export interface TutorStudentsResponse {
+  data: TutorStudent[];
+}
+
+export const fetchTutorMyStudents = async (): Promise<TutorStudent[]> => {
+  const response = await axios.get<TutorStudentsResponse>("/api/tutors/me/students");
+  return response.data.data;
+};

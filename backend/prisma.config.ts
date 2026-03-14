@@ -8,6 +8,6 @@ export default {
     path: "prisma/migrations",
   },
   datasource: {
-    url: "postgresql://etutor_user:etutor_password@postgres:5432/etutor_db",
+    url: "postgresql://postgres:123@localhost:5432/etutor_db",
   },
 }
