@@ -91,6 +91,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
     { label: "Messages", href: "/student/messages", icon: <MessageIcon /> },
     { label: "Meetings", href: "/student/meetings", icon: <EventIcon /> },
     { label: "Documents", href: "/student/documents", icon: <DescriptionIcon /> },
+    { label: "Blog", href: "/student/blog", icon: <ArticleIcon /> },
     { label: "Notifications", href: "/student/notifications", icon: <NotificationsIcon /> },
     { label: "Settings", href: "/student/settings", icon: <SettingsIcon /> },
   ];

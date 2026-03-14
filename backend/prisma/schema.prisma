@@ -117,8 +117,9 @@ model Message {
 
 model BlogPost {
   id        String   @id @default(uuid()) @db.Uuid
+  groupId   String?  @map("group_id") @db.Uuid
   tutorId   String   @map("tutor_id") @db.Uuid
-  studentId String   @map("student_id") @db.Uuid
+  studentId String?  @map("student_id") @db.Uuid
   title     String?  @db.VarChar(255)
   content   String
   sorting   Int?
@@ -127,10 +128,12 @@ model BlogPost {
 
   // Relations
   tutor    User      @relation("BlogPostTutor", fields: [tutorId], references: [id])
-  student  User      @relation("BlogPostStudent", fields: [studentId], references: [id])
+  student  User?     @relation("BlogPostStudent", fields: [studentId], references: [id])
   comments Comment[]
 
-  @@index([title])
+  @@index([groupId])
+  @@index([tutorId])
+  @@index([studentId])
   @@map("blog_posts")
 }
 

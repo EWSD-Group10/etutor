@@ -43,6 +43,16 @@ import {
   updateMeeting,
   listAllMeetings,
 } from "./controllers/meetings.js";
+import {
+  createBlog,
+  listBlogs,
+  getBlogGroup,
+  getBlog,
+  updateBlog,
+  deleteBlog,
+  addComment,
+  getComments,
+} from "./controllers/blogs.js";
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js";
 
 dotenv.config();
@@ -158,6 +168,16 @@ app.put("/api/meetings/:id", requireSignin, updateMeeting);
 
 // Admin meeting endpoints
 app.get("/api/admin/meetings", requireSignin, isAdmin, listAllMeetings);
+
+// Blog endpoints (tutor creates, student views and comments)
+app.get("/api/blogs", requireSignin, listBlogs);
+app.get("/api/blogs/group/:groupId", requireSignin, isTutor, getBlogGroup);
+app.get("/api/blogs/:id", requireSignin, getBlog);
+app.post("/api/blogs", requireSignin, isTutor, createBlog);
+app.put("/api/blogs/:id", requireSignin, isTutor, updateBlog);
+app.delete("/api/blogs/:id", requireSignin, isTutor, deleteBlog);
+app.get("/api/blogs/:id/comments", requireSignin, getComments);
+app.post("/api/blogs/:id/comments", requireSignin, addComment);
 
 // Example usage of sendEmail function
 app.get("/api/send-email", async (req, res) => {
