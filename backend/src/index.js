@@ -66,7 +66,7 @@ app.use(
   cors({
     origin: "http://localhost:3000",
     credentials: true,
-  })
+  }),
 );
 
 // Test database connection endpoint
@@ -125,7 +125,7 @@ app.get(
   "/api/students/unassigned",
   requireSignin,
   isAdmin,
-  listUnassignedStudents
+  listUnassignedStudents,
 );
 app.get("/api/students/assigned", requireSignin, isAdmin, listAssignedStudents);
 app.get("/api/students/:id", requireSignin, isAdmin, getStudent);
@@ -148,7 +148,7 @@ app.post(
   "/api/allocations/bulk",
   requireSignin,
   isAdmin,
-  bulkCreateAllocations
+  bulkCreateAllocations,
 );
 app.get("/api/allocations/:id", requireSignin, isAdmin, getAllocation);
 app.post("/api/allocations", requireSignin, isAdmin, createAllocation);
@@ -185,7 +185,7 @@ app.get("/api/send-email", async (req, res) => {
     await sendEmail(
       "sawwinnnaung@gmail.com",
       "Test Email from eTutor",
-      "<h1>Hello from eTutor!</h1><p>This is a test email sent using AWS SES.</p>"
+      "<h1>Hello from eTutor!</h1><p>This is a test email sent using AWS SES.</p>",
     );
     res.json({ message: "Email sent successfully" });
   } catch (err) {
@@ -197,6 +197,6 @@ app.get("/api/send-email", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
   console.log(
-    `Database URL: ${process.env.DATABASE_URL || "postgresql://etutor_user:etutor_password@localhost:5432/etutor_db"}`
+    `Database URL: ${process.env.DATABASE_URL || "postgresql://etutor_user:etutor_password@postgres:5432/etutor_db"}`,
   );
 });

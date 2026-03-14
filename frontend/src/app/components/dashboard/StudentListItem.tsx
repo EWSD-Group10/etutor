@@ -1,14 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Box,
-  Card,
-  Avatar,
-  Typography,
-  Stack,
-  alpha,
-} from "@mui/material";
+import { Box, Avatar, Typography, Stack, alpha } from "@mui/material";
 
 interface StudentListItemProps {
   id: string;
@@ -18,7 +11,6 @@ interface StudentListItemProps {
 }
 
 const StudentListItem: React.FC<StudentListItemProps> = ({
-  id,
   name,
   engagement,
   initials,
@@ -33,58 +25,71 @@ const StudentListItem: React.FC<StudentListItemProps> = ({
   };
 
   const getEngagementColor = (engagement: number) => {
-    if (engagement > 80) return "#2e7d32"; // Green
-    if (engagement > 50) return "#ed6c02"; // Orange
-    return "#d32f2f"; // Red
+    if (engagement > 80) return "#2e7d32";
+    if (engagement > 50) return "#ed6c02";
+    return "#d32f2f";
   };
 
+  const color = getEngagementColor(engagement);
+
   return (
-    <Card
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="space-between"
       sx={{
-        p: 2,
-        mb: 2,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        borderRadius: 3,
-        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.03)",
-        border: "1px solid",
-        borderColor: alpha("#000", 0.05),
-        "&:hover": {
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.08)",
-          transition: "boxShadow 0.3s ease-in-out",
-        },
+        py: 1.5,
+        px: 0.5,
+        borderBottom: "1px solid",
+        borderColor: alpha("#000", 0.06),
+        "&:last-child": { borderBottom: "none" },
+        "&:hover": { bgcolor: alpha("#1976d2", 0.02) },
+        borderRadius: 1,
+        transition: "background-color 0.2s",
       }}
     >
-      <Stack direction="row" spacing={2} alignItems="center">
+      <Stack direction="row" spacing={1.5} alignItems="center">
         <Avatar
           sx={{
-            bgcolor: alpha("#1976d2", 0.08),
+            bgcolor: alpha("#1976d2", 0.1),
             color: "primary.main",
             fontWeight: 700,
-            fontSize: "0.75rem",
-            width: 44,
-            height: 44,
+            fontSize: "0.72rem",
+            width: 40,
+            height: 40,
           }}
         >
           {initials || getInitials(name)}
         </Avatar>
-        <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.primary" }}>
+        <Typography
+          variant="body2"
+          sx={{ fontWeight: 600, color: "text.primary" }}
+        >
           {name}
         </Typography>
       </Stack>
+
       <Box sx={{ textAlign: "right" }}>
-        <Typography variant="caption" color="textSecondary" sx={{ display: "block", fontSize: "0.65rem", fontWeight: 600, mb: 0.2 }}>
+        <Typography
+          variant="caption"
+          color="textSecondary"
+          sx={{
+            display: "block",
+            fontSize: "0.65rem",
+            fontWeight: 600,
+            mb: 0.2,
+          }}
+        >
           Engagement
         </Typography>
         <Typography
-          variant="subtitle2"
-          sx={{ fontWeight: 800, color: getEngagementColor(engagement) }}
+          variant="body2"
+          sx={{ fontWeight: 800, color, fontSize: "0.82rem" }}
         >
           {engagement} %
         </Typography>
       </Box>
-    </Card>
+    </Stack>
   );
 };
 

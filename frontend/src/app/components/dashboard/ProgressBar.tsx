@@ -16,19 +16,25 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   color = "primary",
 }) => {
   return (
-    <Box sx={{ mb: 2, "&:last-of-type": { mb: 0 } }}>
+    <Box sx={{ mb: 2.5, "&:last-of-type": { mb: 0 } }}>
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 0.5,
+          mb: 0.8,
         }}
       >
-        <Typography variant="body2" sx={{ fontWeight: 500 }}>
+        <Typography
+          variant="body2"
+          sx={{ fontWeight: 500, color: "text.primary" }}
+        >
           {label}
         </Typography>
-        <Typography variant="body2" sx={{ fontWeight: 600, color: "primary.main" }}>
+        <Typography
+          variant="body2"
+          sx={{ fontWeight: 600, color: "text.secondary", fontSize: "0.8rem" }}
+        >
           {Math.round(value)}%
         </Typography>
       </Box>
@@ -37,11 +43,11 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
         value={Math.min(100, Math.max(0, value))}
         color={color}
         sx={{
-          height: 8,
-          borderRadius: 1,
-          bgcolor: "action.hover",
+          height: 7,
+          borderRadius: 4,
+          bgcolor: "rgba(0,0,0,0.06)",
           "& .MuiLinearProgress-bar": {
-            borderRadius: 1,
+            borderRadius: 4,
           },
         }}
       />

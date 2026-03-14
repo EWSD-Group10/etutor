@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Box, Typography, Button, Link } from "@mui/material";
+import { Box, Typography, Link, alpha } from "@mui/material";
 import NextLink from "next/link";
 
 interface DashboardSectionProps {
@@ -16,16 +16,33 @@ const DashboardSection: React.FC<DashboardSectionProps> = ({
   children,
 }) => {
   return (
-    <Box sx={{ mb: 4 }}>
+    <Box
+      sx={{
+        mb: 3,
+        bgcolor: "#fff",
+        borderRadius: 3,
+        border: "1px solid",
+        borderColor: alpha("#000", 0.07),
+        boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.06)",
+        overflow: "hidden",
+      }}
+    >
+      {/* Section header */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 2,
+          px: 3,
+          py: 2,
+          borderBottom: "1px solid",
+          borderColor: alpha("#000", 0.06),
         }}
       >
-        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+        <Typography
+          variant="subtitle1"
+          sx={{ fontWeight: 700, color: "text.primary" }}
+        >
           {title}
         </Typography>
         {viewAllHref && (
@@ -34,8 +51,8 @@ const DashboardSection: React.FC<DashboardSectionProps> = ({
             href={viewAllHref}
             underline="none"
             sx={{
-              fontSize: "0.875rem",
-              fontWeight: 500,
+              fontSize: "0.82rem",
+              fontWeight: 600,
               color: "primary.main",
               "&:hover": { textDecoration: "underline" },
             }}
@@ -44,7 +61,9 @@ const DashboardSection: React.FC<DashboardSectionProps> = ({
           </Link>
         )}
       </Box>
-      <Box>{children}</Box>
+
+      {/* Section content */}
+      <Box sx={{ px: 3, py: 1 }}>{children}</Box>
     </Box>
   );
 };
