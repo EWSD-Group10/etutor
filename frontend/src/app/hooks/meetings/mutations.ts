@@ -1,17 +1,15 @@
 import api from "../../../lib/axios";
-import { Meeting, CreateMeetingInput, MeetingResponse } from "./query";
+import { Meeting, CreateMeetingInput, UpdateMeetingInput, MeetingResponse } from "./query";
 
 export const createMeeting = async (input: CreateMeetingInput): Promise<Meeting> => {
   const response = await api.post<MeetingResponse>("/api/meetings", input);
   return response.data.data;
 };
 
-export const updateMeetingStatus = async (
+export const updateMeeting = async (
   meetingId: string,
-  meetingStatus: string
+  input: UpdateMeetingInput
 ): Promise<Meeting> => {
-  const response = await api.patch<MeetingResponse>(`/api/meetings/${meetingId}/status`, {
-    meetingStatus,
-  });
+  const response = await api.put<MeetingResponse>(`/api/meetings/${meetingId}`, input);
   return response.data.data;
 };

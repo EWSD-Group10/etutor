@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createMeeting, updateMeetingStatus } from "./mutations";
-import { CreateMeetingInput } from "./query";
+import { createMeeting, updateMeeting } from "./mutations";
+import { CreateMeetingInput, UpdateMeetingInput } from "./query";
 
 export const useCreateMeeting = () => {
   const queryClient = useQueryClient();
@@ -8,25 +8,18 @@ export const useCreateMeeting = () => {
   return useMutation({
     mutationFn: (input: CreateMeetingInput) => createMeeting(input),
     onSuccess: () => {
-      // Invalidate meetings queries to refetch
       queryClient.invalidateQueries({ queryKey: ["meetings"] });
     },
   });
 };
 
-export const useUpdateMeetingStatus = () => {
+export const useUpdateMeeting = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      meetingId,
-      meetingStatus,
-    }: {
-      meetingId: string;
-      meetingStatus: string;
-    }) => updateMeetingStatus(meetingId, meetingStatus),
+    mutationFn: ({ meetingId, input }: { meetingId: string; input: UpdateMeetingInput }) =>
+      updateMeeting(meetingId, input),
     onSuccess: () => {
-      // Invalidate meetings queries to refetch
       queryClient.invalidateQueries({ queryKey: ["meetings"] });
     },
   });

@@ -22,9 +22,11 @@ import AddIcon from "@mui/icons-material/Add";
 import DashboardStatsCard from "@/app/components/dashboard/DashboardStatsCard";
 import MeetingListItem from "@/app/components/meetings/MeetingListItem";
 import { ScheduleMeetingDialog } from "@/app/components/meetings/ScheduleMeetingDialog";
+import { EditMeetingDialog } from "@/app/components/meetings/EditMeetingDialog";
+import { MeetingDetailsDialog } from "@/app/components/meetings/MeetingDetailsDialog";
 import { useMeetings, MeetingStatus } from "@/app/hooks/meetings/useMeetings";
-import { useCreateMeeting } from "@/app/hooks/meetings/useMeetingMutations";
-import { CreateMeetingInput } from "@/app/hooks/meetings/query";
+import { useCreateMeeting, useUpdateMeeting } from "@/app/hooks/meetings/useMeetingMutations";
+import { CreateMeetingInput, Meeting, UpdateMeetingInput } from "@/app/hooks/meetings/query";
 
 type TabValue = "all" | MeetingStatus;
 
@@ -33,8 +35,12 @@ export default function StudentMeetingsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
   const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
 
   const createMeeting = useCreateMeeting();
+  const updateMeeting = useUpdateMeeting();
 
   // Determine status filter based on tab
   const statusFilter = activeTab === "all" ? undefined : activeTab;
@@ -69,6 +75,48 @@ export default function StudentMeetingsPage() {
       meeting.notes?.toLowerCase().includes(searchLower)
     );
   });
+
+  const handleViewMeeting = (id: string) => {
+    const m = filteredMeetings.find((x) => x.id === id) ?? null;
+    setSelectedMeeting(m);
+    setDetailsDialogOpen(true);
+  };
+
+  const handleEditMeeting = (id: string) => {
+    const m = filteredMeetings.find((x) => x.id === id) ?? null;
+    setSelectedMeeting(m);
+    setDetailsDialogOpen(false);
+    setEditDialogOpen(true);
+  };
+
+  const handleOpenEditFromDetails = (meeting: Meeting) => {
+    setSelectedMeeting(meeting);
+    setDetailsDialogOpen(false);
+    setEditDialogOpen(true);
+  };
+
+  const handleCancelMeeting = (meetingId: string) => {
+    updateMeeting.mutate({ meetingId, input: { meetingStatus: "cancelled" } });
+    setDetailsDialogOpen(false);
+  };
+
+  const handleSaveEdit = (meetingId: string, input: UpdateMeetingInput) => {
+    updateMeeting.mutate({ meetingId, input });
+    setEditDialogOpen(false);
+    setSelectedMeeting(null);
+  };
+
+  const handleCompleteMeeting = (id: string) => {
+    if (typeof window !== "undefined" && window.confirm("Are you sure you want to mark this meeting as completed?")) {
+      updateMeeting.mutate({ meetingId: id, input: { meetingStatus: "completed" } });
+    }
+  };
+
+  const handleCancelMeetingFromList = (id: string) => {
+    if (typeof window !== "undefined" && window.confirm("Are you sure you want to cancel this meeting?")) {
+      updateMeeting.mutate({ meetingId: id, input: { meetingStatus: "cancelled" } });
+    }
+  };
 
   return (
     <Box sx={{ p: { xs: 2, md: 4 }, bgcolor: "#f8f9fa", minHeight: "100vh" }}>
@@ -112,6 +160,29 @@ export default function StudentMeetingsPage() {
         onSubmit={(data: CreateMeetingInput) => createMeeting.mutate(data)}
         isLoading={createMeeting.isPending}
         role="student"
+      />
+
+      <MeetingDetailsDialog
+        open={detailsDialogOpen}
+        onClose={() => {
+          setDetailsDialogOpen(false);
+          setSelectedMeeting(null);
+        }}
+        meeting={selectedMeeting}
+        onEdit={handleOpenEditFromDetails}
+        onCancel={handleCancelMeeting}
+        isCancelling={updateMeeting.isPending}
+      />
+
+      <EditMeetingDialog
+        open={editDialogOpen}
+        onClose={() => {
+          setEditDialogOpen(false);
+          setSelectedMeeting(null);
+        }}
+        meeting={selectedMeeting}
+        onSubmit={handleSaveEdit}
+        isLoading={updateMeeting.isPending}
       />
 
       {/* Stats row */}
@@ -245,8 +316,10 @@ export default function StudentMeetingsPage() {
                   participant={meeting.tutor?.name || "Unknown"}
                   status={meeting.meetingStatus as MeetingStatus}
                   type={meeting.meetingType === "virtual" ? "virtual" : "in person"}
-                  onView={(id) => console.log("View", id)}
-                  viewOnly
+                  onView={handleViewMeeting}
+                  onEdit={handleEditMeeting}
+                  onComplete={handleCompleteMeeting}
+                  onCancel={handleCancelMeetingFromList}
                 />
               ))}
               

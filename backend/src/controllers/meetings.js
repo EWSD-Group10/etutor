@@ -164,39 +164,54 @@ export const createMeeting = async (req, res) => {
   }
 }
 
-// PATCH /api/meetings/:id/status
-export const updateMeetingStatus = async (req, res) => {
+// PUT /api/meetings/:id - full update (tutor/student who can access the meeting)
+export const updateMeeting = async (req, res) => {
   try {
     const userId = req.user?.id
     const { id } = req.params
-    const { meetingStatus } = req.body
+    // Only read fields that are actually sent (no defaults), so status-only update keeps name/location
+    const {
+      notes,
+      meetingType,
+      scheduledAt,
+      durationMinutes,
+      location,
+      meetingLink,
+      meetingStatus,
+    } = req.body
 
-    if (!userId || !meetingStatus) {
-      return res.status(400).json({ error: "meetingStatus is required" })
-    }
-
-    if (!VALID_STATUSES.has(meetingStatus)) {
-      return res.status(400).json({ error: "Invalid meetingStatus" })
-    }
+    if (!userId) return res.status(401).json({ error: "Unauthorized" })
 
     const existing = await prisma.meeting.findUnique({
       where: { id },
       select: { id: true, studentId: true, tutorId: true },
     })
     if (!existing) return res.status(404).json({ error: "Meeting not found" })
-
-    // Both student and tutor can update status
     if (existing.studentId !== userId && existing.tutorId !== userId) {
       return res.status(403).json({ error: "Not allowed" })
     }
 
-    const data = await prisma.meeting.update({
+    // Only update fields present in body (e.g. status-only update keeps name/location as record)
+    const data = {}
+    if (notes !== undefined) data.meetingName = notes || null
+    if (meetingType !== undefined && VALID_TYPES.has(meetingType)) data.meetingType = meetingType
+    if (scheduledAt !== undefined) data.scheduledDate = new Date(scheduledAt)
+    if (durationMinutes !== undefined) data.durationMinutes = durationMinutes
+    if (location !== undefined) data.location = location || null
+    if (meetingLink !== undefined) data.meetingLink = meetingLink || null
+    if (meetingStatus !== undefined && VALID_STATUSES.has(meetingStatus)) data.meetingStatus = meetingStatus
+
+    if (Object.keys(data).length === 0) {
+      const current = await prisma.meeting.findUnique({ where: { id }, select: meetingSelect })
+      return res.json({ data: toMeetingApi(current) })
+    }
+
+    const updated = await prisma.meeting.update({
       where: { id },
-      data: { meetingStatus },
+      data,
       select: meetingSelect,
     })
-
-    return res.json({ data: toMeetingApi(data) })
+    return res.json({ data: toMeetingApi(updated) })
   } catch (err) {
     console.error(err)
     return res.status(500).json({ error: "Internal server error" })

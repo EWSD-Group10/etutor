@@ -50,6 +50,16 @@ export interface CreateMeetingInput {
   notes?: string;
 }
 
+export interface UpdateMeetingInput {
+  notes?: string;
+  meetingType?: string;
+  scheduledAt?: string;
+  durationMinutes?: number;
+  location?: string;
+  meetingLink?: string;
+  meetingStatus?: string;
+}
+
 // Fetch meetings with pagination and optional status filter
 export const fetchMeetings = async (
   page: number = 1,

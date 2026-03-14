@@ -40,7 +40,7 @@ import {
 import {
   listMeetings,
   createMeeting,
-  updateMeetingStatus,
+  updateMeeting,
   listAllMeetings,
 } from "./controllers/meetings.js";
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js";
@@ -154,7 +154,7 @@ app.post("/api/messages", requireSignin, sendMessage);
 // Meeting endpoints between the assign tutor and student
 app.get("/api/meetings", requireSignin, listMeetings);
 app.post("/api/meetings", requireSignin, createMeeting);
-app.patch("/api/meetings/:id/status", requireSignin, updateMeetingStatus);
+app.put("/api/meetings/:id", requireSignin, updateMeeting);
 
 // Admin meeting endpoints
 app.get("/api/admin/meetings", requireSignin, isAdmin, listAllMeetings);
