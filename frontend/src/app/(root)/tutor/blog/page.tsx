@@ -22,6 +22,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import SendIcon from "@mui/icons-material/Send";
 import {
   useBlogs,
@@ -30,6 +31,7 @@ import {
   useBlogGroup,
   useBlog,
   useAddBlogComment,
+  useUpdateBlog,
   BlogPost,
   BlogGroup,
 } from "@/app/hooks/blogs/useBlogs";
@@ -48,6 +50,12 @@ export default function BlogPage() {
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
 
+  // Edit dialog state
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editContent, setEditContent] = useState("");
+
   // Comment input state
   const [newComment, setNewComment] = useState("");
 
@@ -58,6 +66,7 @@ export default function BlogPage() {
 
   const createBlogMutation = useCreateBlog();
   const deleteBlogMutation = useDeleteBlog();
+  const updateBlogMutation = useUpdateBlog();
   const addCommentMutation = useAddBlogComment();
 
   // Level 1: List of master blogs
@@ -104,6 +113,36 @@ export default function BlogPage() {
       await deleteBlogMutation.mutateAsync(blogInGroup.id);
       setViewLevel("list");
       setSelectedGroupId(null);
+    }
+  };
+
+  // Handle: Open edit dialog
+  const handleEditClick = (blog: BlogPost, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    setEditingBlog(blog);
+    setEditTitle(blog.title || "");
+    setEditContent(blog.content);
+    setEditDialogOpen(true);
+  };
+
+  // Handle: Save edit
+  const handleSaveEdit = async () => {
+    if (!editingBlog || !editTitle.trim() || !editContent.trim()) return;
+
+    try {
+      await updateBlogMutation.mutateAsync({
+        id: editingBlog.id,
+        input: {
+          title: editTitle,
+          content: editContent,
+        },
+      });
+      setEditDialogOpen(false);
+      setEditingBlog(null);
+      setEditTitle("");
+      setEditContent("");
+    } catch (error) {
+      console.error("Failed to update blog:", error);
     }
   };
 
@@ -178,6 +217,7 @@ export default function BlogPage() {
               blog={post}
               onClick={() => handleBlogClick(post)}
               onDelete={() => handleDeleteBlog(post.groupId!)}
+              onEdit={() => handleEditClick(post)}
             />
           ))}
         </Stack>
@@ -396,6 +436,41 @@ export default function BlogPage() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Edit Blog Dialog */}
+      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)} maxWidth="sm" fullWidth>
+        <DialogTitle sx={{ fontWeight: 700 }}>Edit Blog Post</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Title"
+            fullWidth
+            value={editTitle}
+            onChange={(e) => setEditTitle(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            margin="dense"
+            label="Content"
+            fullWidth
+            multiline
+            rows={6}
+            value={editContent}
+            onChange={(e) => setEditContent(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditDialogOpen(false)}>Cancel</Button>
+          <Button
+            variant="contained"
+            onClick={handleSaveEdit}
+            disabled={updateBlogMutation.isPending || !editTitle.trim() || !editContent.trim()}
+          >
+            {updateBlogMutation.isPending ? "Saving..." : "Save Changes"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
@@ -405,9 +480,10 @@ interface BlogListItemProps {
   blog: BlogPost;
   onClick: () => void;
   onDelete: () => void;
+  onEdit: () => void;
 }
 
-function BlogListItem({ blog, onClick, onDelete }: BlogListItemProps) {
+function BlogListItem({ blog, onClick, onDelete, onEdit }: BlogListItemProps) {
   return (
     <Card
       sx={{
@@ -445,15 +521,26 @@ function BlogListItem({ blog, onClick, onDelete }: BlogListItemProps) {
             />
           </Stack>
         </Box>
-        <IconButton
-          color="error"
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-        >
-          <DeleteIcon />
-        </IconButton>
+        <Stack direction="row" spacing={1}>
+          <IconButton
+            color="primary"
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit();
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+          <IconButton
+            color="error"
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Stack>
       </Box>
     </Card>
   );

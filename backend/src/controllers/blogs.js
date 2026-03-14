@@ -114,7 +114,7 @@ export const listBlogs = async (req, res) => {
 
     if (me.role === "tutor") {
       // Tutor sees their master posts only (studentId = null)
-      where = { tutorId: userId, studentId: null }
+      where = { tutorId: userId, studentId: { equals: null } }
     } else if (me.role === "student") {
       // Student sees their copies only
       where = { studentId: userId }
@@ -126,16 +126,42 @@ export const listBlogs = async (req, res) => {
       where,
       select: {
         ...blogSelect,
-        _count: { select: { comments: true } },
+        groupId: true,
       },
       orderBy: { createdAt: "desc" },
     })
 
-    // Format response - add comment count
-    const data = blogs.map((blog) => ({
-      ...blog,
-      commentCount: blog._count.comments,
-    }))
+    // Calculate comment counts
+    const data = await Promise.all(
+      blogs.map(async (blog) => {
+        let commentCount = 0
+
+        if (me.role === "tutor" && blog.groupId) {
+          // For master blogs, first get all student blog IDs in the group, then count comments
+          const studentBlogs = await prisma.blogPost.findMany({
+            where: { groupId: blog.groupId, studentId: { not: null } },
+            select: { id: true },
+          })
+          const studentBlogIds = studentBlogs.map((b) => b.id)
+
+          if (studentBlogIds.length > 0) {
+            commentCount = await prisma.comment.count({
+              where: { blogId: { in: studentBlogIds } },
+            })
+          }
+        } else if (me.role === "student") {
+          // For student blogs, just count comments on this specific blog
+          commentCount = await prisma.comment.count({
+            where: { blogId: blog.id },
+          })
+        }
+
+        return {
+          ...blog,
+          commentCount,
+        }
+      })
+    )
 
     return res.json({ data })
   } catch (err) {
@@ -157,12 +183,12 @@ export const getBlogGroup = async (req, res) => {
       return res.status(403).json({ error: "Only tutors can view blog groups" })
     }
 
-    // Get all copies in this group
+    // Get all copies in this group (excluding master)
     const blogs = await prisma.blogPost.findMany({
-      where: { groupId, tutorId: userId },
+      where: { groupId, tutorId: userId, studentId: { not: null } },
       select: {
         ...blogSelect,
-        _count: { select: { comments: true } },
+        groupId: true,
       },
       orderBy: { student: { name: "asc" } },
     })
@@ -171,7 +197,20 @@ export const getBlogGroup = async (req, res) => {
       return res.status(404).json({ error: "Blog group not found" })
     }
 
-    return res.json({ data: blogs })
+    // Calculate comment counts for each blog
+    const data = await Promise.all(
+      blogs.map(async (blog) => {
+        const commentCount = await prisma.comment.count({
+          where: { blogId: blog.id },
+        })
+        return {
+          ...blog,
+          commentCount,
+        }
+      })
+    )
+
+    return res.json({ data })
   } catch (err) {
     console.error("getBlogGroup error:", err)
     return res.status(500).json({ error: "Internal server error" })
@@ -294,7 +333,21 @@ export const deleteBlog = async (req, res) => {
       return res.status(403).json({ error: "Not your blog" })
     }
 
-    // Delete all blogs in the group (cascades to comments)
+    // First, get all blog IDs in this group
+    const blogsInGroup = await prisma.blogPost.findMany({
+      where: { groupId: existingBlog.groupId },
+      select: { id: true },
+    })
+    const blogIds = blogsInGroup.map((b) => b.id)
+
+    // Delete all comments for these blogs first
+    if (blogIds.length > 0) {
+      await prisma.comment.deleteMany({
+        where: { blogId: { in: blogIds } },
+      })
+    }
+
+    // Then delete all blogs in the group
     await prisma.blogPost.deleteMany({
       where: { groupId: existingBlog.groupId },
     })
