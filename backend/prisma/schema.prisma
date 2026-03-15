@@ -202,3 +202,14 @@ model Meeting {
   @@map("meetings")
 }
 
+// -------------------- INACTIVITY NOTIFICATIONS --------------------
+
+model InactivityNotification {
+  id        String   @id @default(uuid()) @db.Uuid
+  studentId String   @map("student_id") @db.Uuid
+  sentAt    DateTime @default(now()) @map("sent_at")
+
+  @@index([studentId, sentAt])
+  @@map("inactivity_notifications")
+}
+

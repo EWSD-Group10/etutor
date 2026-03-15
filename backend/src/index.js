@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { pool } from "./utils/db.js";
 import { sendEmail } from "./utils/mailer.js";
+import { startInactivityCron } from "./cron/inactivityCheck.js";
 import { login, currentUser, refresh, logout } from "./controllers/auth.js";
 import {
   listStudents,
@@ -199,4 +200,5 @@ app.listen(PORT, () => {
   console.log(
     `Database URL: ${process.env.DATABASE_URL || "postgresql://etutor_user:etutor_password@postgres:5432/etutor_db"}`,
   );
+  startInactivityCron();
 });
