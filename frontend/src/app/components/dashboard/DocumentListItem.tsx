@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, Typography, alpha } from "@mui/material";
 import DescriptionIcon from "@mui/icons-material/Description";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 
 interface DocumentListItemProps {
   label: string;
@@ -23,28 +23,50 @@ const DocumentListItem: React.FC<DocumentListItemProps> = ({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        py: 1,
-        px: 0,
+        py: 1.5,
+        px: 0.5,
         borderBottom: "1px solid",
-        borderColor: "divider",
+        borderColor: alpha("#000", 0.06),
         "&:last-of-type": { borderBottom: "none" },
         cursor: onClick ? "pointer" : "default",
-        "&:hover": onClick ? { bgcolor: "action.hover" } : {},
+        "&:hover": onClick ? { bgcolor: alpha("#1976d2", 0.02) } : {},
         borderRadius: 1,
+        transition: "background-color 0.2s",
       }}
       onClick={onClick}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-        <Box sx={{ color: "secondary.main" }}>
-          {icon ?? <DescriptionIcon fontSize="small" />}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 36,
+            height: 36,
+            borderRadius: 2,
+            bgcolor: alpha("#7c3aed", 0.1),
+            color: "#7c3aed",
+            flexShrink: 0,
+          }}
+        >
+          {icon ?? <DescriptionIcon sx={{ fontSize: 18 }} />}
         </Box>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          sx={{ fontWeight: 500, color: "text.primary" }}
+        >
           {label}
         </Typography>
       </Box>
-      <IconButton size="small" sx={{ p: 0.5 }} aria-label="View">
-        <ChevronRightIcon fontSize="small" />
-      </IconButton>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          color: "text.disabled",
+        }}
+      >
+        <TrendingUpIcon sx={{ fontSize: 18 }} />
+      </Box>
     </Box>
   );
 };

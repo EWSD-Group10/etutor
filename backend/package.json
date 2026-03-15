@@ -16,7 +16,7 @@
   "dependencies": {
     "@aws-sdk/client-ses": "^3.379.0",
     "@prisma/adapter-pg": "^7.4.0",
-    "@prisma/client": "^7.4.2",
+    "@prisma/client": "^7.5.0",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.6",

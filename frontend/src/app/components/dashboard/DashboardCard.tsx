@@ -19,22 +19,30 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
     <Card
       sx={{
         height: "100%",
-        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.03)",
+        boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.06)",
         borderRadius: 3,
         border: "1px solid",
-        borderColor: alpha("#000", 0.05),
+        borderColor: alpha("#000", 0.07),
+        bgcolor: "#fff",
       }}
     >
-      <CardContent sx={{ py: 2, px: 2.5, "&:last-child": { pb: 2 } }}>
+      <CardContent sx={{ py: 2.5, px: 3, "&:last-child": { pb: 2.5 } }}>
         <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "flex-start",
-            mb: 1.5,
+            alignItems: "center",
+            mb: 2,
           }}
         >
-          <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              fontWeight: 600,
+              color: "text.secondary",
+              fontSize: "0.8rem",
+            }}
+          >
             {title}
           </Typography>
           {icon && (
@@ -43,11 +51,11 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "text.secondary",
+                color: "text.disabled",
               }}
             >
               {React.cloneElement(icon as React.ReactElement, {
-                sx: { fontSize: 22 },
+                sx: { fontSize: 20 },
               })}
             </Box>
           )}

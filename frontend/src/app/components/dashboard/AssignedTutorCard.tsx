@@ -19,17 +19,28 @@ const AssignedTutorCard: React.FC<AssignedTutorCardProps> = ({
   initials,
   onViewProfile,
 }) => {
-  const derivedInitials = initials ?? tutorName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
+  const derivedInitials =
+    initials ??
+    tutorName
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
 
   return (
-    <DashboardCard
-      title="Assigned Tutor"
-      icon={<PersonIcon />}
-    >
+    <DashboardCard title="Assigned Tutor" icon={<PersonIcon />}>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-        <Box sx={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            gap: 1,
+          }}
+        >
           <Box>
-            <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 700, mb: 0.3 }}>
               {tutorName}
             </Typography>
             <Typography variant="body2" color="text.secondary">
@@ -38,12 +49,13 @@ const AssignedTutorCard: React.FC<AssignedTutorCardProps> = ({
           </Box>
           <Avatar
             sx={{
-              width: 44,
-              height: 44,
+              width: 40,
+              height: 40,
               bgcolor: alpha("#1976d2", 0.12),
               color: "primary.main",
-              fontSize: "0.875rem",
+              fontSize: "0.8rem",
               fontWeight: 700,
+              flexShrink: 0,
             }}
           >
             {derivedInitials}
@@ -54,10 +66,11 @@ const AssignedTutorCard: React.FC<AssignedTutorCardProps> = ({
             variant="outlined"
             size="small"
             onClick={onViewProfile}
+            fullWidth
             sx={{
               textTransform: "none",
               fontWeight: 600,
-              alignSelf: "flex-start",
+              borderRadius: 2,
               mt: 0.5,
             }}
           >

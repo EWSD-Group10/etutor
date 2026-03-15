@@ -8,6 +8,8 @@ RUN npm install --legacy-peer-deps
 
 COPY . .
 
+RUN npx prisma generate
+
 EXPOSE 8080
 
-CMD ["node", "src/index.js"]
+CMD ["npm", "run", "dev"]

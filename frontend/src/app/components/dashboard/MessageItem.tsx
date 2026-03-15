@@ -1,15 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Box,
-  Card,
-  Avatar,
-  Typography,
-  Stack,
-  alpha,
-  Badge,
-} from "@mui/material";
+import { Box, Avatar, Typography, Stack, alpha } from "@mui/material";
 
 interface MessageItemProps {
   id: string;
@@ -20,7 +12,6 @@ interface MessageItemProps {
 }
 
 const MessageItem: React.FC<MessageItemProps> = ({
-  id,
   sender,
   message,
   unreadCount = 0,
@@ -36,69 +27,80 @@ const MessageItem: React.FC<MessageItemProps> = ({
   };
 
   return (
-    <Card
+    <Stack
+      direction="row"
+      spacing={1.5}
+      alignItems="center"
+      justifyContent="space-between"
       sx={{
-        p: 2,
-        mb: 2,
-        borderRadius: 3,
-        boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.03)",
-        border: "1px solid",
-        borderColor: alpha("#000", 0.05),
-        "&:hover": {
-          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.08)",
-          transition: "boxShadow 0.3s ease-in-out",
-        },
+        py: 1.5,
+        px: 0.5,
+        borderBottom: "1px solid",
+        borderColor: alpha("#000", 0.06),
+        "&:last-child": { borderBottom: "none" },
+        "&:hover": { bgcolor: alpha("#1976d2", 0.02) },
+        borderRadius: 1,
+        transition: "background-color 0.2s",
       }}
     >
-      <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Avatar
-            sx={{
-              bgcolor: alpha("#1976d2", 0.08),
-              color: "primary.main",
-              fontWeight: 700,
-              fontSize: "0.75rem",
-              width: 44,
-              height: 44,
-            }}
+      <Stack
+        direction="row"
+        spacing={1.5}
+        alignItems="center"
+        sx={{ flex: 1, minWidth: 0 }}
+      >
+        <Avatar
+          sx={{
+            bgcolor: alpha("#1976d2", 0.1),
+            color: "primary.main",
+            fontWeight: 700,
+            fontSize: "0.72rem",
+            width: 38,
+            height: 38,
+            flexShrink: 0,
+          }}
+        >
+          {initials || getInitials(sender)}
+        </Avatar>
+        <Box sx={{ minWidth: 0, flex: 1 }}>
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 700, color: "text.primary", mb: 0.2 }}
           >
-            {initials || getInitials(sender)}
-          </Avatar>
-          <Box sx={{ maxWidth: 180 }}>
-            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.primary" }}>
-              {sender}
-            </Typography>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              noWrap
-              sx={{ display: "block", fontWeight: 500 }}
-            >
-              {message}
-            </Typography>
-          </Box>
-        </Stack>
-        {unreadCount > 0 && (
-          <Box
-            sx={{
-              width: 20,
-              height: 20,
-              borderRadius: "50%",
-              bgcolor: "primary.main",
-              color: "white",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "0.65rem",
-              fontWeight: 800,
-              boxShadow: "0px 2px 4px rgba(25, 118, 210, 0.3)",
-            }}
+            {sender}
+          </Typography>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            noWrap
+            sx={{ display: "block", fontWeight: 400 }}
           >
-            {unreadCount}
-          </Box>
-        )}
+            {message}
+          </Typography>
+        </Box>
       </Stack>
-    </Card>
+
+      {unreadCount > 0 && (
+        <Box
+          sx={{
+            minWidth: 22,
+            height: 22,
+            borderRadius: "50%",
+            bgcolor: "primary.main",
+            color: "white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "0.65rem",
+            fontWeight: 800,
+            flexShrink: 0,
+            px: 0.5,
+          }}
+        >
+          {unreadCount}
+        </Box>
+      )}
+    </Stack>
   );
 };
 
