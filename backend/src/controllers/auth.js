@@ -5,6 +5,7 @@ import {
   verifyToken,
 } from "../utils/auth.js";
 import { prisma } from "../utils/prisma.js";
+import { sendEmail } from "../utils/mailer.js";
 
 export const login = async (req, res) => {
   try {
@@ -25,6 +26,19 @@ export const login = async (req, res) => {
     const isMatch = await comparePassword(password, user.passwordHash);
     if (!isMatch) {
       return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    // Send welcome email on first login for students
+    if (user.role === "student" && !user.firstLoginAt) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { firstLoginAt: new Date() },
+      });
+
+      sendEmail(
+        user.email,
+        buildWelcomeEmail(user.email)
+      ).catch((err) => console.error("Failed to send welcome email:", err.message));
     }
 
     const accessToken = generateAccessToken(user);
@@ -142,3 +156,21 @@ export const logout = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+const buildWelcomeEmail = (studentName) => {
+  return ("Welcome to eTutor!",
+    `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2>Welcome to eTutor!</h2>
+          <p>Dear ${studentName || "Student"},</p>
+          <p>Welcome to the eTutor platform! We're excited to have you on board.</p>
+          <p>Here are some things you can do to get started:</p>
+          <ul>
+            <li>Send a message to your personal tutor</li>
+            <li>Check out blog posts from your tutor</li>
+            <li>Schedule a meeting with your tutor</li>
+            <li>Upload documents for feedback</li>
+          </ul>
+          <p>Regular engagement with your tutor will help you succeed in your studies. Don't hesitate to reach out!</p>
+          <p>Best regards,<br/>The eTutor Team</p>
+        </div>`)
+}
