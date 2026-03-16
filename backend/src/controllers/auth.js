@@ -35,10 +35,9 @@ export const login = async (req, res) => {
         data: { firstLoginAt: new Date() },
       });
 
-      sendEmail(
-        user.email,
-        buildWelcomeEmail(user.email)
-      ).catch((err) => console.error("Failed to send welcome email:", err.message));
+      const { subject, body } = buildWelcomeEmail(user.email);
+      sendEmail(user.email, subject, body)
+        .catch((err) => console.error("Failed to send welcome email:", err.message));
     }
 
     // Capture previous lastLoginAt before updating
@@ -168,8 +167,9 @@ export const logout = async (req, res) => {
 };
 
 const buildWelcomeEmail = (studentName) => {
-  return ("Welcome to eTutor!",
-    `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+  return {
+    subject: "Welcome to eTutor!",
+    body: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2>Welcome to eTutor!</h2>
           <p>Dear ${studentName || "Student"},</p>
           <p>Welcome to the eTutor platform! We're excited to have you on board.</p>
@@ -182,5 +182,6 @@ const buildWelcomeEmail = (studentName) => {
           </ul>
           <p>Regular engagement with your tutor will help you succeed in your studies. Don't hesitate to reach out!</p>
           <p>Best regards,<br/>The eTutor Team</p>
-        </div>`)
+        </div>`
+  };
 }
