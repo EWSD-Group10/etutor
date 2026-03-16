@@ -41,6 +41,15 @@ export const login = async (req, res) => {
       ).catch((err) => console.error("Failed to send welcome email:", err.message));
     }
 
+    // Capture previous lastLoginAt before updating
+    const previousLoginAt = user.lastLoginAt;
+
+    // Update lastLoginAt to now
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { lastLoginAt: new Date() },
+    });
+
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
@@ -59,6 +68,7 @@ export const login = async (req, res) => {
         name: user.name,
         role: user.role.toUpperCase(),
       },
+      lastLoginAt: previousLoginAt,
     });
   } catch (err) {
     console.error(err);

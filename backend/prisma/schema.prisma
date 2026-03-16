@@ -51,6 +51,7 @@ model User {
   isActive      Boolean  @default(true) @map("is_active")
   createdAt     DateTime @default(now()) @map("created_at")
   firstLoginAt  DateTime? @map("first_login_at")
+  lastLoginAt   DateTime? @map("last_login_at")
 
   // Relations
   studentAllocations     Allocation[] @relation("AllocationStudent")

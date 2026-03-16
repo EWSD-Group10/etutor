@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../../lib/axios";
 
@@ -16,10 +15,10 @@ interface LoginResponse {
     name: string;
     role: string;
   };
+  lastLoginAt: string | null;
 }
 
 export const useLogin = () => {
-  const router = useRouter();
   const { setUser } = useAuth();
 
   return useMutation({
@@ -40,15 +39,25 @@ export const useLogin = () => {
       document.cookie = `accessToken=${data.accessToken}; path=/; max-age=900; SameSite=Lax${isProduction ? "; Secure" : ""}`;
 
       const role = data.user.role.toLowerCase();
+      let destination = "/";
       if (role === "admin") {
-        router.push("/admin/dashboard");
+        destination = "/admin/dashboard";
       } else if (role === "tutor") {
-        router.push("/tutor/dashboard");
+        destination = "/tutor/dashboard";
       } else if (role === "student") {
-        router.push("/student/dashboard");
-      } else {
-        router.push("/");
+        destination = "/student/dashboard";
       }
+
+      // Pass lastLoginAt via query param so the dashboard can show a toast
+      const loginParam = data.lastLoginAt
+        ? `lastLoginAt=${encodeURIComponent(data.lastLoginAt)}`
+        : "lastLoginAt=first";
+      destination += `?${loginParam}`;
+
+      // Use window.location for a full navigation to avoid React DOM
+      // conflicts between unmounting the login page and the concurrent
+      // AuthContext re-render triggered by setUser above.
+      window.location.href = destination;
     },
   });
 };
