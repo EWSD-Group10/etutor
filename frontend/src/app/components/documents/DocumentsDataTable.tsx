@@ -129,11 +129,17 @@ const DocumentsDataTable: React.FC<DocumentsDataTableProps> = ({
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    <Tooltip title="View">
-                      <IconButton size="small" onClick={() => onView?.(row)} sx={{ color: "text.secondary" }}>
-                        <VisibilityOutlinedIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
+                    {onView && (
+                      <Tooltip title="Download / view">
+                        <IconButton
+                          size="small"
+                          onClick={() => onView(row)}
+                          sx={{ color: "text.secondary" }}
+                        >
+                          <VisibilityOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                     {showEdit && onEdit && (
                       <Tooltip title="Edit">
                         <span>
@@ -148,18 +154,20 @@ const DocumentsDataTable: React.FC<DocumentsDataTableProps> = ({
                         </span>
                       </Tooltip>
                     )}
-                    <Tooltip title="Delete">
-                      <span>
-                        <IconButton
-                          size="small"
-                          disabled={!canDeleteRow(row)}
-                          onClick={() => onDelete?.(row)}
-                          sx={{ color: "error.main" }}
-                        >
-                          <DeleteOutlineIcon fontSize="small" />
-                        </IconButton>
-                      </span>
-                    </Tooltip>
+                    {onDelete && (
+                      <Tooltip title="Delete">
+                        <span>
+                          <IconButton
+                            size="small"
+                            disabled={!canDeleteRow(row)}
+                            onClick={() => onDelete(row)}
+                            sx={{ color: "error.main" }}
+                          >
+                            <DeleteOutlineIcon fontSize="small" />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                    )}
                   </TableCell>
                 </TableRow>
               );

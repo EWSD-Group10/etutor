@@ -20,8 +20,10 @@ export interface DocumentsListResponse {
   data: DocumentRecord[];
 }
 
-export const fetchDocuments = async (): Promise<DocumentsListResponse> => {
-  const response = await api.get<DocumentsListResponse>("/api/documents");
+export const fetchDocuments = async (filterByStudentId?: string): Promise<DocumentsListResponse> => {
+  const response = await api.get<DocumentsListResponse>("/api/documents", {
+    params: filterByStudentId ? { studentId: filterByStudentId } : undefined,
+  });
   return response.data;
 };
 

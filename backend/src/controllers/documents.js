@@ -6,6 +6,7 @@ import {
   isAllowedStudentDocument,
   STUDENT_DOCUMENT_ERROR,
 } from "../utils/documentValidation.js";
+import { hasStudentTutorLink } from "../utils/relationship.js";
 
 const documentSelect = {
   id: true,
@@ -57,6 +58,26 @@ export const listDocuments = async (req, res) => {
 
     if (me.role === "admin") {
       const data = await prisma.document.findMany({
+        orderBy: { uploadedAt: "desc" },
+        select: documentSelect,
+      });
+      return res.json({ data });
+    }
+
+    const rawStudentId = req.query.studentId;
+    const filterStudentId =
+      typeof rawStudentId === "string" && rawStudentId.trim() ? rawStudentId.trim() : null;
+
+    if (filterStudentId) {
+      if (me.role !== "tutor") {
+        return res.status(403).json({ error: "Not allowed" });
+      }
+      const allowed = await hasStudentTutorLink(filterStudentId, userId);
+      if (!allowed) {
+        return res.status(403).json({ error: "Not allowed" });
+      }
+      const data = await prisma.document.findMany({
+        where: { uploaderId: filterStudentId },
         orderBy: { uploadedAt: "desc" },
         select: documentSelect,
       });

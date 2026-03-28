@@ -3,9 +3,9 @@
 import React from "react";
 import { Box, ToggleButton, ToggleButtonGroup, TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import type { DocumentFormatCategory } from "./documentFormatUtils";
 
-export type DocumentsFilterValue = "all" | DocumentFormatCategory;
+/** Toolbar filters only (no "other" — uploads are restricted to these types) */
+export type DocumentsFilterValue = "all" | "pdf" | "doc" | "xls" | "ppt";
 
 interface DocumentsToolbarProps {
   filter: DocumentsFilterValue;
@@ -20,7 +20,6 @@ const FILTERS: { value: DocumentsFilterValue; label: string }[] = [
   { value: "doc", label: "doc" },
   { value: "xls", label: "xls" },
   { value: "ppt", label: "ppt" },
-  { value: "other", label: "other" },
 ];
 
 const DocumentsToolbar: React.FC<DocumentsToolbarProps> = ({

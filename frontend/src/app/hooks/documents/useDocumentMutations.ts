@@ -7,7 +7,7 @@ export const useUploadDocument = () => {
   return useMutation({
     mutationFn: (file: File) => uploadDocumentFile(file),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: documentKeys.list() });
+      queryClient.invalidateQueries({ queryKey: documentKeys.all });
     },
   });
 };
@@ -17,7 +17,7 @@ export const useDeleteDocument = () => {
   return useMutation({
     mutationFn: (id: string) => deleteDocument(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: documentKeys.list() });
+      queryClient.invalidateQueries({ queryKey: documentKeys.all });
     },
   });
 };
