@@ -26,7 +26,6 @@ import MessageIcon from "@mui/icons-material/Message";
 import EventIcon from "@mui/icons-material/Event";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ArticleIcon from "@mui/icons-material/Article";
-import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useLogout } from "@/app/hooks/auth/useLogout";
@@ -44,7 +43,10 @@ interface SidebarProps {
   onMobileClose?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) => {
+export const Sidebar: React.FC<SidebarProps> = ({
+  mobileOpen,
+  onMobileClose,
+}) => {
   const pathname = usePathname();
   const logoutMutation = useLogout();
   const { user, isLoading, setUser } = useAuth();
@@ -73,7 +75,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
     { label: "Dashboard", href: "/admin/dashboard", icon: <DashboardIcon /> },
     { label: "Tutors", href: "/admin/tutors", icon: <SchoolIcon /> },
     { label: "Students", href: "/admin/students", icon: <PeopleIcon /> },
-    { label: "Allocation", href: "/admin/allocations", icon: <AssignmentIcon /> },
+    {
+      label: "Allocation",
+      href: "/admin/allocations",
+      icon: <AssignmentIcon />,
+    },
   ];
 
   const tutorItems = [
@@ -82,22 +88,37 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
     { label: "Messages", href: "/tutor/messages", icon: <MessageIcon /> },
     { label: "Meetings", href: "/tutor/meetings", icon: <EventIcon /> },
     { label: "Blog", href: "/tutor/blog", icon: <ArticleIcon /> },
-    { label: "Settings", href: "/tutor/settings", icon: <SettingsIcon /> },
+    {
+      label: "Notifications",
+      href: "/tutor/notifications",
+      icon: <NotificationsIcon />,
+    },
   ];
 
   const studentItems = [
     { label: "Dashboard", href: "/student/dashboard", icon: <DashboardIcon /> },
     { label: "Messages", href: "/student/messages", icon: <MessageIcon /> },
     { label: "Meetings", href: "/student/meetings", icon: <EventIcon /> },
-    { label: "Documents", href: "/student/documents", icon: <DescriptionIcon /> },
+    {
+      label: "Documents",
+      href: "/student/documents",
+      icon: <DescriptionIcon />,
+    },
     { label: "Blog", href: "/student/blog", icon: <ArticleIcon /> },
-    { label: "Notifications", href: "/student/notifications", icon: <NotificationsIcon /> },
-    { label: "Settings", href: "/student/settings", icon: <SettingsIcon /> },
+    {
+      label: "Notifications",
+      href: "/student/notifications",
+      icon: <NotificationsIcon />,
+    },
   ];
 
   const role = displayUser?.role?.toUpperCase();
   const items =
-    role === "ADMIN" ? adminItems : role === "STUDENT" ? studentItems : tutorItems;
+    role === "ADMIN"
+      ? adminItems
+      : role === "STUDENT"
+        ? studentItems
+        : tutorItems;
 
   // Get initials for avatar
   const getInitials = (name: string | null | undefined) => {
@@ -127,10 +148,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
     >
       <Box>
         <Box sx={{ p: 3, display: "flex", alignItems: "center", gap: 1 }}>
-          <Box sx={{ bgcolor: "primary.main", p: 0.5, borderRadius: 1, color: "white" }}>
+          <Box
+            sx={{
+              bgcolor: "primary.main",
+              p: 0.5,
+              borderRadius: 1,
+              color: "white",
+            }}
+          >
             <SchoolIcon fontSize="small" />
           </Box>
-          <Typography variant="h6" sx={{ fontWeight: 800, color: "primary.main", letterSpacing: -0.5 }}>
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 800, color: "primary.main", letterSpacing: -0.5 }}
+          >
             eTutor
           </Typography>
         </Box>
@@ -145,8 +176,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
               sx={{
                 borderRadius: 2,
                 mb: 0.5,
-                color: pathname === item.href ? "primary.main" : "text.secondary",
-                bgcolor: pathname === item.href ? alpha("#1976d2", 0.08) : "transparent",
+                color:
+                  pathname === item.href ? "primary.main" : "text.secondary",
+                bgcolor:
+                  pathname === item.href
+                    ? alpha("#1976d2", 0.08)
+                    : "transparent",
                 "&.Mui-selected": {
                   bgcolor: alpha("#1976d2", 0.08),
                   color: "primary.main",
@@ -160,14 +195,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
               }}
             >
               <ListItemIcon sx={{ minWidth: 40, color: "inherit" }}>
-                {React.cloneElement(item.icon as React.ReactElement, { fontSize: "small" })}
+                {React.cloneElement(item.icon as React.ReactElement, {
+                  fontSize: "small",
+                })}
               </ListItemIcon>
-              <ListItemText 
-                primary={item.label} 
-                primaryTypographyProps={{ 
-                  variant: "body2", 
-                  sx: { fontWeight: pathname === item.href ? 700 : 500 } 
-                }} 
+              <ListItemText
+                primary={item.label}
+                primaryTypographyProps={{
+                  variant: "body2",
+                  sx: { fontWeight: pathname === item.href ? 700 : 500 },
+                }}
               />
             </ListItemButton>
           ))}
@@ -180,24 +217,34 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
             <CircularProgress size={40} sx={{ mx: "auto", mb: 1 }} />
           ) : (
             <>
-              <Avatar 
-                sx={{ 
-                  mx: "auto", 
-                  mb: 1, 
-                  width: 52, 
-                  height: 52, 
-                  bgcolor: alpha("#000", 0.05), 
+              <Avatar
+                sx={{
+                  mx: "auto",
+                  mb: 1,
+                  width: 52,
+                  height: 52,
+                  bgcolor: alpha("#000", 0.05),
                   color: "text.secondary",
                   fontSize: "1rem",
-                  fontWeight: 700
+                  fontWeight: 700,
                 }}
               >
                 {getInitials(displayUser?.name)}
               </Avatar>
-              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "text.primary" }}>
+              <Typography
+                variant="subtitle2"
+                sx={{ fontWeight: 700, color: "text.primary" }}
+              >
                 {displayUser?.name || "—"}
               </Typography>
-              <Typography variant="caption" sx={{ color: "text.secondary", fontWeight: 500, textTransform: "lowercase" }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: "text.secondary",
+                  fontWeight: 500,
+                  textTransform: "lowercase",
+                }}
+              >
                 {displayUser?.role || ""}
               </Typography>
             </>
@@ -207,7 +254,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
           fullWidth
           variant="outlined"
           color="error"
-          startIcon={logoutMutation.isPending ? <CircularProgress size={16} color="inherit" /> : <LogoutIcon />}
+          startIcon={
+            logoutMutation.isPending ? (
+              <CircularProgress size={16} color="inherit" />
+            ) : (
+              <LogoutIcon />
+            )
+          }
           onClick={() => {
             onMobileClose?.();
             logoutMutation.mutate();
@@ -222,7 +275,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
             "&:hover": {
               bgcolor: alpha("#d32f2f", 0.04),
               borderColor: "#d32f2f",
-            }
+            },
           }}
         >
           {logoutMutation.isPending ? "Signing out..." : "Sign Out"}
@@ -241,7 +294,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
           ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: "block", md: "none" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240, border: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: 240,
+              border: "none",
+            },
           }}
         >
           {sidebarContent}

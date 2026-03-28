@@ -1,4 +1,5 @@
 import { prisma } from "../utils/prisma.js"
+import { sendNotificationEmail } from "../emails/notifications.js"
 
 const notificationSelect = {
   id: true,
@@ -24,9 +25,9 @@ export const listNotifications = async (req, res) => {
     if (filter === "unread") {
       where.isRead = false
     } else if (filter === "allocations") {
-      where.type = { in: ["tutor_assigned", "tutor_reallocated"] }
+      where.type = { in: ["tutor_assigned", "tutor_reallocated", "student_assigned"] }
     } else if (filter === "meetings") {
-      where.type = "meeting_scheduled"
+      where.type = { in: ["meeting_scheduled", "meeting_accepted", "meeting_rejected"] }
     } else if (filter === "documents") {
       where.type = "new_document"
     }
@@ -50,7 +51,7 @@ export const listNotifications = async (req, res) => {
       where: {
         userId,
         isRead: false,
-        type: "meeting_scheduled",
+        type: { in: ["meeting_scheduled"] },
         metadata: { path: ["meetingStatus"], equals: "scheduled" },
       },
     })
@@ -111,12 +112,21 @@ export const markAllNotificationsRead = async (req, res) => {
   }
 }
 
-// Helper: create a notification (used internally by other controllers)
+// Helper: create a notification and send an email (used internally by other controllers)
 export const createNotification = async ({ userId, type, title, message, metadata = null }) => {
   try {
     await prisma.notification.create({
       data: { userId, type, title, message, metadata },
     })
+
+    // Fire-and-forget email
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { email: true, name: true },
+    })
+    if (user?.email) {
+      sendNotificationEmail(user.email, user.name, type, message, metadata)
+    }
   } catch (err) {
     console.error("Failed to create notification:", err)
   }

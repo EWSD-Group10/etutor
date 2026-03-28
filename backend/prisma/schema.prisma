@@ -35,7 +35,10 @@ enum NotificationType {
   tutor_assigned
   tutor_reallocated
   meeting_scheduled
+  meeting_accepted
+  meeting_rejected
   new_document
+  student_assigned
 }
 
 // -------------------- USERS --------------------

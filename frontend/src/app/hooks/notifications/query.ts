@@ -4,7 +4,10 @@ export type NotificationType =
   | "tutor_assigned"
   | "tutor_reallocated"
   | "meeting_scheduled"
-  | "new_document";
+  | "meeting_accepted"
+  | "meeting_rejected"
+  | "new_document"
+  | "student_assigned";
 
 export interface NotificationMetadata {
   tutorId?: string;

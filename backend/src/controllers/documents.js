@@ -149,19 +149,35 @@ export const uploadDocument = async (req, res) => {
       select: documentSelect,
     });
 
-    // Notify assigned student when tutor uploads a document
+    // Notify the other party when a document is uploaded
     if (me.role === "tutor") {
-      const allocation = await prisma.allocation.findMany({
+      // Notify all assigned students
+      const allocations = await prisma.allocation.findMany({
         where: { tutorId: userId },
         select: { studentId: true },
       });
-      for (const { studentId } of allocation) {
+      for (const { studentId } of allocations) {
         createNotification({
           userId: studentId,
           type: "new_document",
           title: "New Document Shared",
           message: `${uploader?.name || "Your tutor"} shared "${file.originalname || file.filename}" with you.`,
-          metadata: { documentId: doc.id, fileName: file.originalname || file.filename },
+          metadata: { documentId: doc.id, fileName: file.originalname || file.filename, sharedBy: uploader?.name || null },
+        });
+      }
+    } else if (me.role === "student") {
+      // Notify the assigned tutor
+      const allocation = await prisma.allocation.findUnique({
+        where: { studentId: userId },
+        select: { tutorId: true },
+      });
+      if (allocation?.tutorId) {
+        createNotification({
+          userId: allocation.tutorId,
+          type: "new_document",
+          title: "New Document Shared",
+          message: `${uploader?.name || "Your student"} shared "${file.originalname || file.filename}" with you.`,
+          metadata: { documentId: doc.id, fileName: file.originalname || file.filename, sharedBy: uploader?.name || null },
         });
       }
     }

@@ -258,6 +258,33 @@ export const updateMeeting = async (req, res) => {
       data,
       select: meetingSelect,
     })
+
+    // If status changed to completed/cancelled, notify the other party
+    if (meetingStatus === "completed" || meetingStatus === "cancelled") {
+      const me = await getUserBasic(userId)
+      const isAccepted = meetingStatus === "completed"
+      const notifType = isAccepted ? "meeting_accepted" : "meeting_rejected"
+      const actionLabel = isAccepted ? "accepted" : "rejected"
+      const meetingName = updated.meetingName || "Meeting"
+
+      // Notify the party who did NOT make the change
+      const otherPartyId = userId === existing.studentId ? existing.tutorId : existing.studentId
+      createNotification({
+        userId: otherPartyId,
+        type: notifType,
+        title: isAccepted ? "Meeting Accepted" : "Meeting Rejected",
+        message: `${me?.name || "The other participant"} ${actionLabel} the meeting: ${meetingName}.`,
+        metadata: {
+          meetingId: id,
+          meetingName,
+          actionBy: me?.name || null,
+          scheduledAt: updated.scheduledDate,
+          meetingType: updated.meetingType === "in_person" ? "In Person" : "Virtual",
+          location: updated.location || null,
+        },
+      })
+    }
+
     return res.json({ data: toMeetingApi(updated) })
   } catch (err) {
     console.error(err)
