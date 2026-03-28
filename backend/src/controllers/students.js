@@ -358,135 +358,148 @@ export const deleteStudent = async (req, res) => {
   }
 };
 
+/**
+ * Build student dashboard payload for a given student user id (shared: /me + admin view-as).
+ * @param {string} studentId
+ */
+export async function buildStudentDashboardPayload(studentId) {
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const now = new Date();
+
+  const [profile, allocation] = await Promise.all([
+    prisma.user.findUnique({
+      where: { id: studentId },
+      select: { degreeProgram: true },
+    }),
+    prisma.allocation.findUnique({
+      where: { studentId },
+      select: {
+        tutor: {
+          select: {
+            id: true,
+            name: true,
+            department: true,
+          },
+        },
+      },
+    }),
+  ]);
+
+  const [
+    nextMeeting,
+    recentDocuments,
+    recentBlogPosts,
+    unreadMessages,
+    messagesLast7Days,
+    upcomingMeetingsCount,
+  ] = await Promise.all([
+    prisma.meeting.findFirst({
+      where: {
+        studentId,
+        meetingStatus: "scheduled",
+        scheduledDate: { gte: now },
+      },
+      select: {
+        id: true,
+        scheduledDate: true,
+        location: true,
+        meetingType: true,
+        meetingLink: true,
+        meetingName: true,
+      },
+      orderBy: { scheduledDate: "asc" },
+    }),
+    prisma.document.findMany({
+      where: { uploaderId: studentId },
+      select: {
+        id: true,
+        fileName: true,
+        uploadedAt: true,
+      },
+      orderBy: { uploadedAt: "desc" },
+      take: 5,
+    }),
+    prisma.blogPost.findMany({
+      where: { studentId },
+      select: {
+        id: true,
+        title: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+    }),
+    prisma.message.count({
+      where: { recipientId: studentId, readAt: null },
+    }),
+    prisma.message.count({
+      where: {
+        OR: [{ senderId: studentId }, { recipientId: studentId }],
+        createdAt: { gte: sevenDaysAgo },
+      },
+    }),
+    prisma.meeting.count({
+      where: {
+        studentId,
+        meetingStatus: "scheduled",
+        scheduledDate: { gte: now },
+      },
+    }),
+  ]);
+
+  return {
+    degreeProgram: profile?.degreeProgram ?? null,
+    summary: {
+      unreadMessages,
+      messagesLast7Days,
+      upcomingMeetingsCount,
+    },
+    nextMeeting: nextMeeting
+      ? {
+          id: nextMeeting.id,
+          scheduledAt: nextMeeting.scheduledDate.toISOString(),
+          title: nextMeeting.meetingName || null,
+          location: nextMeeting.location,
+          meetingLink: nextMeeting.meetingLink,
+          meetingType: nextMeeting.meetingType,
+        }
+      : null,
+    assignedTutor: allocation
+      ? {
+          id: allocation.tutor.id,
+          name: allocation.tutor.name,
+          department: allocation.tutor.department,
+        }
+      : null,
+    recentDocuments: recentDocuments.map((doc) => ({
+      id: doc.id,
+      label: doc.fileName || "Document",
+    })),
+    recentBlogPosts: recentBlogPosts.map((post) => ({
+      id: post.id,
+      title: post.title || "Untitled",
+      createdAt: post.createdAt.toISOString(),
+    })),
+  };
+}
+
 // GET /api/students/me/dashboard - Get student dashboard data
 export const getStudentDashboard = async (req, res) => {
   try {
     const studentId = req.user?.id;
     if (!studentId) return res.status(401).json({ error: "Unauthorized" });
 
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-    const now = new Date();
-
-    const [profile, allocation] = await Promise.all([
-      prisma.user.findUnique({
-        where: { id: studentId },
-        select: { degreeProgram: true },
-      }),
-      prisma.allocation.findUnique({
-        where: { studentId },
-        select: {
-          tutor: {
-            select: {
-              id: true,
-              name: true,
-              department: true,
-            },
-          },
-        },
-      }),
-    ]);
-
-    const [
-      nextMeeting,
-      recentDocuments,
-      recentBlogPosts,
-      unreadMessages,
-      messagesLast7Days,
-      upcomingMeetingsCount,
-    ] = await Promise.all([
-      prisma.meeting.findFirst({
-        where: {
-          studentId,
-          meetingStatus: "scheduled",
-          scheduledDate: { gte: now },
-        },
-        select: {
-          id: true,
-          scheduledDate: true,
-          location: true,
-          meetingType: true,
-          meetingLink: true,
-          meetingName: true,
-        },
-        orderBy: { scheduledDate: "asc" },
-      }),
-      prisma.document.findMany({
-        // Match student Documents page: only this student's uploads (not tutor's).
-        where: { uploaderId: studentId },
-        select: {
-          id: true,
-          fileName: true,
-          uploadedAt: true,
-        },
-        orderBy: { uploadedAt: "desc" },
-        take: 5,
-      }),
-      prisma.blogPost.findMany({
-        // Only posts explicitly tied to this student, not all of the tutor's blogs.
-        where: { studentId },
-        select: {
-          id: true,
-          title: true,
-          createdAt: true,
-        },
-        orderBy: { createdAt: "desc" },
-        take: 5,
-      }),
-      prisma.message.count({
-        where: { recipientId: studentId, readAt: null },
-      }),
-      prisma.message.count({
-        where: {
-          OR: [{ senderId: studentId }, { recipientId: studentId }],
-          createdAt: { gte: sevenDaysAgo },
-        },
-      }),
-      prisma.meeting.count({
-        where: {
-          studentId,
-          meetingStatus: "scheduled",
-          scheduledDate: { gte: now },
-        },
-      }),
-    ]);
-
-    res.json({
-      data: {
-        degreeProgram: profile?.degreeProgram ?? null,
-        summary: {
-          unreadMessages,
-          messagesLast7Days,
-          upcomingMeetingsCount,
-        },
-        nextMeeting: nextMeeting
-          ? {
-              id: nextMeeting.id,
-              scheduledAt: nextMeeting.scheduledDate.toISOString(),
-              title: nextMeeting.meetingName || null,
-              location: nextMeeting.location,
-              meetingLink: nextMeeting.meetingLink,
-              meetingType: nextMeeting.meetingType,
-            }
-          : null,
-        assignedTutor: allocation
-          ? {
-              id: allocation.tutor.id,
-              name: allocation.tutor.name,
-              department: allocation.tutor.department,
-            }
-          : null,
-        recentDocuments: recentDocuments.map((doc) => ({
-          id: doc.id,
-          label: doc.fileName || "Document",
-        })),
-        recentBlogPosts: recentBlogPosts.map((post) => ({
-          id: post.id,
-          title: post.title || "Untitled",
-          createdAt: post.createdAt.toISOString(),
-        })),
-      },
+    const me = await prisma.user.findUnique({
+      where: { id: studentId },
+      select: { role: true },
     });
+    if (me?.role !== "student") {
+      return res.status(403).json({ error: "Student access only" });
+    }
+
+    const data = await buildStudentDashboardPayload(studentId);
+    res.json({ data });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal server error" });

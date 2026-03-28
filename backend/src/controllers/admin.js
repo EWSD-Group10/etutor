@@ -1,4 +1,9 @@
 import { prisma } from "../utils/prisma.js";
+import { buildStudentDashboardPayload } from "./students.js";
+import { buildTutorDashboardPayload } from "./teachers.js";
+
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function startOfUtcDay(d) {
   const x = new Date(d);
@@ -196,6 +201,76 @@ export const getMostActiveUsers = async (req, res) => {
         limit,
         since: since.toISOString(),
         topUsers,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// GET /api/admin/view-as/student/:userId/dashboard — same payload as student /me/dashboard + viewAs meta
+export const getAdminViewAsStudentDashboard = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    if (!UUID_REGEX.test(userId)) {
+      return res.status(400).json({ error: "Invalid user ID format" });
+    }
+
+    const target = await prisma.user.findFirst({
+      where: { id: userId, role: "student" },
+      select: { id: true, name: true, email: true, isActive: true },
+    });
+    if (!target) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    const dashboard = await buildStudentDashboardPayload(userId);
+    res.json({
+      data: {
+        ...dashboard,
+        viewAs: {
+          userId: target.id,
+          name: target.name,
+          email: target.email,
+          role: "student",
+          isActive: target.isActive,
+        },
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// GET /api/admin/view-as/tutor/:userId/dashboard — same payload as tutor /me/dashboard + viewAs meta
+export const getAdminViewAsTutorDashboard = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    if (!UUID_REGEX.test(userId)) {
+      return res.status(400).json({ error: "Invalid user ID format" });
+    }
+
+    const target = await prisma.user.findFirst({
+      where: { id: userId, role: "tutor" },
+      select: { id: true, name: true, email: true, isActive: true },
+    });
+    if (!target) {
+      return res.status(404).json({ error: "Tutor not found" });
+    }
+
+    const dashboard = await buildTutorDashboardPayload(userId);
+    res.json({
+      data: {
+        ...dashboard,
+        viewAs: {
+          userId: target.id,
+          name: target.name,
+          email: target.email,
+          role: "tutor",
+          isActive: target.isActive,
+        },
       },
     });
   } catch (err) {

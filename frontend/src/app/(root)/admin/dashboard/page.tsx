@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import axios from "@/lib/axios";
+import Link from "next/link";
 import { Skeleton } from "@mui/material";
 
 interface StatCard {
@@ -277,6 +278,17 @@ export default function AdminDashboard() {
               Welcome back, Admin
             </h1>
             <p className="text-sm text-gray-500 mt-0.5">{dateStr}</p>
+            <p className="mt-3">
+              <Link
+                href="/admin/view-as"
+                className="text-sm font-semibold text-blue-600 hover:underline"
+              >
+                View as student or tutor
+              </Link>
+              <span className="text-sm text-gray-500 ml-2">
+                (dashboard preview, read-only)
+              </span>
+            </p>
           </div>
 
           {/* Stats grid */}

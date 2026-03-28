@@ -272,161 +272,176 @@ export const deleteTutors = async (req, res) => {
   }
 };
 
+/**
+ * Build tutor dashboard payload for a given tutor user id (shared: /me + admin view-as).
+ * @param {string} tutorId
+ */
+export async function buildTutorDashboardPayload(tutorId) {
+  const now = new Date();
+
+  const allocations = await prisma.allocation.findMany({
+    where: { tutorId },
+    select: {
+      allocatedAt: true,
+      student: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          degreeProgram: true,
+        },
+      },
+    },
+    orderBy: { allocatedAt: "desc" },
+  });
+
+  const studentIds = allocations.map((a) => a.student.id);
+
+  const unreadRows =
+    studentIds.length > 0
+      ? await prisma.message.findMany({
+          where: {
+            recipientId: tutorId,
+            readAt: null,
+            senderId: { in: studentIds },
+          },
+          select: { senderId: true },
+        })
+      : [];
+
+  const unreadFromStudentById = new Map();
+  for (const row of unreadRows) {
+    const sid = row.senderId;
+    unreadFromStudentById.set(sid, (unreadFromStudentById.get(sid) || 0) + 1);
+  }
+
+  const tuteesWithUnread = studentIds.filter(
+    (id) => (unreadFromStudentById.get(id) || 0) > 0,
+  ).length;
+
+  const [
+    upcomingMeetingsCount,
+    upcomingMeetings,
+    totalUnreadMessages,
+    incomingFromTutees,
+  ] = await Promise.all([
+    prisma.meeting.count({
+      where: {
+        tutorId,
+        meetingStatus: "scheduled",
+        scheduledDate: { gte: now },
+      },
+    }),
+    prisma.meeting.findMany({
+      where: {
+        tutorId,
+        meetingStatus: "scheduled",
+        scheduledDate: { gte: now },
+      },
+      select: {
+        id: true,
+        scheduledDate: true,
+        location: true,
+        meetingType: true,
+        meetingName: true,
+        student: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+      orderBy: { scheduledDate: "asc" },
+      take: 3,
+    }),
+    prisma.message.count({
+      where: {
+        recipientId: tutorId,
+        readAt: null,
+      },
+    }),
+    studentIds.length > 0
+      ? prisma.message.findMany({
+          where: {
+            recipientId: tutorId,
+            senderId: { in: studentIds },
+          },
+          orderBy: { createdAt: "desc" },
+          take: 50,
+          select: {
+            senderId: true,
+            content: true,
+            sender: { select: { id: true, name: true } },
+          },
+        })
+      : Promise.resolve([]),
+  ]);
+
+  const recentMessages = [];
+  const seenSender = new Set();
+  for (const m of incomingFromTutees) {
+    if (seenSender.has(m.senderId)) continue;
+    seenSender.add(m.senderId);
+    recentMessages.push({
+      id: m.senderId,
+      sender: m.sender.name,
+      message: m.content,
+      unreadCount: unreadFromStudentById.get(m.senderId) || 0,
+    });
+    if (recentMessages.length >= 2) break;
+  }
+
+  return {
+    studentsCount: allocations.length,
+    tuteesWithUnread,
+    upcomingMeetingsCount,
+    upcomingMeetings: upcomingMeetings.map((m) => ({
+      id: m.id,
+      time: m.scheduledDate.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+      date: m.scheduledDate.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }),
+      location:
+        m.meetingType === "virtual"
+          ? m.location || "Virtual"
+          : m.location || "TBD",
+      subject: m.meetingName
+        ? `${m.meetingName} · ${m.student.name ?? "Student"}`
+        : (m.student.name ?? "Student"),
+    })),
+    unreadMessagesCount: totalUnreadMessages,
+    recentMessages: recentMessages.slice(0, 2),
+    tutees: allocations.map((a) => ({
+      id: a.student.id,
+      name: a.student.name,
+      email: a.student.email,
+      degreeProgram: a.student.degreeProgram,
+      allocatedAt: a.allocatedAt.toISOString(),
+      unreadFromStudent: unreadFromStudentById.get(a.student.id) || 0,
+    })),
+  };
+}
+
 // GET /api/tutors/me/dashboard - Get tutor dashboard data
 export const getTutorDashboard = async (req, res) => {
   try {
     const tutorId = req.user?.id;
     if (!tutorId) return res.status(401).json({ error: "Unauthorized" });
-    const now = new Date();
 
-    const allocations = await prisma.allocation.findMany({
-      where: { tutorId },
-      select: {
-        allocatedAt: true,
-        student: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            degreeProgram: true,
-          },
-        },
-      },
-      orderBy: { allocatedAt: "desc" },
+    const me = await prisma.user.findUnique({
+      where: { id: tutorId },
+      select: { role: true },
     });
-
-    const studentIds = allocations.map((a) => a.student.id);
-
-    const unreadRows =
-      studentIds.length > 0
-        ? await prisma.message.findMany({
-            where: {
-              recipientId: tutorId,
-              readAt: null,
-              senderId: { in: studentIds },
-            },
-            select: { senderId: true },
-          })
-        : [];
-
-    const unreadFromStudentById = new Map();
-    for (const row of unreadRows) {
-      const sid = row.senderId;
-      unreadFromStudentById.set(sid, (unreadFromStudentById.get(sid) || 0) + 1);
+    if (me?.role !== "tutor") {
+      return res.status(403).json({ error: "Tutor access only" });
     }
 
-    const tuteesWithUnread = studentIds.filter(
-      (id) => (unreadFromStudentById.get(id) || 0) > 0,
-    ).length;
-
-    const [
-      upcomingMeetingsCount,
-      upcomingMeetings,
-      totalUnreadMessages,
-      incomingFromTutees,
-    ] = await Promise.all([
-      prisma.meeting.count({
-        where: {
-          tutorId,
-          meetingStatus: "scheduled",
-          scheduledDate: { gte: now },
-        },
-      }),
-      prisma.meeting.findMany({
-        where: {
-          tutorId,
-          meetingStatus: "scheduled",
-          scheduledDate: { gte: now },
-        },
-        select: {
-          id: true,
-          scheduledDate: true,
-          location: true,
-          meetingType: true,
-          meetingName: true,
-          student: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-        },
-        orderBy: { scheduledDate: "asc" },
-        take: 3,
-      }),
-      prisma.message.count({
-        where: {
-          recipientId: tutorId,
-          readAt: null,
-        },
-      }),
-      studentIds.length > 0
-        ? prisma.message.findMany({
-            where: {
-              recipientId: tutorId,
-              senderId: { in: studentIds },
-            },
-            orderBy: { createdAt: "desc" },
-            take: 50,
-            select: {
-              senderId: true,
-              content: true,
-              sender: { select: { id: true, name: true } },
-            },
-          })
-        : Promise.resolve([]),
-    ]);
-
-    // Latest *incoming* message per tutee (student → tutor), not last bubble in thread (which may be from tutor)
-    const recentMessages = [];
-    const seenSender = new Set();
-    for (const m of incomingFromTutees) {
-      if (seenSender.has(m.senderId)) continue;
-      seenSender.add(m.senderId);
-      recentMessages.push({
-        id: m.senderId,
-        sender: m.sender.name,
-        message: m.content,
-        unreadCount: unreadFromStudentById.get(m.senderId) || 0,
-      });
-      if (recentMessages.length >= 2) break;
-    }
-
-    res.json({
-      data: {
-        studentsCount: allocations.length,
-        tuteesWithUnread,
-        upcomingMeetingsCount,
-        upcomingMeetings: upcomingMeetings.map((m) => ({
-          id: m.id,
-          time: m.scheduledDate.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
-          date: m.scheduledDate.toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-          }),
-          location:
-            m.meetingType === "virtual"
-              ? m.location || "Virtual"
-              : m.location || "TBD",
-          subject: m.meetingName
-            ? `${m.meetingName} · ${m.student.name ?? "Student"}`
-            : (m.student.name ?? "Student"),
-        })),
-        unreadMessagesCount: totalUnreadMessages,
-        recentMessages: recentMessages.slice(0, 2),
-        tutees: allocations.map((a) => ({
-          id: a.student.id,
-          name: a.student.name,
-          email: a.student.email,
-          degreeProgram: a.student.degreeProgram,
-          allocatedAt: a.allocatedAt.toISOString(),
-          unreadFromStudent: unreadFromStudentById.get(a.student.id) || 0,
-        })),
-      },
-    });
+    const data = await buildTutorDashboardPayload(tutorId);
+    res.json({ data });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal server error" });

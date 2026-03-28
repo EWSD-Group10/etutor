@@ -6,7 +6,12 @@ import { pool } from "./utils/db.js";
 import { sendEmail } from "./utils/mailer.js";
 import { startInactivityCron } from "./cron/inactivityCheck.js";
 import { login, currentUser, refresh, logout } from "./controllers/auth.js";
-import { getAdminDashboard, getMostActiveUsers } from "./controllers/admin.js";
+import {
+  getAdminDashboard,
+  getAdminViewAsStudentDashboard,
+  getAdminViewAsTutorDashboard,
+  getMostActiveUsers,
+} from "./controllers/admin.js";
 import {
   listStudents,
   listUnassignedStudents,
@@ -184,6 +189,18 @@ app.get("/api/admin/meetings", requireSignin, isAdmin, listAllMeetings);
 
 // Admin dashboard endpoint
 app.get("/api/admin/dashboard", requireSignin, isAdmin, getAdminDashboard);
+app.get(
+  "/api/admin/view-as/student/:userId/dashboard",
+  requireSignin,
+  isAdmin,
+  getAdminViewAsStudentDashboard,
+);
+app.get(
+  "/api/admin/view-as/tutor/:userId/dashboard",
+  requireSignin,
+  isAdmin,
+  getAdminViewAsTutorDashboard,
+);
 app.get(
   "/api/admin/reports/most-active-users",
   requireSignin,
