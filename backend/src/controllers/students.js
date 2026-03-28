@@ -364,96 +364,109 @@ export const getStudentDashboard = async (req, res) => {
     const studentId = req.user?.id;
     if (!studentId) return res.status(401).json({ error: "Unauthorized" });
 
-    // Get student's allocation (tutor info)
-    const allocation = await prisma.allocation.findUnique({
-      where: { studentId },
-      select: {
-        tutor: {
-          select: {
-            id: true,
-            name: true,
-            department: true,
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const now = new Date();
+
+    const [profile, allocation] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: studentId },
+        select: { degreeProgram: true },
+      }),
+      prisma.allocation.findUnique({
+        where: { studentId },
+        select: {
+          tutor: {
+            select: {
+              id: true,
+              name: true,
+              department: true,
+            },
           },
         },
-      },
-    });
+      }),
+    ]);
 
-    // Get next upcoming meeting
-    const nextMeeting = await prisma.meeting.findFirst({
-      where: {
-        studentId,
-        meetingStatus: "scheduled",
-        scheduledDate: {
-          gte: new Date(),
+    const [
+      nextMeeting,
+      recentDocuments,
+      recentBlogPosts,
+      unreadMessages,
+      messagesLast7Days,
+      upcomingMeetingsCount,
+    ] = await Promise.all([
+      prisma.meeting.findFirst({
+        where: {
+          studentId,
+          meetingStatus: "scheduled",
+          scheduledDate: { gte: now },
         },
-      },
-      select: {
-        id: true,
-        scheduledDate: true,
-        location: true,
-        meetingType: true,
-      },
-      orderBy: { scheduledDate: "asc" },
-    });
+        select: {
+          id: true,
+          scheduledDate: true,
+          location: true,
+          meetingType: true,
+          meetingLink: true,
+          meetingName: true,
+        },
+        orderBy: { scheduledDate: "asc" },
+      }),
+      prisma.document.findMany({
+        // Match student Documents page: only this student's uploads (not tutor's).
+        where: { uploaderId: studentId },
+        select: {
+          id: true,
+          fileName: true,
+          uploadedAt: true,
+        },
+        orderBy: { uploadedAt: "desc" },
+        take: 5,
+      }),
+      prisma.blogPost.findMany({
+        // Only posts explicitly tied to this student, not all of the tutor's blogs.
+        where: { studentId },
+        select: {
+          id: true,
+          title: true,
+          createdAt: true,
+        },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      }),
+      prisma.message.count({
+        where: { recipientId: studentId, readAt: null },
+      }),
+      prisma.message.count({
+        where: {
+          OR: [{ senderId: studentId }, { recipientId: studentId }],
+          createdAt: { gte: sevenDaysAgo },
+        },
+      }),
+      prisma.meeting.count({
+        where: {
+          studentId,
+          meetingStatus: "scheduled",
+          scheduledDate: { gte: now },
+        },
+      }),
+    ]);
 
-    // Get recent documents (max 5) - only from student or their assigned tutor
-    const recentDocuments = await prisma.document.findMany({
-      where: {
-        OR: [
-          { uploaderId: studentId }, // Documents uploaded by student
-          ...(allocation?.tutor?.id
-            ? [{ uploaderId: allocation.tutor.id }]
-            : []), // Documents from their assigned tutor only
-        ],
-      },
-      select: {
-        id: true,
-        fileName: true,
-        uploadedAt: true,
-      },
-      orderBy: { uploadedAt: "desc" },
-      take: 5,
-    });
-
-    // Get student's blogs (course-like progress) - only from student or their assigned tutor
-    const studentBlogs = await prisma.blogPost.findMany({
-      where: {
-        OR: [
-          { studentId }, // Blogs assigned to this student
-          ...(allocation?.tutor?.id ? [{ tutorId: allocation.tutor.id }] : []), // Blogs from their assigned tutor only
-        ],
-      },
-      select: {
-        id: true,
-        title: true,
-        content: true,
-      },
-      orderBy: { createdAt: "desc" },
-      take: 4,
-    });
-
-    // Mock GPA data based on blog count (real system would have actual grades)
-    const gpa = 3.5 + (studentBlogs.length > 0 ? 0.2 : 0);
-    const studentCount = await prisma.user.count({
-      where: { role: "student" },
-    });
-    // Mock ranking
-    const percentileRank = Math.round(Math.random() * 20) + 80; // Top 20%
-
-    // Return dashboard data
     res.json({
       data: {
-        gpa: Math.min(gpa, 4.0),
-        percentileRank,
+        degreeProgram: profile?.degreeProgram ?? null,
+        summary: {
+          unreadMessages,
+          messagesLast7Days,
+          upcomingMeetingsCount,
+        },
         nextMeeting: nextMeeting
           ? {
               id: nextMeeting.id,
-              time: nextMeeting.scheduledDate.toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
-              }),
-              location: nextMeeting.location || "Online",
-              type: nextMeeting.meetingType,
+              scheduledAt: nextMeeting.scheduledDate.toISOString(),
+              title: nextMeeting.meetingName || null,
+              location: nextMeeting.location,
+              meetingLink: nextMeeting.meetingLink,
+              meetingType: nextMeeting.meetingType,
             }
           : null,
         assignedTutor: allocation
@@ -467,9 +480,10 @@ export const getStudentDashboard = async (req, res) => {
           id: doc.id,
           label: doc.fileName || "Document",
         })),
-        courseProgress: studentBlogs.map((blog) => ({
-          label: blog.title || "Untitled Course",
-          value: Math.min(Math.round((blog.content?.length || 0) / 10), 100),
+        recentBlogPosts: recentBlogPosts.map((post) => ({
+          id: post.id,
+          title: post.title || "Untitled",
+          createdAt: post.createdAt.toISOString(),
         })),
       },
     });
