@@ -1,5 +1,6 @@
 import { prisma } from "../utils/prisma.js"
 import { getUserBasic, hasStudentTutorLink } from "../utils/relationship.js"
+import { logUserActivity } from "../utils/activityLog.js"
 
 const meetingSelect = {
   id: true,
@@ -156,6 +157,8 @@ export const createMeeting = async (req, res) => {
       },
       select: meetingSelect,
     })
+
+    logUserActivity(userId, "meeting_created")
 
     return res.status(201).json({ data: toMeetingApi(data) })
   } catch (err) {

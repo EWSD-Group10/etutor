@@ -43,6 +43,14 @@ interface DashboardData {
   }>;
 }
 
+interface MostActiveUserRow {
+  userId: string;
+  eventCount: number;
+  name: string | null;
+  email: string;
+  role: string | null;
+}
+
 const getStatCardConfig = (label: string): Partial<StatCard> => {
   const configs: { [key: string]: Partial<StatCard> } = {
     "Total Students": {
@@ -185,6 +193,10 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [, setError] = useState<string | null>(null);
 
+  const [activityDays, setActivityDays] = useState<7 | 30>(7);
+  const [activityLoading, setActivityLoading] = useState(true);
+  const [activityRows, setActivityRows] = useState<MostActiveUserRow[]>([]);
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
@@ -202,6 +214,30 @@ export default function AdminDashboard() {
 
     fetchDashboardData();
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadActivity = async () => {
+      try {
+        setActivityLoading(true);
+        const res = await axios.get("/api/admin/reports/most-active-users", {
+          params: { days: activityDays, limit: 10 },
+        });
+        if (!cancelled) {
+          setActivityRows(res.data.data.topUsers ?? []);
+        }
+      } catch (e) {
+        console.error(e);
+        if (!cancelled) setActivityRows([]);
+      } finally {
+        if (!cancelled) setActivityLoading(false);
+      }
+    };
+    loadActivity();
+    return () => {
+      cancelled = true;
+    };
+  }, [activityDays]);
 
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-GB", {
@@ -450,6 +486,118 @@ export default function AdminDashboard() {
             ) : (
               <div className="py-8 text-center text-gray-500">
                 No at-risk students found
+              </div>
+            )}
+          </div>
+
+          {/* Most active users (logged actions: login, messages, meetings, uploads) */}
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <div>
+                <h2 className="text-[15px] font-semibold text-slate-900">
+                  Most active users
+                </h2>
+                <p className="text-xs text-gray-500 mt-1">
+                  By event count (logins, messages sent, meetings created,
+                  document uploads). Top 10.
+                </p>
+              </div>
+              <div className="inline-flex rounded-lg border border-gray-200 p-0.5 bg-gray-50">
+                <button
+                  type="button"
+                  onClick={() => setActivityDays(7)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                    activityDays === 7
+                      ? "bg-white text-blue-600 shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Last 7 days
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActivityDays(30)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                    activityDays === 30
+                      ? "bg-white text-blue-600 shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Last 30 days
+                </button>
+              </div>
+            </div>
+            {activityLoading ? (
+              <div className="space-y-3">
+                {[...Array(5)].map((_, i) => (
+                  <Skeleton
+                    key={i}
+                    variant="rectangular"
+                    height={40}
+                    sx={{ borderRadius: "8px" }}
+                  />
+                ))}
+              </div>
+            ) : activityRows.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[520px]">
+                  <thead>
+                    <tr className="bg-gray-50 rounded-lg">
+                      <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5 rounded-l-lg w-12">
+                        #
+                      </th>
+                      <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5">
+                        User
+                      </th>
+                      <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5">
+                        Email
+                      </th>
+                      <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5">
+                        Role
+                      </th>
+                      <th className="text-right text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5 rounded-r-lg">
+                        Events
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {activityRows.map((row, i) => (
+                      <tr
+                        key={row.userId}
+                        className="border-b border-gray-50 last:border-0"
+                      >
+                        <td className="px-4 py-3 text-xs text-gray-500">
+                          {i + 1}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="text-xs font-medium text-gray-900">
+                            {row.name || "—"}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="text-xs text-gray-500">
+                            {row.email}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700 capitalize">
+                            {row.role ?? "—"}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-right">
+                          <span className="text-xs font-bold text-blue-600 tabular-nums">
+                            {row.eventCount}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="py-8 text-center text-gray-500 text-sm">
+                No activity logged in this period yet. Events appear after users
+                log in, send messages, create meetings, or upload documents.
               </div>
             )}
           </div>

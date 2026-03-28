@@ -1,6 +1,7 @@
 import path from "path";
 import fs from "fs";
 import { prisma } from "../utils/prisma.js";
+import { logUserActivity } from "../utils/activityLog.js";
 import { DOCUMENTS_UPLOAD_DIR } from "../utils/documentUpload.js";
 import {
   isAllowedStudentDocument,
@@ -143,6 +144,7 @@ export const uploadDocument = async (req, res) => {
       },
       select: documentSelect,
     });
+    logUserActivity(userId, "document_uploaded");
     return res.status(201).json({ data: doc });
   } catch (err) {
     console.error(err);

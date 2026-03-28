@@ -38,6 +38,13 @@ enum NotificationType {
   new_document
 }
 
+enum ActivityAction {
+  login
+  message_sent
+  meeting_created
+  document_uploaded
+}
+
 // -------------------- USERS --------------------
 
 model User {
@@ -70,6 +77,8 @@ model User {
   createdMeetings Meeting[] @relation("MeetingCreator")
   tutorMeetings   Meeting[] @relation("MeetingTutor")
   studentMeetings Meeting[] @relation("MeetingStudent")
+
+  activityEvents UserActivityEvent[]
 
   @@index([name])
   @@map("users")
@@ -202,6 +211,21 @@ model Meeting {
   @@index([tutorId])
   @@index([scheduledDate])
   @@map("meetings")
+}
+
+// -------------------- USER ACTIVITY (admin analytics) --------------------
+
+model UserActivityEvent {
+  id        String         @id @default(uuid()) @db.Uuid
+  userId    String         @map("user_id") @db.Uuid
+  action    ActivityAction
+  createdAt DateTime       @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([createdAt])
+  @@map("user_activity_events")
 }
 
 // -------------------- INACTIVITY NOTIFICATIONS --------------------

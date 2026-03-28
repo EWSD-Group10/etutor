@@ -6,6 +6,7 @@ import {
 } from "../utils/auth.js";
 import { prisma } from "../utils/prisma.js";
 import { sendEmail } from "../utils/mailer.js";
+import { logUserActivity } from "../utils/activityLog.js";
 
 export const login = async (req, res) => {
   try {
@@ -51,6 +52,8 @@ export const login = async (req, res) => {
 
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
+
+    logUserActivity(user.id, "login");
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,

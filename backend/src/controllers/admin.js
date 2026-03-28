@@ -144,3 +144,73 @@ export const getAdminDashboard = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+// GET /api/admin/reports/most-active-users?days=7|30&limit=10
+export const getMostActiveUsers = async (req, res) => {
+  try {
+    const rawDays = parseInt(String(req.query.days || "7"), 10);
+    const windowDays = rawDays === 30 ? 30 : 7;
+    const limit = Math.min(
+      50,
+      Math.max(1, parseInt(String(req.query.limit || "10"), 10) || 10),
+    );
+
+    const since = new Date();
+    since.setDate(since.getDate() - windowDays);
+    since.setHours(0, 0, 0, 0);
+
+    const activity = prisma.userActivityEvent;
+    if (!activity || typeof activity.groupBy !== "function") {
+      return res.json({
+        data: {
+          windowDays,
+          limit,
+          since: since.toISOString(),
+          topUsers: [],
+        },
+      });
+    }
+
+    const grouped = await activity.groupBy({
+      by: ["userId"],
+      where: { createdAt: { gte: since } },
+      _count: { id: true },
+      orderBy: { _count: { id: "desc" } },
+      take: limit,
+    });
+
+    const userIds = grouped.map((g) => g.userId);
+    const users =
+      userIds.length > 0
+        ? await prisma.user.findMany({
+            where: { id: { in: userIds } },
+            select: { id: true, name: true, email: true, role: true },
+          })
+        : [];
+
+    const byId = new Map(users.map((u) => [u.id, u]));
+
+    const topUsers = grouped.map((g) => {
+      const u = byId.get(g.userId);
+      return {
+        userId: g.userId,
+        eventCount: g._count.id,
+        name: u?.name ?? null,
+        email: u?.email ?? "",
+        role: u?.role ?? null,
+      };
+    });
+
+    res.json({
+      data: {
+        windowDays,
+        limit,
+        since: since.toISOString(),
+        topUsers,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
