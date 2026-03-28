@@ -122,7 +122,7 @@ export default function TutorDashboard() {
       <Grid container spacing={3}>
         {/* Left Column — My Students */}
         <Grid size={{ xs: 12, md: 7, lg: 8 }}>
-          <DashboardSection title="My Students" viewAllHref="/tutor/student">
+          <DashboardSection title="My Students" viewAllHref="/tutor/students">
             <Stack>
               {students.map((student) => (
                 <StudentListItem

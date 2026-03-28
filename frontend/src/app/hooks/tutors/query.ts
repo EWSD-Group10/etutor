@@ -39,10 +39,15 @@ export const fetchTutor = async (id: string): Promise<Tutor> => {
   return response.data.data;
 };
 
+/** Same shape as admin student list for reuse in StudentTable */
 export interface TutorStudent {
   id: string;
-  name: string;
+  name: string | null;
   email: string;
+  role: string;
+  degreeProgram: string | null;
+  isActive: boolean;
+  createdAt: string;
 }
 
 export interface TutorStudentsResponse {

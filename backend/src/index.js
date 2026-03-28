@@ -54,6 +54,13 @@ import {
   addComment,
   getComments,
 } from "./controllers/blogs.js";
+import {
+  listDocuments,
+  uploadDocument,
+  downloadDocument,
+  deleteDocument,
+} from "./controllers/documents.js";
+import { documentUpload } from "./utils/documentUpload.js";
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js";
 
 dotenv.config();
@@ -179,6 +186,17 @@ app.put("/api/blogs/:id", requireSignin, isTutor, updateBlog);
 app.delete("/api/blogs/:id", requireSignin, isTutor, deleteBlog);
 app.get("/api/blogs/:id/comments", requireSignin, getComments);
 app.post("/api/blogs/:id/comments", requireSignin, addComment);
+
+// Documents (tutor + assigned students share visibility; upload for student/tutor)
+app.get("/api/documents", requireSignin, listDocuments);
+app.post(
+  "/api/documents",
+  requireSignin,
+  documentUpload.single("file"),
+  uploadDocument,
+);
+app.get("/api/documents/:id/download", requireSignin, downloadDocument);
+app.delete("/api/documents/:id", requireSignin, deleteDocument);
 
 // Example usage of sendEmail function
 app.get("/api/send-email", async (req, res) => {

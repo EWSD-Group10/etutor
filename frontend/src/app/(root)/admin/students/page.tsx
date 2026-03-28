@@ -46,7 +46,7 @@ export default function StudentPage() {
   };
 
   const openView = (studentId: string) => {
-    router.push(`/students/${studentId}`);
+    router.push(`/admin/students/${studentId}`);
   };
 
   const openDelete = (studentId: string) => {

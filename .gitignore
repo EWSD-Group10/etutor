@@ -37,3 +37,6 @@ out/
 .cache/
 temp/
 tmp/
+
+# Uploaded files (local dev)
+backend/uploads/

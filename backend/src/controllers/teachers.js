@@ -69,7 +69,15 @@ export const listMyStudents = async (req, res) => {
       where: { tutorId },
       select: {
         student: {
-          select: { id: true, name: true, email: true },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            degreeProgram: true,
+            isActive: true,
+            createdAt: true,
+          },
         },
       },
     })

@@ -78,10 +78,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, onMobileClose }) =
 
   const tutorItems = [
     { label: "Dashboard", href: "/tutor/dashboard", icon: <DashboardIcon /> },
-    { label: "Students", href: "/tutor/student", icon: <PeopleIcon /> },
+    { label: "Students", href: "/tutor/students", icon: <PeopleIcon /> },
     { label: "Messages", href: "/tutor/messages", icon: <MessageIcon /> },
     { label: "Meetings", href: "/tutor/meetings", icon: <EventIcon /> },
-    { label: "Documents", href: "/tutor/documents", icon: <DescriptionIcon /> },
     { label: "Blog", href: "/tutor/blog", icon: <ArticleIcon /> },
     { label: "Settings", href: "/tutor/settings", icon: <SettingsIcon /> },
   ];
