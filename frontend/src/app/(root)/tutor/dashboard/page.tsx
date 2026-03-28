@@ -5,7 +5,7 @@ import { Box, Typography, Grid, Stack, Skeleton } from "@mui/material";
 import PeopleIcon from "@mui/icons-material/People";
 import EventIcon from "@mui/icons-material/Event";
 import MessageIcon from "@mui/icons-material/Message";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
+import MarkChatUnreadIcon from "@mui/icons-material/MarkChatUnread";
 import DashboardStatsCard from "@/app/components/dashboard/DashboardStatsCard";
 import DashboardSection from "@/app/components/dashboard/DashboardSection";
 import StudentListItem from "@/app/components/dashboard/StudentListItem";
@@ -14,8 +14,18 @@ import MessageItem from "@/app/components/dashboard/MessageItem";
 import { useAuth } from "@/app/context/AuthContext";
 import axios from "@/lib/axios";
 
+interface Tutee {
+  id: string;
+  name: string | null;
+  email: string;
+  degreeProgram: string | null;
+  allocatedAt: string;
+  unreadFromStudent: number;
+}
+
 interface DashboardData {
   studentsCount: number;
+  tuteesWithUnread: number;
   upcomingMeetingsCount: number;
   upcomingMeetings: Array<{
     id: string;
@@ -31,12 +41,7 @@ interface DashboardData {
     message: string;
     unreadCount: number;
   }>;
-  students: Array<{
-    id: string;
-    name: string;
-    engagement: number;
-  }>;
-  avgGPA: number;
+  tutees: Tutee[];
 }
 
 export default function TutorDashboard() {
@@ -67,17 +72,16 @@ export default function TutorDashboard() {
     }
   }, [isLoading, user]);
 
-  const students = dashboardData?.students || [];
+  const tutees = dashboardData?.tutees ?? [];
   const schedule = dashboardData?.upcomingMeetings || [];
   const messages = dashboardData?.recentMessages || [];
   const studentsCount = dashboardData?.studentsCount || 0;
   const upcomingMeetingsCount = dashboardData?.upcomingMeetingsCount || 0;
   const unreadMessagesCount = dashboardData?.unreadMessagesCount || 0;
-  const avgGPA = dashboardData?.avgGPA || 0;
+  const tuteesWithUnread = dashboardData?.tuteesWithUnread ?? 0;
 
   return (
     <Box sx={{ p: { xs: 2, md: 3 }, bgcolor: "#f5f6fa", minHeight: "100vh" }}>
-      {/* Header */}
       <Box sx={{ mb: 3 }}>
         {isLoading ? (
           <Skeleton width={260} height={36} sx={{ mb: 0.5 }} />
@@ -91,7 +95,6 @@ export default function TutorDashboard() {
         </Typography>
       </Box>
 
-      {/* Stats Cards */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           {dataLoading ? (
@@ -134,18 +137,16 @@ export default function TutorDashboard() {
             <Skeleton variant="rectangular" height={120} />
           ) : (
             <DashboardStatsCard
-              label="Avg GPA"
-              value={avgGPA.toFixed(1)}
-              icon={<MenuBookIcon />}
+              label="Tutees with unread"
+              value={tuteesWithUnread.toString()}
+              icon={<MarkChatUnreadIcon />}
               color="#ed6c02"
             />
           )}
         </Grid>
       </Grid>
 
-      {/* Main Content */}
       <Grid container spacing={3}>
-        {/* Left Column — My Students */}
         <Grid size={{ xs: 12, md: 7, lg: 8 }}>
           <DashboardSection title="My Students" viewAllHref="/tutor/students">
             <Stack>
@@ -160,13 +161,15 @@ export default function TutorDashboard() {
                     />
                   ))}
                 </>
-              ) : students.length > 0 ? (
-                students.map((student) => (
+              ) : tutees.length > 0 ? (
+                tutees.map((student) => (
                   <StudentListItem
                     key={student.id}
                     id={student.id}
-                    name={student.name}
-                    engagement={student.engagement}
+                    name={student.name ?? ""}
+                    email={student.email}
+                    degreeProgram={student.degreeProgram}
+                    unreadFromStudent={student.unreadFromStudent}
                   />
                 ))
               ) : (
@@ -182,9 +185,8 @@ export default function TutorDashboard() {
           </DashboardSection>
         </Grid>
 
-        {/* Right Column — Schedule & Messages */}
         <Grid size={{ xs: 12, md: 5, lg: 4 }}>
-          <DashboardSection title="Today's Schedule">
+          <DashboardSection title="Upcoming meetings" viewAllHref="/tutor/meetings">
             <Stack>
               {dataLoading ? (
                 <>
@@ -214,13 +216,16 @@ export default function TutorDashboard() {
                   align="center"
                   sx={{ py: 2 }}
                 >
-                  No scheduled meetings
+                  No upcoming meetings
                 </Typography>
               )}
             </Stack>
           </DashboardSection>
 
-          <DashboardSection title="Recent Messages">
+          <DashboardSection
+            title="Messages from students"
+            viewAllHref="/tutor/messages"
+          >
             <Stack>
               {dataLoading ? (
                 <>
@@ -249,7 +254,7 @@ export default function TutorDashboard() {
                   align="center"
                   sx={{ py: 2 }}
                 >
-                  No messages yet
+                  No incoming messages from students yet
                 </Typography>
               )}
             </Stack>

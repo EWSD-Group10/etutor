@@ -8,6 +8,9 @@ export interface Student {
   degreeProgram: string;
   isActive: boolean;
   createdAt: string;
+  /** Tutor "My students" list only */
+  allocatedAt?: string;
+  unreadFromStudent?: number;
 }
 
 export interface StudentsResponse {

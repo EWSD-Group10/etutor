@@ -1,95 +1,104 @@
 "use client";
 
 import React from "react";
-import { Box, Avatar, Typography, Stack, alpha } from "@mui/material";
+import Link from "next/link";
+import { Box, Avatar, Typography, Stack, alpha, Chip } from "@mui/material";
 
 interface StudentListItemProps {
   id: string;
   name: string;
-  engagement: number;
-  initials?: string;
+  email: string;
+  degreeProgram: string | null;
+  unreadFromStudent: number;
 }
 
 const StudentListItem: React.FC<StudentListItemProps> = ({
+  id,
   name,
-  engagement,
-  initials,
+  email,
+  degreeProgram,
+  unreadFromStudent,
 }) => {
-  const getInitials = (name: string) => {
-    return name
+  const getInitials = (n: string) => {
+    return n
       .split(" ")
-      .map((n) => n[0])
+      .map((part) => part[0])
       .join("")
       .toUpperCase()
       .slice(0, 2);
   };
 
-  const getEngagementColor = (engagement: number) => {
-    if (engagement > 80) return "#2e7d32";
-    if (engagement > 50) return "#ed6c02";
-    return "#d32f2f";
-  };
-
-  const color = getEngagementColor(engagement);
+  const subtitle =
+    degreeProgram?.trim() ||
+    email ||
+    "";
 
   return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-      sx={{
-        py: 1.5,
-        px: 0.5,
-        borderBottom: "1px solid",
-        borderColor: alpha("#000", 0.06),
-        "&:last-child": { borderBottom: "none" },
-        "&:hover": { bgcolor: alpha("#1976d2", 0.02) },
-        borderRadius: 1,
-        transition: "background-color 0.2s",
-      }}
+    <Link
+      href={`/tutor/students/${id}/documents`}
+      style={{ textDecoration: "none", color: "inherit" }}
     >
-      <Stack direction="row" spacing={1.5} alignItems="center">
-        <Avatar
-          sx={{
-            bgcolor: alpha("#1976d2", 0.1),
-            color: "primary.main",
-            fontWeight: 700,
-            fontSize: "0.72rem",
-            width: 40,
-            height: 40,
-          }}
-        >
-          {initials || getInitials(name)}
-        </Avatar>
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 600, color: "text.primary" }}
-        >
-          {name}
-        </Typography>
-      </Stack>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{
+          py: 1.5,
+          px: 0.5,
+          borderBottom: "1px solid",
+          borderColor: alpha("#000", 0.06),
+          "&:last-child": { borderBottom: "none" },
+          "&:hover": { bgcolor: alpha("#1976d2", 0.04) },
+          borderRadius: 1,
+          transition: "background-color 0.2s",
+        }}
+      >
+        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0 }}>
+          <Avatar
+            sx={{
+              bgcolor: alpha("#1976d2", 0.1),
+              color: "primary.main",
+              fontWeight: 700,
+              fontSize: "0.72rem",
+              width: 40,
+              height: 40,
+              flexShrink: 0,
+            }}
+          >
+            {getInitials(name || "?")}
+          </Avatar>
+          <Box sx={{ minWidth: 0 }}>
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: 600, color: "text.primary" }}
+              noWrap
+            >
+              {name || "Student"}
+            </Typography>
+            {subtitle ? (
+              <Typography variant="caption" color="text.secondary" noWrap display="block">
+                {subtitle}
+              </Typography>
+            ) : null}
+          </Box>
+        </Stack>
 
-      <Box sx={{ textAlign: "right" }}>
-        <Typography
-          variant="caption"
-          color="textSecondary"
-          sx={{
-            display: "block",
-            fontSize: "0.65rem",
-            fontWeight: 600,
-            mb: 0.2,
-          }}
-        >
-          Engagement
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 800, color, fontSize: "0.82rem" }}
-        >
-          {engagement} %
-        </Typography>
-      </Box>
-    </Stack>
+        <Box sx={{ textAlign: "right", flexShrink: 0, pl: 1 }}>
+          {unreadFromStudent > 0 ? (
+            <Chip
+              label={`${unreadFromStudent} unread`}
+              size="small"
+              color="warning"
+              sx={{ fontWeight: 700, fontSize: "0.7rem" }}
+            />
+          ) : (
+            <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 600 }}>
+              Inbox clear
+            </Typography>
+          )}
+        </Box>
+      </Stack>
+    </Link>
   );
 };
 
