@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import {
   Table as MuiTable,
   TableBody,
@@ -11,25 +11,28 @@ import {
   TablePagination,
   Paper,
   Box,
+  Button,
 } from "@mui/material";
 import { Allocation } from "@/app/hooks/allocations/query";
 
-interface AllocationTableProps {
+interface AssignedStudentsTableProps {
   data: Allocation[];
   page: number;
   limit: number;
   total: number;
   onPageChange: (newPage: number) => void;
   onLimitChange: (newLimit: number) => void;
+  onDetails?: (allocation: Allocation) => void;
 }
 
-export const AllocationTable: React.FC<AllocationTableProps> = ({
+export const AssignedStudentsTable: React.FC<AssignedStudentsTableProps> = ({
   data,
   page,
   limit,
   total,
   onPageChange,
   onLimitChange,
+  onDetails,
 }) => {
   const handleChangePage = (event: unknown, newPage: number) => {
     onPageChange(newPage + 1);
@@ -41,89 +44,63 @@ export const AllocationTable: React.FC<AllocationTableProps> = ({
     onLimitChange(parseInt(event.target.value, 10));
   };
 
-  // Group allocations by tutor
-  const groupedByTutor = useMemo(() => {
-    const groups: Record<
-      string,
-      {
-        tutorId: string;
-        tutorName: string;
-        tutorEmail: string;
-        allocations: Allocation[];
-      }
-    > = {};
-
-    data.forEach((allocation) => {
-      const key = allocation.tutorId || "unassigned";
-      if (!groups[key]) {
-        groups[key] = {
-          tutorId: allocation.tutorId,
-          tutorName: allocation.tutorName || "Unassigned",
-          tutorEmail: allocation.tutorEmail || "",
-          allocations: [],
-        };
-      }
-      groups[key].allocations.push(allocation);
-    });
-
-    return Object.values(groups);
-  }, [data]);
-
   return (
     <Box>
       <TableContainer component={Paper}>
         <MuiTable>
           <TableHead>
             <TableRow sx={{ backgroundColor: "#f5f5f5" }}>
-              <TableCell sx={{ fontWeight: 600 }}>Teacher</TableCell>
-              <TableCell sx={{ fontWeight: 600 }}>Students</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>Student</TableCell>
+              <TableCell sx={{ fontWeight: 600 }}>Tutor</TableCell>
+              <TableCell sx={{ fontWeight: 600 }} align="right">
+                Actions
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {groupedByTutor.length > 0 ? (
-              groupedByTutor.map((group) => (
+            {data.length > 0 ? (
+              data.map((allocation) => (
                 <TableRow
-                  key={group.tutorId}
+                  key={allocation.id}
                   sx={{ "&:hover": { backgroundColor: "#f9f9f9" } }}
                 >
                   <TableCell>
                     <Box>
-                      <Box sx={{ fontWeight: 600 }}>{group.tutorName}</Box>
+                      <Box sx={{ fontWeight: 500 }}>
+                        {allocation.studentName}
+                      </Box>
                       <Box sx={{ fontSize: "0.875rem", color: "#666" }}>
-                        {group.tutorEmail}
+                        {allocation.studentEmail}
                       </Box>
                     </Box>
                   </TableCell>
                   <TableCell>
                     <Box>
-                      {group.allocations.map((allocation, index) => (
-                        <Box
-                          key={allocation.id}
-                          sx={{
-                            fontSize: "0.95rem",
-                            mb: index < group.allocations.length - 1 ? 0.5 : 0,
-                          }}
-                        >
-                          <Box sx={{ fontWeight: 500 }}>
-                            {allocation.studentName}
-                          </Box>
-                          <Box sx={{ fontSize: "0.825rem", color: "#999" }}>
-                            {allocation.studentEmail}
-                          </Box>
-                        </Box>
-                      ))}
+                      <Box sx={{ fontWeight: 500 }}>{allocation.tutorName}</Box>
+                      <Box sx={{ fontSize: "0.875rem", color: "#666" }}>
+                        {allocation.tutorEmail}
+                      </Box>
                     </Box>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => onDetails?.(allocation)}
+                    >
+                      Details
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={2}
+                  colSpan={3}
                   align="center"
                   sx={{ py: 4, color: "#999" }}
                 >
-                  No allocations found
+                  No assigned students found
                 </TableCell>
               </TableRow>
             )}

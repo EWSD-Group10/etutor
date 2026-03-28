@@ -1,9 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
-import { Box, Stack, Tabs, Tab, CircularProgress, Alert } from "@mui/material";
+import {
+  Box,
+  Stack,
+  Tabs,
+  Tab,
+  CircularProgress,
+  Alert,
+  TextField,
+  InputAdornment,
+  Button,
+} from "@mui/material";
 import AllocationStatsCard from "@/app/components/AllocationStatsCard";
-import { AllocationTable } from "@/app/components/AllocationTable";
+import { AssignedStudentsTable } from "@/app/components/AssignedStudentsTable";
+import { UnassignedStudentsTable } from "@/app/components/UnassignedStudentsTable";
+import { AllocationDetailsDialog } from "@/app/components/AllocationDetailsDialog";
 import { SingleAllocationDialog } from "@/app/components/SingleAllocationDialog";
 import { BulkAllocationDialog } from "@/app/components/BulkAllocationDialog";
 import {
@@ -21,6 +33,8 @@ import {
   Person as PersonIcon,
   School as SchoolIcon,
   BarChart as BarChartIcon,
+  Search as SearchIcon,
+  PersonAdd as PersonAddIcon,
 } from "@mui/icons-material";
 import { Allocation } from "@/app/hooks/allocations/query";
 
@@ -30,11 +44,15 @@ export default function AllocationPage() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(20);
   const [tabStatus, setTabStatus] = useState<TabStatus>("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [singleDialogOpen, setSingleDialogOpen] = useState(false);
   const [bulkDialogOpen, setBulkDialogOpen] = useState(false);
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
   const [editingAllocation, setEditingAllocation] = useState<Allocation | null>(
     null,
   );
+  const [selectedAllocationForDetails, setSelectedAllocationForDetails] =
+    useState<Allocation | null>(null);
 
   const { data: allocationsData, isLoading: allocationsLoading } =
     useAllocations(page, limit, tabStatus);
@@ -45,24 +63,30 @@ export default function AllocationPage() {
   const updateAllocationMutation = useUpdateAllocation();
   const deleteAllocationMutation = useDeleteAllocation();
 
-  const handleOpenSingleDialog = () => {
+  const handleOpenAllocationDialog = () => {
     setEditingAllocation(null);
-    setSingleDialogOpen(true);
-  };
-
-  const handleOpenBulkDialog = () => {
     setBulkDialogOpen(true);
   };
 
-  const handleEditAllocation = (allocation: Allocation) => {
-    setEditingAllocation(allocation);
-    setSingleDialogOpen(true);
+  const handleShowDetails = (allocation: Allocation) => {
+    setSelectedAllocationForDetails(allocation);
+    setDetailsDialogOpen(true);
   };
 
   const handleDeleteAllocation = (allocationId: string) => {
     if (confirm("Are you sure you want to remove this allocation?")) {
       deleteAllocationMutation.mutate(allocationId);
     }
+  };
+
+  const handleReallocateAllocation = (
+    allocationId: string,
+    newTutorId: string,
+  ) => {
+    updateAllocationMutation.mutate({
+      id: allocationId,
+      tutorId: newTutorId,
+    });
   };
 
   const handleSubmitSingleAllocation = (data: {
@@ -162,39 +186,46 @@ export default function AllocationPage() {
               }}
             >
               <Tab label="All Allocations" value="all" />
-              <Tab label="Assigned Students" value="assigned" />
               <Tab label="Unassigned Students" value="unassigned" />
+              <Tab label="Assigned Students" value="assigned" />
             </Tabs>
-            <Box sx={{ display: "flex", gap: 1 }}>
-              <button
-                onClick={handleOpenSingleDialog}
-                style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#1976d2",
-                  color: "white",
-                  border: "none",
+            <Button
+              variant="contained"
+              startIcon={<PersonAddIcon />}
+              onClick={handleOpenAllocationDialog}
+              sx={{
+                backgroundColor: "#1976d2",
+                color: "white",
+                textTransform: "none",
+                fontSize: "1rem",
+                padding: "8px 24px",
+              }}
+            >
+              New Allocation
+            </Button>
+          </Box>
+          {/* Search */}
+          <Box sx={{ mb: 2 }}>
+            <TextField
+              placeholder="Search..."
+              size="small"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ color: "#999" }} />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                width: "100%",
+                maxWidth: "400px",
+                "& .MuiOutlinedInput-root": {
                   borderRadius: "4px",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                }}
-              >
-                Single Allocation
-              </button>
-              <button
-                onClick={handleOpenBulkDialog}
-                style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#388e3c",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                }}
-              >
-                Bulk Allocation
-              </button>
-            </Box>
+                },
+              }}
+            />
           </Box>
         </Box>
 
@@ -239,25 +270,59 @@ export default function AllocationPage() {
             )}
 
             {/* Allocation Table */}
-            <AllocationTable
-              data={allocationsData?.data || []}
-              page={page}
-              limit={limit}
-              total={allocationsData?.pagination?.total || 0}
-              onPageChange={setPage}
-              onLimitChange={(newLimit) => {
-                setLimit(newLimit);
-                setPage(1);
-              }}
-              onEdit={handleEditAllocation}
-              onDelete={handleDeleteAllocation}
-              onAdd={handleOpenSingleDialog}
-            />
+            {tabStatus === "unassigned" ? (
+              <UnassignedStudentsTable
+                data={allocationsData?.data || []}
+                page={page}
+                limit={limit}
+                total={allocationsData?.pagination?.total || 0}
+                onPageChange={setPage}
+                onLimitChange={(newLimit) => {
+                  setLimit(newLimit);
+                  setPage(1);
+                }}
+                onAssign={(studentId, tutorId) => {
+                  createAllocationMutation.mutate({
+                    studentId,
+                    tutorId,
+                  });
+                }}
+                isLoading={createAllocationMutation.isPending}
+              />
+            ) : (
+              <AssignedStudentsTable
+                data={allocationsData?.data || []}
+                page={page}
+                limit={limit}
+                total={allocationsData?.pagination?.total || 0}
+                onPageChange={setPage}
+                onLimitChange={(newLimit) => {
+                  setLimit(newLimit);
+                  setPage(1);
+                }}
+                onDetails={handleShowDetails}
+              />
+            )}
           </>
         )}
       </Stack>
 
       {/* Dialogs */}
+      <AllocationDetailsDialog
+        open={detailsDialogOpen}
+        allocation={selectedAllocationForDetails}
+        onClose={() => {
+          setDetailsDialogOpen(false);
+          setSelectedAllocationForDetails(null);
+        }}
+        onRemove={handleDeleteAllocation}
+        onReallocate={handleReallocateAllocation}
+        isLoading={
+          deleteAllocationMutation.isPending ||
+          updateAllocationMutation.isPending
+        }
+      />
+
       <SingleAllocationDialog
         open={singleDialogOpen}
         onClose={() => {

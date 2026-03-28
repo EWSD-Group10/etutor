@@ -8,6 +8,8 @@ export interface Tutor {
   department: string;
   isActive: boolean;
   createdAt: string;
+  studentCount?: number;
+  maxStudents?: number;
 }
 
 export interface TutorsResponse {
@@ -57,6 +59,8 @@ export interface TutorStudentsResponse {
 }
 
 export const fetchTutorMyStudents = async (): Promise<TutorStudent[]> => {
-  const response = await axios.get<TutorStudentsResponse>("/api/tutors/me/students");
+  const response = await axios.get<TutorStudentsResponse>(
+    "/api/tutors/me/students",
+  );
   return response.data.data;
 };

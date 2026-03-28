@@ -14,7 +14,6 @@ import {
   FormLabel,
   Stack,
   CircularProgress,
-  Box,
 } from "@mui/material";
 import { useTutors } from "@/app/hooks/tutors/useTutors";
 import { useUnassignedStudents } from "@/app/hooks/allocations/useAllocations";
@@ -80,7 +79,9 @@ export const SingleAllocationDialog: React.FC<SingleAllocationDialogProps> = ({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        {editingAllocation ? "Reallocate Student" : "Allocate Student to Tutor"}
+        {editingAllocation?.tutorId
+          ? "Reallocate Student"
+          : "Assign Tutor to Student"}
       </DialogTitle>
       <DialogContent>
         <Stack spacing={3} sx={{ mt: 2 }}>
@@ -107,7 +108,9 @@ export const SingleAllocationDialog: React.FC<SingleAllocationDialogProps> = ({
             <Select
               value={studentId}
               onChange={(e) => setStudentId(e.target.value)}
-              disabled={studentsLoading || isLoading}
+              disabled={
+                studentsLoading || isLoading || !!editingAllocation?.studentId
+              }
             >
               <MenuItem value="">
                 {studentsLoading ? "Loading students..." : "Select a student"}

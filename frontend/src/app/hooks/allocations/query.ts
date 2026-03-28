@@ -39,6 +39,7 @@ export interface UnassignedStudent {
   name: string;
   email: string;
   degreeProgram: string;
+  year?: number;
 }
 
 export interface UnassignedStudentsResponse {

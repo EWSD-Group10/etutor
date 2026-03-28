@@ -33,16 +33,25 @@ export const listTutors = async (req, res) => {
       }),
     };
 
-    const [data, total] = await Promise.all([
-      prisma.user.findMany({
-        where,
-        select: teacherSelect,
-        skip: (page - 1) * limit,
-        take: limit,
-        orderBy: { createdAt: "desc" },
-      }),
-      prisma.user.count({ where }),
-    ]);
+    const tutors = await prisma.user.findMany({
+      where,
+      select: { ...teacherSelect, tutorAllocations: { select: { id: true } } },
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+    });
+
+    // Transform data to include student count
+    const data = tutors.map((tutor) => {
+      const { tutorAllocations, ...tutelemetry } = tutor;
+      return {
+        ...tutelemetry,
+        studentCount: tutorAllocations.length,
+        maxStudents: 15, // You can make this configurable
+      };
+    });
+
+    const total = await prisma.user.count({ where });
 
     res.json({
       data,
@@ -101,10 +110,7 @@ export const listMyStudents = async (req, res) => {
     const unreadFromStudentById = new Map();
     for (const row of unreadRows) {
       const sid = row.senderId;
-      unreadFromStudentById.set(
-        sid,
-        (unreadFromStudentById.get(sid) || 0) + 1,
-      );
+      unreadFromStudentById.set(sid, (unreadFromStudentById.get(sid) || 0) + 1);
     }
 
     const data = allocations.map((a) => ({
@@ -411,7 +417,7 @@ export async function buildTutorDashboardPayload(tutorId) {
           : m.location || "TBD",
       subject: m.meetingName
         ? `${m.meetingName} · ${m.student.name ?? "Student"}`
-        : (m.student.name ?? "Student"),
+        : m.student.name ?? "Student",
     })),
     unreadMessagesCount: totalUnreadMessages,
     recentMessages: recentMessages.slice(0, 2),

@@ -39,14 +39,76 @@ const validateUUID = (value, label) => {
   return null;
 };
 
-// GET /api/allocations?page=1&limit=10&search=
+// GET /api/allocations?page=1&limit=10&search=&status=all|assigned|unassigned
 export const listAllocations = async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page) || 1);
     const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 10));
     const search = req.query.search?.trim() || "";
+    const status = req.query.status || "all"; // "all", "assigned", or "unassigned"
 
-    const where = search
+    let where = {};
+    let studentSelectOverride = null;
+
+    if (status === "unassigned") {
+      // Unassigned students - students without allocations
+      where = {
+        role: "student",
+        isActive: true,
+        studentAllocations: { none: {} },
+        ...(search && {
+          OR: [
+            { name: { contains: search, mode: "insensitive" } },
+            { email: { contains: search, mode: "insensitive" } },
+          ],
+        }),
+      };
+
+      // Query from User table instead of Allocation
+      const [students, total] = await Promise.all([
+        prisma.user.findMany({
+          where,
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            degreeProgram: true,
+          },
+          skip: (page - 1) * limit,
+          take: limit,
+          orderBy: { createdAt: "desc" },
+        }),
+        prisma.user.count({ where }),
+      ]);
+
+      // Format unassigned students as allocations with null tutor
+      const data = students.map((student) => ({
+        id: student.id, // Use student ID as allocation ID for this view
+        studentId: student.id,
+        studentName: student.name,
+        studentEmail: student.email,
+        studentDegreeProgram: student.degreeProgram,
+        tutorId: null,
+        tutorName: null,
+        tutorEmail: null,
+        reason: null,
+        notes: null,
+        allocatedAt: null,
+      }));
+
+      return res.json({
+        data,
+        pagination: {
+          page,
+          limit,
+          total,
+          totalPages: Math.ceil(total / limit),
+        },
+      });
+    }
+
+    // For "all" and "assigned", query from Allocation table
+    where = search
       ? {
           OR: [
             { student: { name: { contains: search, mode: "insensitive" } } },
@@ -232,9 +294,7 @@ export const bulkCreateAllocations = async (req, res) => {
         tutor: { select: { name: true, email: true } },
       },
     });
-    const priorByStudentId = new Map(
-      priors.map((p) => [p.studentId, p]),
-    );
+    const priorByStudentId = new Map(priors.map((p) => [p.studentId, p]));
 
     // Loop through each studentId and upsert individually
     const results = [];
