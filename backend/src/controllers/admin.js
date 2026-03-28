@@ -1,20 +1,41 @@
 import { prisma } from "../utils/prisma.js";
 
+function startOfUtcDay(d) {
+  const x = new Date(d);
+  x.setUTCHours(0, 0, 0, 0);
+  return x;
+}
+
 // GET /api/admin/dashboard - Get admin dashboard data
 export const getAdminDashboard = async (req, res) => {
   try {
-    // Get total students count
     const totalStudents = await prisma.user.count({
       where: { role: "student" },
     });
 
-    // Get active tutors count
     const activeTutors = await prisma.user.count({
       where: { role: "tutor", isActive: true },
     });
 
-    // Get at-risk students (low engagement)
-    // For now, we'll consider students with engagement < 40% as at-risk
+    const today = startOfUtcDay(new Date());
+    const windowStart = new Date(today);
+    windowStart.setUTCDate(windowStart.getUTCDate() - 42);
+
+    const meetingsInWindow = await prisma.meeting.findMany({
+      where: { createdAt: { gte: windowStart } },
+      select: { createdAt: true, studentId: true },
+    });
+
+    const meetingsLast6Weeks = meetingsInWindow.length;
+
+    const meetingCountByStudent = new Map();
+    for (const m of meetingsInWindow) {
+      meetingCountByStudent.set(
+        m.studentId,
+        (meetingCountByStudent.get(m.studentId) || 0) + 1,
+      );
+    }
+
     const allAllocations = await prisma.allocation.findMany({
       include: {
         student: {
@@ -26,68 +47,48 @@ export const getAdminDashboard = async (req, res) => {
       },
     });
 
-    // Calculate engagement for each student (mock based on meeting count)
+    const seenStudent = new Set();
     const atRiskStudents = [];
     for (const allocation of allAllocations) {
-      const meetings = await prisma.meeting.count({
-        where: { studentId: allocation.student.id },
-      });
-      const engagement = Math.min(meetings * 15, 100); // Mock: engagement based on meeting count
+      const sid = allocation.student.id;
+      if (seenStudent.has(sid)) continue;
+      seenStudent.add(sid);
 
-      if (engagement < 40) {
+      const n = meetingCountByStudent.get(sid) ?? 0;
+      if (n === 0) {
         atRiskStudents.push({
-          id: allocation.student.id,
+          id: sid,
           name: allocation.student.name,
           course: allocation.student.degreeProgram || "Unknown",
-          engagement: Math.round(engagement),
-          risk: "High",
           tutorName: allocation.tutor.name,
+          meetingsInLast6Weeks: 0,
+          status: "No meetings (6 wks)",
         });
       }
     }
 
-    // Sort by engagement (lowest first) and take top 10
     const topAtRiskStudents = atRiskStudents
-      .sort((a, b) => a.engagement - b.engagement)
+      .sort((a, b) => a.name.localeCompare(b.name))
       .slice(0, 10);
 
-    // Get engagement trend (last 6 weeks)
-    const sixWeeksAgo = new Date();
-    sixWeeksAgo.setDate(sixWeeksAgo.getDate() - 42);
+    // Six contiguous 7-day buckets ending today (UTC); value = meetings created in bucket
+    const weeklyMeetings = [];
+    for (let idx = 5; idx >= 0; idx--) {
+      const weekEnd = new Date(today);
+      weekEnd.setUTCDate(weekEnd.getUTCDate() - idx * 7);
+      const weekStart = new Date(weekEnd);
+      weekStart.setUTCDate(weekStart.getUTCDate() - 7);
 
-    const meetingsTrend = await prisma.meeting.findMany({
-      where: {
-        createdAt: {
-          gte: sixWeeksAgo,
-        },
-      },
-      select: {
-        createdAt: true,
-      },
-    });
-
-    // Group meetings by week
-    const engagementData = [];
-    for (let i = 5; i >= 0; i--) {
-      const weekStart = new Date();
-      weekStart.setDate(weekStart.getDate() - i * 7);
-      const weekEnd = new Date(weekStart);
-      weekEnd.setDate(weekEnd.getDate() + 7);
-
-      const weekMeetings = meetingsTrend.filter(
+      const count = meetingsInWindow.filter(
         (m) => m.createdAt >= weekStart && m.createdAt < weekEnd,
-      );
+      ).length;
 
-      // Calculate engagement as percentage (mock: based on meeting count)
-      const engagement = Math.min(weekMeetings.length * 10, 100);
-
-      engagementData.push({
-        week: `Week ${6 - i}`,
-        value: engagement,
+      weeklyMeetings.push({
+        week: `Wk ${6 - idx}`,
+        count,
       });
     }
 
-    // Get student distribution by degree program
     const students = await prisma.user.findMany({
       where: { role: "student" },
       select: { degreeProgram: true },
@@ -101,42 +102,30 @@ export const getAdminDashboard = async (req, res) => {
 
     const distributionData = Object.entries(distribution)
       .map(([subject, count]) => ({
-        subject: subject.substring(0, 4), // Abbreviate for display
+        subject: subject.substring(0, 4),
         students: count,
       }))
-      .slice(0, 4); // Top 4 subjects
+      .slice(0, 4);
 
-    // Calculate various metrics
-    const totalMeetings = await prisma.meeting.count();
-    const avgEngagement = Math.round(
-      engagementData.reduce((sum, item) => sum + item.value, 0) /
-        engagementData.length || 0,
-    );
-
-    // Return dashboard data
     res.json({
       data: {
         statCards: [
+          { label: "Total Students", value: totalStudents.toString() },
+          { label: "Active Tutors", value: activeTutors.toString() },
           {
-            label: "Total Students",
-            value: totalStudents.toString(),
+            label: "Students — no meetings (6 wks)",
+            value: atRiskStudents.length.toString(),
           },
           {
-            label: "Active Tutors",
-            value: activeTutors.toString(),
-          },
-          {
-            label: "At-Risk Students",
-            value: topAtRiskStudents.length.toString(),
-          },
-          {
-            label: "Avg Engagement",
-            value: `${avgEngagement}%`,
+            label: "Meetings created (6 wks)",
+            value: meetingsLast6Weeks.toString(),
           },
         ],
-        engagementData,
+        weeklyMeetings,
         distributionData,
         atRiskStudents: topAtRiskStudents,
+        atRiskDefinition:
+          "Assigned students with zero meetings recorded in the last 6 weeks (UTC).",
       },
     });
   } catch (err) {

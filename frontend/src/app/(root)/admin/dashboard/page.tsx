@@ -26,9 +26,9 @@ interface DashboardData {
     label: string;
     value: string;
   }>;
-  engagementData: Array<{
+  weeklyMeetings: Array<{
     week: string;
-    value: number;
+    count: number;
   }>;
   distributionData: Array<{
     subject: string;
@@ -38,9 +38,11 @@ interface DashboardData {
     id: string;
     name: string;
     course: string;
-    engagement: number;
-    risk: string;
+    tutorName?: string;
+    meetingsInLast6Weeks?: number;
+    status: string;
   }>;
+  atRiskDefinition?: string;
 }
 
 interface MostActiveUserRow {
@@ -128,7 +130,7 @@ const getStatCardConfig = (label: string): Partial<StatCard> => {
         </svg>
       ),
     },
-    "At-Risk Students": {
+    "Students — no meetings (6 wks)": {
       iconBg: "bg-amber-50",
       icon: (
         <svg
@@ -162,7 +164,7 @@ const getStatCardConfig = (label: string): Partial<StatCard> => {
         </svg>
       ),
     },
-    "Avg Engagement": {
+    "Meetings created (6 wks)": {
       iconBg: "bg-purple-50",
       icon: (
         <svg
@@ -254,9 +256,15 @@ export default function AdminDashboard() {
     }),
   );
 
-  const engagementData = dashboardData?.engagementData || [];
+  const weeklyMeetings = dashboardData?.weeklyMeetings || [];
   const distributionData = dashboardData?.distributionData || [];
   const atRiskStudents = dashboardData?.atRiskStudents || [];
+  const atRiskDefinition = dashboardData?.atRiskDefinition;
+  const meetingsChartMax = Math.max(
+    4,
+    ...weeklyMeetings.map((w) => w.count),
+    1,
+  );
 
   return (
     <div className="flex min-h-screen w-full bg-gray-50 font-inter">
@@ -310,17 +318,20 @@ export default function AdminDashboard() {
 
           {/* Charts row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            {/* Engagement Trend */}
+            {/* Meetings created per week (real counts) */}
             <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-              <h2 className="text-[15px] font-semibold text-slate-900 mb-6">
-                Engagement Trend
+              <h2 className="text-[15px] font-semibold text-slate-900">
+                Meetings created (weekly)
               </h2>
+              <p className="text-xs text-gray-500 mt-1 mb-6">
+                Count of new meetings per 7-day bucket, last 6 weeks (UTC).
+              </p>
               {loading ? (
                 <Skeleton variant="rectangular" height={260} />
-              ) : engagementData.length > 0 ? (
+              ) : weeklyMeetings.length > 0 ? (
                 <ResponsiveContainer width="100%" height={260}>
                   <LineChart
-                    data={engagementData}
+                    data={weeklyMeetings}
                     margin={{ top: 8, right: 8, left: -10, bottom: 0 }}
                   >
                     <CartesianGrid
@@ -335,15 +346,16 @@ export default function AdminDashboard() {
                       tickLine={false}
                     />
                     <YAxis
-                      domain={[0, 100]}
-                      ticks={[0, 20, 40, 60, 80, 100]}
+                      domain={[0, meetingsChartMax]}
+                      allowDecimals={false}
                       tick={{ fill: "#9CA3AF", fontSize: 12 }}
                       axisLine={false}
                       tickLine={false}
                     />
                     <Line
                       type="monotone"
-                      dataKey="value"
+                      dataKey="count"
+                      name="Meetings"
                       stroke="#2563EB"
                       strokeWidth={3}
                       dot={{
@@ -410,11 +422,16 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* At-Risk Students Table */}
+          {/* Assigned students with no recent meetings */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-[15px] font-semibold text-slate-900 mb-4">
-              At-Risk Students (High Priority)
+            <h2 className="text-[15px] font-semibold text-slate-900">
+              Assigned students — no meetings (6 weeks)
             </h2>
+            <p className="text-xs text-gray-500 mt-1 mb-4">
+              {atRiskDefinition ??
+                "Assigned students with no meetings in the rolling 6-week window."}{" "}
+              Table shows up to 10; the stat card is the full count.
+            </p>
             {loading ? (
               <div className="space-y-3">
                 {[...Array(5)].map((_, i) => (
@@ -428,7 +445,7 @@ export default function AdminDashboard() {
               </div>
             ) : atRiskStudents.length > 0 ? (
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[540px]">
+                <table className="w-full min-w-[640px]">
                   <thead>
                     <tr className="bg-gray-50 rounded-lg">
                       <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5 rounded-l-lg">
@@ -437,18 +454,18 @@ export default function AdminDashboard() {
                       <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5">
                         Course
                       </th>
-                      {/* <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5">
-                        Engagement
-                      </th> */}
+                      <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5">
+                        Tutor
+                      </th>
                       <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5 rounded-r-lg">
-                        Risk Level
+                        Status
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {atRiskStudents.map((student, i) => (
+                    {atRiskStudents.map((student) => (
                       <tr
-                        key={i}
+                        key={student.id}
                         className="border-b border-gray-50 last:border-0"
                       >
                         <td className="px-4 py-3">
@@ -461,21 +478,14 @@ export default function AdminDashboard() {
                             {student.course}
                           </span>
                         </td>
-
-                        {/* <td className="px-4 py-3">
-                          <div className="flex items-center gap-2">
-                            <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-red-400 rounded-full"
-                                style={{ width: `${student.engagement}%` }}
-                              />
-                            </div>
-                          </div>
-                        </td> */}
-
                         <td className="px-4 py-3">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-red-100 text-red-800">
-                            {student.risk}
+                          <span className="text-xs text-gray-500">
+                            {student.tutorName ?? "—"}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-amber-100 text-amber-900">
+                            {student.status}
                           </span>
                         </td>
                       </tr>
@@ -485,7 +495,7 @@ export default function AdminDashboard() {
               </div>
             ) : (
               <div className="py-8 text-center text-gray-500">
-                No at-risk students found
+                No assigned students without meetings in this window.
               </div>
             )}
           </div>
