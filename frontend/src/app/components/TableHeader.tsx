@@ -1,5 +1,6 @@
 // components/PageHeader.tsx
-import { Box, Typography, Button } from "@mui/material";
+import type { ReactNode } from "react";
+import { Box, Typography, Button, Stack, alpha } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 interface PageHeaderProps {
@@ -7,6 +8,8 @@ interface PageHeaderProps {
   subtitle?: string;
   buttonText?: string;
   onButtonClick?: () => void;
+  /** Right-side toolbar (e.g. search + sort) — sits beside title on desktop */
+  actions?: ReactNode;
 }
 
 export default function PageHeader({
@@ -14,38 +17,66 @@ export default function PageHeader({
   subtitle,
   buttonText,
   onButtonClick,
+  actions,
 }: PageHeaderProps) {
+  const showRight = Boolean(actions || buttonText);
+
   return (
     <Box
       sx={{
-        px: 4,
-        py: 3,
-        borderRadius: 2,
+        px: { xs: 2, sm: 3 },
+        py: 2.5,
+        mb: 2,
+        borderRadius: 3,
+        border: "1px solid",
+        borderColor: alpha("#000", 0.07),
+        bgcolor: "#fff",
+        boxShadow: "0px 1px 4px rgba(0, 0, 0, 0.06)",
         display: "flex",
+        flexDirection: { xs: "column", md: "row" },
+        alignItems: { xs: "stretch", md: "flex-end" },
         justifyContent: "space-between",
-        alignItems: "center",
+        gap: 2,
       }}
     >
-      <Box>
-        <Typography variant="h6" fontWeight={600}>
+      <Box sx={{ minWidth: 0, flex: showRight ? "1 1 auto" : undefined }}>
+        <Typography variant="h6" fontWeight={700} color="text.primary">
           {title}
         </Typography>
 
         {subtitle && (
-          <Typography variant="body2" color="text.secondary" mt={0.5}>
+          <Typography variant="body2" color="text.secondary" mt={0.35}>
             {subtitle}
           </Typography>
         )}
       </Box>
 
-      {buttonText && (
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={onButtonClick}
+      {showRight && (
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1.25}
+          alignItems={{ xs: "stretch", sm: "center" }}
+          justifyContent="flex-end"
+          sx={{ flexShrink: 0, width: { xs: "100%", md: "auto" } }}
         >
-          {buttonText}
-        </Button>
+          {actions}
+          {buttonText && (
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={onButtonClick}
+              sx={{
+                textTransform: "none",
+                fontWeight: 600,
+                borderRadius: 2,
+                boxShadow: "none",
+                "&:hover": { boxShadow: "none" },
+              }}
+            >
+              {buttonText}
+            </Button>
+          )}
+        </Stack>
       )}
     </Box>
   );

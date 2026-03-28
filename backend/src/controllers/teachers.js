@@ -68,6 +68,7 @@ export const listMyStudents = async (req, res) => {
     const allocations = await prisma.allocation.findMany({
       where: { tutorId },
       select: {
+        allocatedAt: true,
         student: {
           select: {
             id: true,
@@ -80,9 +81,37 @@ export const listMyStudents = async (req, res) => {
           },
         },
       },
+      orderBy: { allocatedAt: "desc" },
     });
 
-    const data = allocations.map((a) => a.student).filter(Boolean);
+    const studentIds = allocations.map((a) => a.student.id);
+
+    const unreadRows =
+      studentIds.length > 0
+        ? await prisma.message.findMany({
+            where: {
+              recipientId: tutorId,
+              readAt: null,
+              senderId: { in: studentIds },
+            },
+            select: { senderId: true },
+          })
+        : [];
+
+    const unreadFromStudentById = new Map();
+    for (const row of unreadRows) {
+      const sid = row.senderId;
+      unreadFromStudentById.set(
+        sid,
+        (unreadFromStudentById.get(sid) || 0) + 1,
+      );
+    }
+
+    const data = allocations.map((a) => ({
+      ...a.student,
+      allocatedAt: a.allocatedAt.toISOString(),
+      unreadFromStudent: unreadFromStudentById.get(a.student.id) || 0,
+    }));
 
     return res.json({ data });
   } catch (err) {
@@ -248,113 +277,126 @@ export const getTutorDashboard = async (req, res) => {
   try {
     const tutorId = req.user?.id;
     if (!tutorId) return res.status(401).json({ error: "Unauthorized" });
+    const now = new Date();
 
-    // Get students count
-    const studentsCount = await prisma.allocation.count({
-      where: { tutorId },
-    });
-
-    // Get students with engagement (mock engagement as 0 for now - not in schema)
-    const students = await prisma.allocation.findMany({
+    const allocations = await prisma.allocation.findMany({
       where: { tutorId },
       select: {
+        allocatedAt: true,
         student: {
           select: {
             id: true,
             name: true,
+            email: true,
+            degreeProgram: true,
           },
         },
       },
-      take: 8, // Limit to 8 for dashboard display
+      orderBy: { allocatedAt: "desc" },
     });
 
-    // Get upcoming meetings (next 3)
-    const upcomingMeetings = await prisma.meeting.findMany({
-      where: {
-        tutorId,
-        meetingStatus: "scheduled",
-        scheduledDate: {
-          gte: new Date(), // Only future meetings
-        },
-      },
-      select: {
-        id: true,
-        scheduledDate: true,
-        location: true,
-        meetingType: true,
-        student: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-      },
-      orderBy: { scheduledDate: "asc" },
-      take: 3,
-    });
+    const studentIds = allocations.map((a) => a.student.id);
 
-    // Get unread message count and recent messages
-    const messageContacts = await prisma.message.findMany({
-      where: {
-        OR: [{ recipientId: tutorId }, { senderId: tutorId }],
-      },
-      distinct: ["senderId", "recipientId"],
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    });
+    const unreadRows =
+      studentIds.length > 0
+        ? await prisma.message.findMany({
+            where: {
+              recipientId: tutorId,
+              readAt: null,
+              senderId: { in: studentIds },
+            },
+            select: { senderId: true },
+          })
+        : [];
 
-    const recentMessages = [];
-    for (const msgContact of messageContacts) {
-      const otherUserId =
-        msgContact.senderId === tutorId
-          ? msgContact.recipientId
-          : msgContact.senderId;
+    const unreadFromStudentById = new Map();
+    for (const row of unreadRows) {
+      const sid = row.senderId;
+      unreadFromStudentById.set(sid, (unreadFromStudentById.get(sid) || 0) + 1);
+    }
 
-      const unreadCount = await prisma.message.count({
+    const tuteesWithUnread = studentIds.filter(
+      (id) => (unreadFromStudentById.get(id) || 0) > 0,
+    ).length;
+
+    const [
+      upcomingMeetingsCount,
+      upcomingMeetings,
+      totalUnreadMessages,
+      incomingFromTutees,
+    ] = await Promise.all([
+      prisma.meeting.count({
         where: {
-          senderId: otherUserId,
+          tutorId,
+          meetingStatus: "scheduled",
+          scheduledDate: { gte: now },
+        },
+      }),
+      prisma.meeting.findMany({
+        where: {
+          tutorId,
+          meetingStatus: "scheduled",
+          scheduledDate: { gte: now },
+        },
+        select: {
+          id: true,
+          scheduledDate: true,
+          location: true,
+          meetingType: true,
+          meetingName: true,
+          student: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+        orderBy: { scheduledDate: "asc" },
+        take: 3,
+      }),
+      prisma.message.count({
+        where: {
           recipientId: tutorId,
           readAt: null,
         },
-      });
+      }),
+      studentIds.length > 0
+        ? prisma.message.findMany({
+            where: {
+              recipientId: tutorId,
+              senderId: { in: studentIds },
+            },
+            orderBy: { createdAt: "desc" },
+            take: 50,
+            select: {
+              senderId: true,
+              content: true,
+              sender: { select: { id: true, name: true } },
+            },
+          })
+        : Promise.resolve([]),
+    ]);
 
-      const latestMessage = await prisma.message.findFirst({
-        where: {
-          OR: [
-            { senderId: tutorId, recipientId: otherUserId },
-            { senderId: otherUserId, recipientId: tutorId },
-          ],
-        },
-        select: {
-          content: true,
-          sender: { select: { id: true, name: true } },
-        },
-        orderBy: { createdAt: "desc" },
+    // Latest *incoming* message per tutee (student → tutor), not last bubble in thread (which may be from tutor)
+    const recentMessages = [];
+    const seenSender = new Set();
+    for (const m of incomingFromTutees) {
+      if (seenSender.has(m.senderId)) continue;
+      seenSender.add(m.senderId);
+      recentMessages.push({
+        id: m.senderId,
+        sender: m.sender.name,
+        message: m.content,
+        unreadCount: unreadFromStudentById.get(m.senderId) || 0,
       });
-
-      if (latestMessage) {
-        recentMessages.push({
-          id: otherUserId,
-          sender: latestMessage.sender.name,
-          message: latestMessage.content,
-          unreadCount,
-        });
-      }
+      if (recentMessages.length >= 2) break;
     }
 
-    // Calculate total unread messages
-    const totalUnreadMessages = await prisma.message.count({
-      where: {
-        recipientId: tutorId,
-        readAt: null,
-      },
-    });
-
-    // Return dashboard data
     res.json({
       data: {
-        studentsCount,
-        upcomingMeetingsCount: upcomingMeetings.length,
+        studentsCount: allocations.length,
+        tuteesWithUnread,
+        upcomingMeetingsCount,
         upcomingMeetings: upcomingMeetings.map((m) => ({
           id: m.id,
           time: m.scheduledDate.toLocaleTimeString("en-US", {
@@ -365,17 +407,24 @@ export const getTutorDashboard = async (req, res) => {
             month: "short",
             day: "numeric",
           }),
-          location: m.location || "Online",
-          subject: m.student.name,
+          location:
+            m.meetingType === "virtual"
+              ? m.location || "Virtual"
+              : m.location || "TBD",
+          subject: m.meetingName
+            ? `${m.meetingName} · ${m.student.name ?? "Student"}`
+            : (m.student.name ?? "Student"),
         })),
         unreadMessagesCount: totalUnreadMessages,
-        recentMessages: recentMessages.slice(0, 2), // Show only 2 recent
-        students: students.map((s) => ({
-          id: s.student.id,
-          name: s.student.name,
-          engagement: Math.floor(Math.random() * 100), // Mock engagement data
+        recentMessages: recentMessages.slice(0, 2),
+        tutees: allocations.map((a) => ({
+          id: a.student.id,
+          name: a.student.name,
+          email: a.student.email,
+          degreeProgram: a.student.degreeProgram,
+          allocatedAt: a.allocatedAt.toISOString(),
+          unreadFromStudent: unreadFromStudentById.get(a.student.id) || 0,
         })),
-        avgGPA: 3.4, // Mock average GPA
       },
     });
   } catch (err) {

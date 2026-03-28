@@ -48,6 +48,8 @@ export interface TutorStudent {
   degreeProgram: string | null;
   isActive: boolean;
   createdAt: string;
+  allocatedAt: string;
+  unreadFromStudent: number;
 }
 
 export interface TutorStudentsResponse {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, type ReactNode } from "react";
 import { IconButton, Tooltip, Stack } from "@mui/material";
 import { Visibility, Edit, Delete, Description } from "@mui/icons-material";
 import { DataTable, Column } from "./Table";
@@ -125,6 +125,7 @@ export const StudentTable: React.FC<StudentTableProps> = ({
   title = "Students Directory",
   subtitle = "Manage student records and performance",
   showCreatedAt = true,
+  headerActions,
 }) => {
   const columns = useMemo(() => {
     const dataCols = showCreatedAt ? [...studentBaseColumns, createdAtColumn] : studentBaseColumns;
@@ -139,6 +140,7 @@ export const StudentTable: React.FC<StudentTableProps> = ({
         subtitle={subtitle}
         buttonText={onAdd ? "Add Student" : undefined}
         onButtonClick={onAdd}
+        actions={headerActions}
       />
       <DataTable<Student>
         columns={columns}

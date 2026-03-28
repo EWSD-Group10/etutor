@@ -1,8 +1,5 @@
 import { prisma } from "../utils/prisma.js";
-import {
-  notifyStudentTutorAssigned,
-  notifyStudentTutorReallocated,
-} from "../emails/studentAllocation.js";
+import { notifyPartiesAfterAllocationUpsert } from "../emails/allocationParties.js";
 
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -148,7 +145,7 @@ export const createAllocation = async (req, res) => {
       where: { studentId },
       select: {
         tutorId: true,
-        tutor: { select: { name: true } },
+        tutor: { select: { name: true, email: true } },
       },
     });
 
@@ -170,20 +167,7 @@ export const createAllocation = async (req, res) => {
       select: allocationSelect,
     });
 
-    if (!prior) {
-      notifyStudentTutorAssigned(
-        allocation.student.email,
-        allocation.student.name,
-        allocation.tutor.name,
-      );
-    } else if (prior.tutorId !== tutorId) {
-      notifyStudentTutorReallocated(
-        allocation.student.email,
-        allocation.student.name,
-        allocation.tutor.name,
-        prior.tutor?.name,
-      );
-    }
+    notifyPartiesAfterAllocationUpsert(prior, allocation);
 
     res.status(201).json({ data: formatAllocation(allocation) });
   } catch (err) {
@@ -245,7 +229,7 @@ export const bulkCreateAllocations = async (req, res) => {
       select: {
         studentId: true,
         tutorId: true,
-        tutor: { select: { name: true } },
+        tutor: { select: { name: true, email: true } },
       },
     });
     const priorByStudentId = new Map(
@@ -275,20 +259,15 @@ export const bulkCreateAllocations = async (req, res) => {
         select: allocationSelect,
       });
 
-      if (!prior) {
-        notifyStudentTutorAssigned(
-          allocation.student.email,
-          allocation.student.name,
-          allocation.tutor.name,
-        );
-      } else if (prior.tutorId !== tutorId) {
-        notifyStudentTutorReallocated(
-          allocation.student.email,
-          allocation.student.name,
-          allocation.tutor.name,
-          prior.tutor?.name,
-        );
-      }
+      notifyPartiesAfterAllocationUpsert(
+        prior
+          ? {
+              tutorId: prior.tutorId,
+              tutor: prior.tutor,
+            }
+          : null,
+        allocation,
+      );
 
       results.push(formatAllocation(allocation));
     }
@@ -343,7 +322,7 @@ export const updateAllocation = async (req, res) => {
         student: {
           select: { email: true, name: true },
         },
-        tutor: { select: { name: true } },
+        tutor: { select: { name: true, email: true } },
       },
     });
     if (!existing) {
@@ -367,11 +346,12 @@ export const updateAllocation = async (req, res) => {
     });
 
     if (data.tutorId && data.tutorId !== existing.tutorId) {
-      notifyStudentTutorReallocated(
-        existing.student.email,
-        existing.student.name,
-        allocation.tutor.name,
-        existing.tutor?.name,
+      notifyPartiesAfterAllocationUpsert(
+        {
+          tutorId: existing.tutorId,
+          tutor: existing.tutor,
+        },
+        allocation,
       );
     }
 
