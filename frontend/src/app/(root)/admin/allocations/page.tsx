@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Box, Stack, Tabs, Tab, CircularProgress, Alert } from "@mui/material";
 import AllocationStatsCard from "@/app/components/AllocationStatsCard";
 import { AllocationTable } from "@/app/components/AllocationTable";
-import { SingleAllocationDialog } from "@/app/components/SingleAllocationDialog";
 import { BulkAllocationDialog } from "@/app/components/BulkAllocationDialog";
 import {
   useAllocations,
@@ -165,36 +164,6 @@ export default function AllocationPage() {
               <Tab label="Assigned Students" value="assigned" />
               <Tab label="Unassigned Students" value="unassigned" />
             </Tabs>
-            <Box sx={{ display: "flex", gap: 1 }}>
-              <button
-                onClick={handleOpenSingleDialog}
-                style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#1976d2",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                }}
-              >
-                Single Allocation
-              </button>
-              <button
-                onClick={handleOpenBulkDialog}
-                style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#388e3c",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                }}
-              >
-                Bulk Allocation
-              </button>
-            </Box>
           </Box>
         </Box>
 
@@ -251,26 +220,11 @@ export default function AllocationPage() {
               }}
               onEdit={handleEditAllocation}
               onDelete={handleDeleteAllocation}
-              onAdd={handleOpenSingleDialog}
+              onAdd={handleOpenBulkDialog}
             />
           </>
         )}
       </Stack>
-
-      {/* Dialogs */}
-      <SingleAllocationDialog
-        open={singleDialogOpen}
-        onClose={() => {
-          setSingleDialogOpen(false);
-          setEditingAllocation(null);
-        }}
-        onSubmit={handleSubmitSingleAllocation}
-        isLoading={
-          createAllocationMutation.isPending ||
-          updateAllocationMutation.isPending
-        }
-        editingAllocation={editingAllocation}
-      />
 
       <BulkAllocationDialog
         open={bulkDialogOpen}
