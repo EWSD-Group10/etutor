@@ -323,30 +323,38 @@ async function seedBlogPosts(users) {
   const blogTemplates = [
     {
       tutor: users.tutors[0],
-      studentIds: [users.students[0].id, users.students[1].id, users.students[2].id],
+      studentIds: [
+        users.students[0].id,
+        users.students[1].id,
+        users.students[2].id,
+      ],
       title: "Welcome to the Course",
-      content: "Welcome to the new semester! I'm excited to guide you through this course. Here are some tips for success:\n\n1. Attend all sessions\n2. Complete assignments on time\n3. Don't hesitate to ask questions\n\nLooking forward to a great semester!",
+      content:
+        "Welcome to the new semester! I'm excited to guide you through this course. Here are some tips for success:\n\n1. Attend all sessions\n2. Complete assignments on time\n3. Don't hesitate to ask questions\n\nLooking forward to a great semester!",
       sorting: 1,
     },
     {
       tutor: users.tutors[0],
       studentIds: [users.students[0].id, users.students[1].id],
       title: "Assignment Guidelines",
-      content: "Here are the guidelines for your upcoming assignments:\n\n- Use proper citations\n- Follow the formatting guidelines\n- Submit through the portal before the deadline\n\nBest of luck!",
+      content:
+        "Here are the guidelines for your upcoming assignments:\n\n- Use proper citations\n- Follow the formatting guidelines\n- Submit through the portal before the deadline\n\nBest of luck!",
       sorting: 2,
     },
     {
       tutor: users.tutors[1],
       studentIds: [users.students[3].id, users.students[4].id],
       title: "Research Methodology",
-      content: "This week we're covering research methodology. Remember to:\n\n1. Define your research question clearly\n2. Review existing literature\n3. Choose appropriate methods\n\nSee you in class!",
+      content:
+        "This week we're covering research methodology. Remember to:\n\n1. Define your research question clearly\n2. Review existing literature\n3. Choose appropriate methods\n\nSee you in class!",
       sorting: 1,
     },
     {
       tutor: users.tutors[2],
       studentIds: [users.students[5].id, users.students[6].id],
       title: "Project Milestones",
-      content: "Great progress on your projects! Here are the upcoming milestones:\n\n- Week 4: Design review\n- Week 8: Implementation checkpoint\n- Week 12: Final presentation\n\nKeep up the excellent work!",
+      content:
+        "Great progress on your projects! Here are the upcoming milestones:\n\n- Week 4: Design review\n- Week 8: Implementation checkpoint\n- Week 12: Final presentation\n\nKeep up the excellent work!",
       sorting: 1,
     },
   ];
@@ -368,7 +376,9 @@ async function seedBlogPosts(users) {
         createdBy: template.tutor.id,
       },
     });
-    console.log(`  [MASTER] "${template.title}" (groupId: ${groupId.slice(0, 8)}...)`);
+    console.log(
+      `  [MASTER] "${template.title}" (groupId: ${groupId.slice(0, 8)}...)`,
+    );
 
     // Create a copy for each student
     for (const studentId of template.studentIds) {
@@ -385,10 +395,14 @@ async function seedBlogPosts(users) {
       });
       createdPosts.push(copy);
     }
-    console.log(`  [COPIES] Created ${template.studentIds.length} copies for students`);
+    console.log(
+      `  [COPIES] Created ${template.studentIds.length} copies for students`,
+    );
   }
 
-  console.log(`  Total: ${createdPosts.length} blog post copies (plus masters)\n`);
+  console.log(
+    `  Total: ${createdPosts.length} blog post copies (plus masters)\n`,
+  );
   return createdPosts;
 }
 
@@ -500,7 +514,7 @@ async function seedComments(users, blogPosts, documents) {
 
   // Find blog copy for student[0] with title containing "Welcome"
   const welcomePost0 = blogPosts.find(
-    (bp) => bp.studentId === users.students[0].id
+    (bp) => bp.studentId === users.students[0].id,
   );
   if (welcomePost0) {
     blogComments.push({
@@ -512,7 +526,7 @@ async function seedComments(users, blogPosts, documents) {
 
   // Find blog copy for student[2] with title containing "Research"
   const researchPost = blogPosts.find(
-    (bp) => bp.studentId === users.students[2].id
+    (bp) => bp.studentId === users.students[2].id,
   );
   if (researchPost) {
     blogComments.push({

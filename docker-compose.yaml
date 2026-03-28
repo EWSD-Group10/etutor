@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: etutor_password
       POSTGRES_DB: etutor_db
     ports:
-      - "5435:5432"
+      - "5436:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -48,23 +48,23 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app
-      - backend_node_modules:/app/node_modules
+      - /app/node_modules
     command: sh -c "npx prisma migrate deploy && npm run dev"
 
-  frontend:
-    build: ./frontend
-    container_name: etutor_frontend
-    platform: linux/amd64
-    environment:
-      NODE_ENV: development
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    volumes:
-      - ./frontend/src:/app/src
-      - ./frontend/public:/app/public
-    command: npm run dev
+  # frontend:
+  #   build: ./frontend
+  #   container_name: etutor_frontend
+  #   platform: linux/amd64
+  #   environment:
+  #     NODE_ENV: development
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+  #   volumes:
+  #     - ./frontend/src:/app/src
+  #     - ./frontend/public:/app/public
+  #   command: npm run dev
 
 volumes:
   postgres_data:

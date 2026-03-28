@@ -6,11 +6,13 @@ import { pool } from "./utils/db.js";
 import { sendEmail } from "./utils/mailer.js";
 import { startInactivityCron } from "./cron/inactivityCheck.js";
 import { login, currentUser, refresh, logout } from "./controllers/auth.js";
+import { getAdminDashboard } from "./controllers/admin.js";
 import {
   listStudents,
   listUnassignedStudents,
   listAssignedStudents,
   getStudent,
+  getStudentDashboard,
   createStudent,
   updateStudent,
   deleteStudent,
@@ -19,6 +21,7 @@ import {
   listTutors,
   getTutor,
   listMyStudents,
+  getTutorDashboard,
   createTutor,
   updateTutor,
   deleteTutors,
@@ -136,6 +139,7 @@ app.get(
   listUnassignedStudents,
 );
 app.get("/api/students/assigned", requireSignin, isAdmin, listAssignedStudents);
+app.get("/api/students/me/dashboard", requireSignin, getStudentDashboard);
 app.get("/api/students/:id", requireSignin, isAdmin, getStudent);
 app.post("/api/students", requireSignin, isAdmin, createStudent);
 app.put("/api/students/:id", requireSignin, isAdmin, updateStudent);
@@ -143,6 +147,7 @@ app.delete("/api/students/:id", requireSignin, isAdmin, deleteStudent);
 
 // Teacher CRUD endpoints (admin only)
 app.get("/api/tutors", requireSignin, isAdmin, listTutors);
+app.get("/api/tutors/me/dashboard", requireSignin, isTutor, getTutorDashboard);
 app.get("/api/tutors/me/students", requireSignin, isTutor, listMyStudents);
 app.get("/api/tutors/:id", requireSignin, isAdmin, getTutor);
 app.post("/api/tutors", requireSignin, isAdmin, createTutor);
@@ -176,6 +181,9 @@ app.put("/api/meetings/:id", requireSignin, updateMeeting);
 
 // Admin meeting endpoints
 app.get("/api/admin/meetings", requireSignin, isAdmin, listAllMeetings);
+
+// Admin dashboard endpoint
+app.get("/api/admin/dashboard", requireSignin, isAdmin, getAdminDashboard);
 
 // Blog endpoints (tutor creates, student views and comments)
 app.get("/api/blogs", requireSignin, listBlogs);

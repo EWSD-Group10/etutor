@@ -357,3 +357,124 @@ export const deleteStudent = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+// GET /api/students/me/dashboard - Get student dashboard data
+export const getStudentDashboard = async (req, res) => {
+  try {
+    const studentId = req.user?.id;
+    if (!studentId) return res.status(401).json({ error: "Unauthorized" });
+
+    // Get student's allocation (tutor info)
+    const allocation = await prisma.allocation.findUnique({
+      where: { studentId },
+      select: {
+        tutor: {
+          select: {
+            id: true,
+            name: true,
+            department: true,
+          },
+        },
+      },
+    });
+
+    // Get next upcoming meeting
+    const nextMeeting = await prisma.meeting.findFirst({
+      where: {
+        studentId,
+        meetingStatus: "scheduled",
+        scheduledDate: {
+          gte: new Date(),
+        },
+      },
+      select: {
+        id: true,
+        scheduledDate: true,
+        location: true,
+        meetingType: true,
+      },
+      orderBy: { scheduledDate: "asc" },
+    });
+
+    // Get recent documents (max 5) - only from student or their assigned tutor
+    const recentDocuments = await prisma.document.findMany({
+      where: {
+        OR: [
+          { uploaderId: studentId }, // Documents uploaded by student
+          ...(allocation?.tutor?.id
+            ? [{ uploaderId: allocation.tutor.id }]
+            : []), // Documents from their assigned tutor only
+        ],
+      },
+      select: {
+        id: true,
+        fileName: true,
+        uploadedAt: true,
+      },
+      orderBy: { uploadedAt: "desc" },
+      take: 5,
+    });
+
+    // Get student's blogs (course-like progress) - only from student or their assigned tutor
+    const studentBlogs = await prisma.blogPost.findMany({
+      where: {
+        OR: [
+          { studentId }, // Blogs assigned to this student
+          ...(allocation?.tutor?.id ? [{ tutorId: allocation.tutor.id }] : []), // Blogs from their assigned tutor only
+        ],
+      },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+      },
+      orderBy: { createdAt: "desc" },
+      take: 4,
+    });
+
+    // Mock GPA data based on blog count (real system would have actual grades)
+    const gpa = 3.5 + (studentBlogs.length > 0 ? 0.2 : 0);
+    const studentCount = await prisma.user.count({
+      where: { role: "student" },
+    });
+    // Mock ranking
+    const percentileRank = Math.round(Math.random() * 20) + 80; // Top 20%
+
+    // Return dashboard data
+    res.json({
+      data: {
+        gpa: Math.min(gpa, 4.0),
+        percentileRank,
+        nextMeeting: nextMeeting
+          ? {
+              id: nextMeeting.id,
+              time: nextMeeting.scheduledDate.toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+              }),
+              location: nextMeeting.location || "Online",
+              type: nextMeeting.meetingType,
+            }
+          : null,
+        assignedTutor: allocation
+          ? {
+              id: allocation.tutor.id,
+              name: allocation.tutor.name,
+              department: allocation.tutor.department,
+            }
+          : null,
+        recentDocuments: recentDocuments.map((doc) => ({
+          id: doc.id,
+          label: doc.fileName || "Document",
+        })),
+        courseProgress: studentBlogs.map((blog) => ({
+          label: blog.title || "Untitled Course",
+          value: Math.min(Math.round((blog.content?.length || 0) / 10), 100),
+        })),
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};

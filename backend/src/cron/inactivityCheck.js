@@ -127,9 +127,7 @@ async function checkInactiveStudents() {
     });
 
     const thresholdDate = new Date();
-    thresholdDate.setDate(
-      thresholdDate.getDate() - INACTIVITY_THRESHOLD_DAYS,
-    );
+    thresholdDate.setDate(thresholdDate.getDate() - INACTIVITY_THRESHOLD_DAYS);
 
     let notifiedCount = 0;
 
