@@ -1,4 +1,8 @@
 import { prisma } from "../utils/prisma.js";
+import {
+  notifyStudentTutorAssigned,
+  notifyStudentTutorReallocated,
+} from "../emails/studentAllocation.js";
 
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -140,6 +144,14 @@ export const createAllocation = async (req, res) => {
       return res.status(404).json({ error: "Student not found" });
     }
 
+    const prior = await prisma.allocation.findUnique({
+      where: { studentId },
+      select: {
+        tutorId: true,
+        tutor: { select: { name: true } },
+      },
+    });
+
     const allocation = await prisma.allocation.upsert({
       where: { studentId },
       create: {
@@ -157,6 +169,21 @@ export const createAllocation = async (req, res) => {
       },
       select: allocationSelect,
     });
+
+    if (!prior) {
+      notifyStudentTutorAssigned(
+        allocation.student.email,
+        allocation.student.name,
+        allocation.tutor.name,
+      );
+    } else if (prior.tutorId !== tutorId) {
+      notifyStudentTutorReallocated(
+        allocation.student.email,
+        allocation.student.name,
+        allocation.tutor.name,
+        prior.tutor?.name,
+      );
+    }
 
     res.status(201).json({ data: formatAllocation(allocation) });
   } catch (err) {
@@ -213,9 +240,23 @@ export const bulkCreateAllocations = async (req, res) => {
       });
     }
 
+    const priors = await prisma.allocation.findMany({
+      where: { studentId: { in: studentIds } },
+      select: {
+        studentId: true,
+        tutorId: true,
+        tutor: { select: { name: true } },
+      },
+    });
+    const priorByStudentId = new Map(
+      priors.map((p) => [p.studentId, p]),
+    );
+
     // Loop through each studentId and upsert individually
     const results = [];
     for (const studentId of studentIds) {
+      const prior = priorByStudentId.get(studentId);
+
       const allocation = await prisma.allocation.upsert({
         where: { studentId },
         create: {
@@ -233,6 +274,22 @@ export const bulkCreateAllocations = async (req, res) => {
         },
         select: allocationSelect,
       });
+
+      if (!prior) {
+        notifyStudentTutorAssigned(
+          allocation.student.email,
+          allocation.student.name,
+          allocation.tutor.name,
+        );
+      } else if (prior.tutorId !== tutorId) {
+        notifyStudentTutorReallocated(
+          allocation.student.email,
+          allocation.student.name,
+          allocation.tutor.name,
+          prior.tutor?.name,
+        );
+      }
+
       results.push(formatAllocation(allocation));
     }
 
@@ -279,7 +336,16 @@ export const updateAllocation = async (req, res) => {
         .json({ error: "At least one field is required to update" });
     }
 
-    const existing = await prisma.allocation.findUnique({ where: { id } });
+    const existing = await prisma.allocation.findUnique({
+      where: { id },
+      select: {
+        tutorId: true,
+        student: {
+          select: { email: true, name: true },
+        },
+        tutor: { select: { name: true } },
+      },
+    });
     if (!existing) {
       return res.status(404).json({ error: "Allocation not found" });
     }
@@ -299,6 +365,15 @@ export const updateAllocation = async (req, res) => {
       data,
       select: allocationSelect,
     });
+
+    if (data.tutorId && data.tutorId !== existing.tutorId) {
+      notifyStudentTutorReallocated(
+        existing.student.email,
+        existing.student.name,
+        allocation.tutor.name,
+        existing.tutor?.name,
+      );
+    }
 
     res.json({ data: formatAllocation(allocation) });
   } catch (err) {
