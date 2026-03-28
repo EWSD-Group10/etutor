@@ -7,6 +7,7 @@ import {
   STUDENT_DOCUMENT_ERROR,
 } from "../utils/documentValidation.js";
 import { hasStudentTutorLink } from "../utils/relationship.js";
+import { createNotification } from "./notifications.js";
 
 const documentSelect = {
   id: true,
@@ -133,6 +134,10 @@ export const uploadDocument = async (req, res) => {
     }
 
     const relativePath = `documents/${file.filename}`;
+    const uploader = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { name: true },
+    });
     const doc = await prisma.document.create({
       data: {
         uploaderId: userId,
@@ -143,6 +148,24 @@ export const uploadDocument = async (req, res) => {
       },
       select: documentSelect,
     });
+
+    // Notify assigned student when tutor uploads a document
+    if (me.role === "tutor") {
+      const allocation = await prisma.allocation.findMany({
+        where: { tutorId: userId },
+        select: { studentId: true },
+      });
+      for (const { studentId } of allocation) {
+        createNotification({
+          userId: studentId,
+          type: "new_document",
+          title: "New Document Shared",
+          message: `${uploader?.name || "Your tutor"} shared "${file.originalname || file.filename}" with you.`,
+          metadata: { documentId: doc.id, fileName: file.originalname || file.filename },
+        });
+      }
+    }
+
     return res.status(201).json({ data: doc });
   } catch (err) {
     console.error(err);

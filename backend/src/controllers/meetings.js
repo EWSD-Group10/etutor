@@ -1,5 +1,6 @@
 import { prisma } from "../utils/prisma.js"
 import { getUserBasic, hasStudentTutorLink } from "../utils/relationship.js"
+import { createNotification } from "./notifications.js"
 
 const meetingSelect = {
   id: true,
@@ -156,6 +157,47 @@ export const createMeeting = async (req, res) => {
       },
       select: meetingSelect,
     })
+
+    // Notify the other party
+    const scheduledDate = new Date(scheduledAt)
+    const dateStr = scheduledDate.toLocaleDateString("en-US", { year: "numeric", month: "numeric", day: "numeric" })
+    const meetingTypeLabel = meetingType === "in_person" ? "In Person" : "Virtual"
+
+    if (me.role === "tutor") {
+      // Notify the student
+      createNotification({
+        userId: studentId,
+        type: "meeting_scheduled",
+        title: "New Meeting Scheduled",
+        message: `${me.name || "Your tutor"} scheduled a meeting: ${notes || "Meeting"}.`,
+        metadata: {
+          meetingId: data.id,
+          meetingName: notes || null,
+          scheduledAt: data.scheduledDate,
+          meetingType: meetingTypeLabel,
+          location: location || null,
+          meetingLink: meetingLink || null,
+          meetingStatus: "scheduled",
+        },
+      })
+    } else if (me.role === "student") {
+      // Notify the tutor
+      createNotification({
+        userId: tutorId,
+        type: "meeting_scheduled",
+        title: "New Meeting Scheduled",
+        message: `${me.name || "A student"} requested a meeting: ${notes || "Meeting"}.`,
+        metadata: {
+          meetingId: data.id,
+          meetingName: notes || null,
+          scheduledAt: data.scheduledDate,
+          meetingType: meetingTypeLabel,
+          location: location || null,
+          meetingLink: meetingLink || null,
+          meetingStatus: "scheduled",
+        },
+      })
+    }
 
     return res.status(201).json({ data: toMeetingApi(data) })
   } catch (err) {

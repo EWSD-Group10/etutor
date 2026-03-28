@@ -3,6 +3,7 @@ import {
   notifyStudentTutorAssigned,
   notifyStudentTutorReallocated,
 } from "../emails/studentAllocation.js";
+import { createNotification } from "./notifications.js";
 
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -176,6 +177,13 @@ export const createAllocation = async (req, res) => {
         allocation.student.name,
         allocation.tutor.name,
       );
+      createNotification({
+        userId: allocation.student.id,
+        type: "tutor_assigned",
+        title: "Tutor Assigned",
+        message: `You have been assigned to ${allocation.tutor.name} for academic support.`,
+        metadata: { tutorId: allocation.tutor.id, tutorName: allocation.tutor.name },
+      });
     } else if (prior.tutorId !== tutorId) {
       notifyStudentTutorReallocated(
         allocation.student.email,
@@ -183,6 +191,13 @@ export const createAllocation = async (req, res) => {
         allocation.tutor.name,
         prior.tutor?.name,
       );
+      createNotification({
+        userId: allocation.student.id,
+        type: "tutor_reallocated",
+        title: "Tutor Reallocated",
+        message: `Your tutor has been changed from ${prior.tutor?.name} to ${allocation.tutor.name}.`,
+        metadata: { tutorId: allocation.tutor.id, tutorName: allocation.tutor.name, previousTutorName: prior.tutor?.name },
+      });
     }
 
     res.status(201).json({ data: formatAllocation(allocation) });
@@ -281,6 +296,13 @@ export const bulkCreateAllocations = async (req, res) => {
           allocation.student.name,
           allocation.tutor.name,
         );
+        createNotification({
+          userId: allocation.student.id,
+          type: "tutor_assigned",
+          title: "Tutor Assigned",
+          message: `You have been assigned to ${allocation.tutor.name} for academic support.`,
+          metadata: { tutorId: allocation.tutor.id, tutorName: allocation.tutor.name },
+        });
       } else if (prior.tutorId !== tutorId) {
         notifyStudentTutorReallocated(
           allocation.student.email,
@@ -288,6 +310,13 @@ export const bulkCreateAllocations = async (req, res) => {
           allocation.tutor.name,
           prior.tutor?.name,
         );
+        createNotification({
+          userId: allocation.student.id,
+          type: "tutor_reallocated",
+          title: "Tutor Reallocated",
+          message: `Your tutor has been changed from ${prior.tutor?.name} to ${allocation.tutor.name}.`,
+          metadata: { tutorId: allocation.tutor.id, tutorName: allocation.tutor.name, previousTutorName: prior.tutor?.name },
+        });
       }
 
       results.push(formatAllocation(allocation));
@@ -373,6 +402,13 @@ export const updateAllocation = async (req, res) => {
         allocation.tutor.name,
         existing.tutor?.name,
       );
+      createNotification({
+        userId: allocation.student.id,
+        type: "tutor_reallocated",
+        title: "Tutor Reallocated",
+        message: `Your tutor has been changed from ${existing.tutor?.name} to ${allocation.tutor.name}.`,
+        metadata: { tutorId: allocation.tutor.id, tutorName: allocation.tutor.name, previousTutorName: existing.tutor?.name },
+      });
     }
 
     res.json({ data: formatAllocation(allocation) });

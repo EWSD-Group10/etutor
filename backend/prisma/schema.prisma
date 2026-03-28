@@ -71,6 +71,8 @@ model User {
   tutorMeetings   Meeting[] @relation("MeetingTutor")
   studentMeetings Meeting[] @relation("MeetingStudent")
 
+  notifications Notification[]
+
   @@index([name])
   @@map("users")
 }
@@ -202,6 +204,25 @@ model Meeting {
   @@index([tutorId])
   @@index([scheduledDate])
   @@map("meetings")
+}
+
+// -------------------- NOTIFICATIONS --------------------
+
+model Notification {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String           @map("user_id") @db.Uuid
+  type      NotificationType
+  title     String           @db.VarChar(255)
+  message   String           @db.Text
+  isRead    Boolean          @default(false) @map("is_read")
+  metadata  Json?
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+  @@index([userId, isRead])
+  @@map("notifications")
 }
 
 // -------------------- INACTIVITY NOTIFICATIONS --------------------
