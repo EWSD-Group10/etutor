@@ -36,7 +36,7 @@ export default function TutorsPage() {
   };
 
   const openView = (tutorId: string) => {
-    router.push(`/tutors/${tutorId}`);
+    router.push(`/admin/view-as/tutor/${tutorId}`);
   };
 
   const openDelete = (tutorId: string) => {
@@ -81,6 +81,7 @@ export default function TutorsPage() {
           onAdd={openAdd}
           onView={openView}
           onDelete={openDelete}
+          viewTooltip="View dashboard as this tutor"
         />
       </Stack>
 

@@ -25,6 +25,9 @@ interface StudentTableProps {
   subtitle?: string;
   /** Default true (admin). Tutors often omit created-at. */
   showCreatedAt?: boolean;
+  /** Tooltip on the eye action (e.g. admin “view as dashboard”). */
+  viewTooltip?: string;
+  headerActions?: ReactNode;
 }
 
 const studentBaseColumns: Column<Student>[] = [
@@ -63,6 +66,7 @@ function makeActionsColumn(
   onEdit?: (s: Student) => void,
   onDelete?: (id: string) => void,
   onStudentDocuments?: (id: string) => void,
+  viewTooltip = "View Details",
 ): Column<Student> | null {
   if (!onView && !onEdit && !onDelete && !onStudentDocuments) return null;
 
@@ -85,7 +89,7 @@ function makeActionsColumn(
           </Tooltip>
         )}
         {onView && (
-          <Tooltip title="View Details">
+          <Tooltip title={viewTooltip}>
             <IconButton size="small" color="primary" onClick={() => onView(student.id)}>
               <Visibility fontSize="small" />
             </IconButton>
@@ -125,13 +129,20 @@ export const StudentTable: React.FC<StudentTableProps> = ({
   title = "Students Directory",
   subtitle = "Manage student records and performance",
   showCreatedAt = true,
+  viewTooltip = "View Details",
   headerActions,
 }) => {
   const columns = useMemo(() => {
     const dataCols = showCreatedAt ? [...studentBaseColumns, createdAtColumn] : studentBaseColumns;
-    const actions = makeActionsColumn(onView, onEdit, onDelete, onStudentDocuments);
+    const actions = makeActionsColumn(
+      onView,
+      onEdit,
+      onDelete,
+      onStudentDocuments,
+      viewTooltip,
+    );
     return actions ? [...dataCols, actions] : dataCols;
-  }, [showCreatedAt, onView, onEdit, onDelete, onStudentDocuments]);
+  }, [showCreatedAt, onView, onEdit, onDelete, onStudentDocuments, viewTooltip]);
 
   return (
     <>

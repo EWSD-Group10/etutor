@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import axios from "@/lib/axios";
+import Link from "next/link";
 import { Skeleton } from "@mui/material";
 
 interface StatCard {
@@ -26,9 +27,9 @@ interface DashboardData {
     label: string;
     value: string;
   }>;
-  engagementData: Array<{
+  weeklyMeetings: Array<{
     week: string;
-    value: number;
+    count: number;
   }>;
   distributionData: Array<{
     subject: string;
@@ -38,9 +39,19 @@ interface DashboardData {
     id: string;
     name: string;
     course: string;
-    engagement: number;
-    risk: string;
+    tutorName?: string;
+    meetingsInLast6Weeks?: number;
+    status: string;
   }>;
+  atRiskDefinition?: string;
+}
+
+interface MostActiveUserRow {
+  userId: string;
+  eventCount: number;
+  name: string | null;
+  email: string;
+  role: string | null;
 }
 
 const getStatCardConfig = (label: string): Partial<StatCard> => {
@@ -120,7 +131,7 @@ const getStatCardConfig = (label: string): Partial<StatCard> => {
         </svg>
       ),
     },
-    "At-Risk Students": {
+    "Students — no meetings (6 wks)": {
       iconBg: "bg-amber-50",
       icon: (
         <svg
@@ -154,7 +165,7 @@ const getStatCardConfig = (label: string): Partial<StatCard> => {
         </svg>
       ),
     },
-    "Avg Engagement": {
+    "Meetings created (6 wks)": {
       iconBg: "bg-purple-50",
       icon: (
         <svg
@@ -185,6 +196,10 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [, setError] = useState<string | null>(null);
 
+  const [activityDays, setActivityDays] = useState<7 | 30>(7);
+  const [activityLoading, setActivityLoading] = useState(true);
+  const [activityRows, setActivityRows] = useState<MostActiveUserRow[]>([]);
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
@@ -203,6 +218,30 @@ export default function AdminDashboard() {
     fetchDashboardData();
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    const loadActivity = async () => {
+      try {
+        setActivityLoading(true);
+        const res = await axios.get("/api/admin/reports/most-active-users", {
+          params: { days: activityDays, limit: 10 },
+        });
+        if (!cancelled) {
+          setActivityRows(res.data.data.topUsers ?? []);
+        }
+      } catch (e) {
+        console.error(e);
+        if (!cancelled) setActivityRows([]);
+      } finally {
+        if (!cancelled) setActivityLoading(false);
+      }
+    };
+    loadActivity();
+    return () => {
+      cancelled = true;
+    };
+  }, [activityDays]);
+
   const today = new Date();
   const dateStr = today.toLocaleDateString("en-GB", {
     weekday: "long",
@@ -218,9 +257,15 @@ export default function AdminDashboard() {
     }),
   );
 
-  const engagementData = dashboardData?.engagementData || [];
+  const weeklyMeetings = dashboardData?.weeklyMeetings || [];
   const distributionData = dashboardData?.distributionData || [];
   const atRiskStudents = dashboardData?.atRiskStudents || [];
+  const atRiskDefinition = dashboardData?.atRiskDefinition;
+  const meetingsChartMax = Math.max(
+    4,
+    ...weeklyMeetings.map((w) => w.count),
+    1,
+  );
 
   return (
     <div className="flex min-h-screen w-full bg-gray-50 font-inter">
@@ -233,6 +278,17 @@ export default function AdminDashboard() {
               Welcome back, Admin
             </h1>
             <p className="text-sm text-gray-500 mt-0.5">{dateStr}</p>
+            <p className="mt-3">
+              <Link
+                href="/admin/view-as"
+                className="text-sm font-semibold text-blue-600 hover:underline"
+              >
+                View as student or tutor
+              </Link>
+              <span className="text-sm text-gray-500 ml-2">
+                (dashboard preview, read-only)
+              </span>
+            </p>
           </div>
 
           {/* Stats grid */}
@@ -274,17 +330,20 @@ export default function AdminDashboard() {
 
           {/* Charts row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            {/* Engagement Trend */}
+            {/* Meetings created per week (real counts) */}
             <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-              <h2 className="text-[15px] font-semibold text-slate-900 mb-6">
-                Engagement Trend
+              <h2 className="text-[15px] font-semibold text-slate-900">
+                Meetings created (weekly)
               </h2>
+              <p className="text-xs text-gray-500 mt-1 mb-6">
+                Count of new meetings per 7-day bucket, last 6 weeks (UTC).
+              </p>
               {loading ? (
                 <Skeleton variant="rectangular" height={260} />
-              ) : engagementData.length > 0 ? (
+              ) : weeklyMeetings.length > 0 ? (
                 <ResponsiveContainer width="100%" height={260}>
                   <LineChart
-                    data={engagementData}
+                    data={weeklyMeetings}
                     margin={{ top: 8, right: 8, left: -10, bottom: 0 }}
                   >
                     <CartesianGrid
@@ -299,15 +358,16 @@ export default function AdminDashboard() {
                       tickLine={false}
                     />
                     <YAxis
-                      domain={[0, 100]}
-                      ticks={[0, 20, 40, 60, 80, 100]}
+                      domain={[0, meetingsChartMax]}
+                      allowDecimals={false}
                       tick={{ fill: "#9CA3AF", fontSize: 12 }}
                       axisLine={false}
                       tickLine={false}
                     />
                     <Line
                       type="monotone"
-                      dataKey="value"
+                      dataKey="count"
+                      name="Meetings"
                       stroke="#2563EB"
                       strokeWidth={3}
                       dot={{
@@ -374,11 +434,16 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* At-Risk Students Table */}
+          {/* Assigned students with no recent meetings */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-[15px] font-semibold text-slate-900 mb-4">
-              At-Risk Students (High Priority)
+            <h2 className="text-[15px] font-semibold text-slate-900">
+              Assigned students — no meetings (6 weeks)
             </h2>
+            <p className="text-xs text-gray-500 mt-1 mb-4">
+              {atRiskDefinition ??
+                "Assigned students with no meetings in the rolling 6-week window."}{" "}
+              Table shows up to 10; the stat card is the full count.
+            </p>
             {loading ? (
               <div className="space-y-3">
                 {[...Array(5)].map((_, i) => (
@@ -392,7 +457,7 @@ export default function AdminDashboard() {
               </div>
             ) : atRiskStudents.length > 0 ? (
               <div className="overflow-x-auto">
-                <table className="w-full min-w-[540px]">
+                <table className="w-full min-w-[640px]">
                   <thead>
                     <tr className="bg-gray-50 rounded-lg">
                       <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5 rounded-l-lg">
@@ -401,18 +466,18 @@ export default function AdminDashboard() {
                       <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5">
                         Course
                       </th>
-                      {/* <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5">
-                        Engagement
-                      </th> */}
+                      <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5">
+                        Tutor
+                      </th>
                       <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5 rounded-r-lg">
-                        Risk Level
+                        Status
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {atRiskStudents.map((student, i) => (
+                    {atRiskStudents.map((student) => (
                       <tr
-                        key={i}
+                        key={student.id}
                         className="border-b border-gray-50 last:border-0"
                       >
                         <td className="px-4 py-3">
@@ -425,21 +490,14 @@ export default function AdminDashboard() {
                             {student.course}
                           </span>
                         </td>
-
-                        {/* <td className="px-4 py-3">
-                          <div className="flex items-center gap-2">
-                            <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-red-400 rounded-full"
-                                style={{ width: `${student.engagement}%` }}
-                              />
-                            </div>
-                          </div>
-                        </td> */}
-
                         <td className="px-4 py-3">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-red-100 text-red-800">
-                            {student.risk}
+                          <span className="text-xs text-gray-500">
+                            {student.tutorName ?? "—"}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-medium bg-amber-100 text-amber-900">
+                            {student.status}
                           </span>
                         </td>
                       </tr>
@@ -449,7 +507,119 @@ export default function AdminDashboard() {
               </div>
             ) : (
               <div className="py-8 text-center text-gray-500">
-                No at-risk students found
+                No assigned students without meetings in this window.
+              </div>
+            )}
+          </div>
+
+          {/* Most active users (logged actions: login, messages, meetings, uploads) */}
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <div>
+                <h2 className="text-[15px] font-semibold text-slate-900">
+                  Most active users
+                </h2>
+                <p className="text-xs text-gray-500 mt-1">
+                  By event count (logins, messages sent, meetings created,
+                  document uploads). Top 10.
+                </p>
+              </div>
+              <div className="inline-flex rounded-lg border border-gray-200 p-0.5 bg-gray-50">
+                <button
+                  type="button"
+                  onClick={() => setActivityDays(7)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                    activityDays === 7
+                      ? "bg-white text-blue-600 shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Last 7 days
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActivityDays(30)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                    activityDays === 30
+                      ? "bg-white text-blue-600 shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Last 30 days
+                </button>
+              </div>
+            </div>
+            {activityLoading ? (
+              <div className="space-y-3">
+                {[...Array(5)].map((_, i) => (
+                  <Skeleton
+                    key={i}
+                    variant="rectangular"
+                    height={40}
+                    sx={{ borderRadius: "8px" }}
+                  />
+                ))}
+              </div>
+            ) : activityRows.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[520px]">
+                  <thead>
+                    <tr className="bg-gray-50 rounded-lg">
+                      <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5 rounded-l-lg w-12">
+                        #
+                      </th>
+                      <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5">
+                        User
+                      </th>
+                      <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5">
+                        Email
+                      </th>
+                      <th className="text-left text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5">
+                        Role
+                      </th>
+                      <th className="text-right text-[10px] font-bold text-gray-500 uppercase tracking-wide px-4 py-2.5 rounded-r-lg">
+                        Events
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {activityRows.map((row, i) => (
+                      <tr
+                        key={row.userId}
+                        className="border-b border-gray-50 last:border-0"
+                      >
+                        <td className="px-4 py-3 text-xs text-gray-500">
+                          {i + 1}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="text-xs font-medium text-gray-900">
+                            {row.name || "—"}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="text-xs text-gray-500">
+                            {row.email}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-700 capitalize">
+                            {row.role ?? "—"}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-right">
+                          <span className="text-xs font-bold text-blue-600 tabular-nums">
+                            {row.eventCount}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="py-8 text-center text-gray-500 text-sm">
+                No activity logged in this period yet. Events appear after users
+                log in, send messages, create meetings, or upload documents.
               </div>
             )}
           </div>

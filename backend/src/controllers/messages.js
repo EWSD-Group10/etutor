@@ -1,5 +1,6 @@
 import { prisma } from "../utils/prisma.js"
 import { canDirectInteract, getUserBasic } from "../utils/relationship.js"
+import { logUserActivity } from "../utils/activityLog.js"
 
 // Map DB fields (content, createdAt, readAt) to API shape (messageBody, sentAt, isRead) for frontend
 function toMessageApi(m) {
@@ -118,6 +119,8 @@ export const sendMessage = async (req, res) => {
         recipient: { select: { id: true, name: true, role: true } },
       },
     })
+
+    logUserActivity(userId, "message_sent")
 
     return res.status(201).json({ data: toMessageApi(data) })
   } catch (err) {

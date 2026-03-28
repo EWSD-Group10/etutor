@@ -46,7 +46,7 @@ export default function StudentPage() {
   };
 
   const openView = (studentId: string) => {
-    router.push(`/admin/students/${studentId}`);
+    router.push(`/admin/view-as/student/${studentId}`);
   };
 
   const openDelete = (studentId: string) => {
@@ -80,6 +80,7 @@ export default function StudentPage() {
           onView={openView}
           onDelete={openDelete}
           onAdd={openAdd}
+          viewTooltip="View dashboard as this student"
         />
       </Stack>
 
