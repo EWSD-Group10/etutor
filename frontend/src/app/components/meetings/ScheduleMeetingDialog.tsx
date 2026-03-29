@@ -217,8 +217,8 @@ export const ScheduleMeetingDialog: React.FC<ScheduleMeetingDialogProps> = ({
                   return students.find((s) => s.id === v)?.name ?? v;
                 }}
               >
-                <MenuItem value="">
-                  {tutorStudentsLoading ? "Loading students..." : "e.g. Oliver Smith, Emma Jones"}
+                <MenuItem value="" disabled>
+                  {tutorStudentsLoading ? "Loading students..." : "Select a student"}
                 </MenuItem>
                 {students.map((s) => (
                   <MenuItem key={s.id} value={s.id}>
@@ -226,7 +226,7 @@ export const ScheduleMeetingDialog: React.FC<ScheduleMeetingDialogProps> = ({
                   </MenuItem>
                 ))}
               </Select>
-              <FormHelperText>Separate multiple names with commas.</FormHelperText>
+              <FormHelperText>Select one of your assigned students.</FormHelperText>
             </FormControl>
           )}
 
