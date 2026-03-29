@@ -65,7 +65,13 @@ function getNotificationIcon(type: Notification["type"]) {
     case "tutor_reallocated":
       return { icon: <SyncIcon {...iconProps} />, bg: "#ed6c02" };
     case "meeting_scheduled":
+    case "meeting_pending":
       return { icon: <EventIcon {...iconProps} />, bg: "#7b1fa2" };
+    case "meeting_accepted":
+      return { icon: <CheckIcon {...iconProps} />, bg: "#2e7d32" };
+    case "meeting_rejected":
+    case "meeting_updated":
+      return { icon: <CloseIcon {...iconProps} />, bg: "#d32f2f" };
     case "new_document":
       return { icon: <DescriptionIcon {...iconProps} />, bg: "#2e7d32" };
     default:
@@ -78,7 +84,7 @@ interface NotificationItemProps {
   onRead: (id: string) => void;
   onMeetingAction: (
     meetingId: string,
-    status: "completed" | "cancelled",
+    status: "scheduled" | "cancelled",
   ) => void;
   isMeetingUpdating: boolean;
 }
@@ -92,8 +98,8 @@ function NotificationItem({
   const { icon, bg } = getNotificationIcon(notification.type);
   const meta = notification.metadata as NotificationMetadata | null;
   const isPendingMeeting =
-    notification.type === "meeting_scheduled" &&
-    meta?.meetingStatus === "scheduled" &&
+    notification.type === "meeting_pending" &&
+    meta?.meetingStatus === "pending" &&
     !notification.isRead;
 
   const handleClick = () => {
@@ -103,10 +109,10 @@ function NotificationItem({
   };
 
   const getStatusBadge = () => {
-    if (notification.type !== "meeting_scheduled") return null;
-    if (!notification.isRead && meta?.meetingStatus === "scheduled")
+    if (notification.type !== "meeting_pending" && notification.type !== "meeting_scheduled") return null;
+    if (!notification.isRead && meta?.meetingStatus === "pending")
       return null; // show buttons instead
-    if (meta?.meetingStatus === "scheduled") return null;
+    if (meta?.meetingStatus === "pending") return null;
 
     const accepted = notification.message?.toLowerCase().includes("accepted");
     const rejected = notification.message?.toLowerCase().includes("rejected");
@@ -315,7 +321,7 @@ function NotificationItem({
                 startIcon={<CheckIcon sx={{ fontSize: 14 }} />}
                 disabled={isMeetingUpdating}
                 onClick={() => {
-                  onMeetingAction(meta.meetingId!, "completed");
+                  onMeetingAction(meta.meetingId!, "scheduled");
                   onRead(notification.id);
                 }}
                 sx={{
@@ -376,7 +382,7 @@ export default function StudentNotificationsPage() {
 
   const handleMeetingAction = (
     meetingId: string,
-    status: "completed" | "cancelled",
+    status: "scheduled" | "cancelled",
   ) => {
     updateMeeting.mutate({ meetingId, input: { meetingStatus: status } });
   };
