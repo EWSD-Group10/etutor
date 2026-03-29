@@ -20,6 +20,14 @@ const documentSelect = {
   uploader: { select: { id: true, name: true, role: true } },
 };
 
+const commentSelect = {
+  id: true,
+  commentText: true,
+  createdAt: true,
+  commenterId: true,
+  commenter: { select: { id: true, name: true, role: true } },
+};
+
 async function getVisibleUploaderIds(userId, role) {
   if (role === "student") {
     return [userId];
@@ -32,6 +40,16 @@ async function getVisibleUploaderIds(userId, role) {
     return [userId, ...tutees.map((t) => t.studentId)];
   }
   return [];
+}
+
+async function canAccessDocument(userId, role, documentUploaderId) {
+  if (role === "admin") return true;
+  if (role === "student") {
+    return userId === documentUploaderId;
+  }
+  // tutor
+  const visibleUploaderIds = await getVisibleUploaderIds(userId, role);
+  return visibleUploaderIds.includes(documentUploaderId);
 }
 
 function resolveDiskPath(filePath) {
@@ -234,6 +252,102 @@ export const downloadDocument = async (req, res) => {
     }
 
     return res.download(diskPath, doc.fileName || "download");
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// GET /api/documents/:id (info + comments)
+export const getDocument = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const { id } = req.params;
+    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+    const me = await prisma.user.findUnique({ where: { id: userId }, select: { role: true } });
+    if (!me) return res.status(404).json({ error: "User not found" });
+
+    const doc = await prisma.document.findUnique({
+      where: { id },
+      select: {
+        ...documentSelect,
+        uploaderId: true,
+        comments: { select: commentSelect, orderBy: { createdAt: "asc" } },
+      },
+    });
+    if (!doc) return res.status(404).json({ error: "Document not found" });
+
+    const allowed = await canAccessDocument(userId, me.role, doc.uploaderId);
+    if (!allowed) return res.status(403).json({ error: "Not allowed" });
+
+    return res.json({ data: doc });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// GET /api/documents/:id/comments
+export const getDocumentComments = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const { id } = req.params;
+    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+
+    const me = await prisma.user.findUnique({ where: { id: userId }, select: { role: true } });
+    if (!me) return res.status(404).json({ error: "User not found" });
+
+    const doc = await prisma.document.findUnique({ where: { id }, select: { uploaderId: true } });
+    if (!doc) return res.status(404).json({ error: "Document not found" });
+
+    const allowed = await canAccessDocument(userId, me.role, doc.uploaderId);
+    if (!allowed) return res.status(403).json({ error: "Not allowed" });
+
+    const comments = await prisma.comment.findMany({
+      where: { documentId: id },
+      select: commentSelect,
+      orderBy: { createdAt: "asc" },
+    });
+
+    return res.json({ data: comments });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// POST /api/documents/:id/comments
+export const addDocumentComment = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const { id } = req.params;
+    const { commentText } = req.body;
+
+    if (!userId) return res.status(401).json({ error: "Unauthorized" });
+    if (!commentText || !commentText.trim()) {
+      return res.status(400).json({ error: "Comment text is required" });
+    }
+
+    const me = await prisma.user.findUnique({ where: { id: userId }, select: { role: true } });
+    if (!me) return res.status(404).json({ error: "User not found" });
+
+    const doc = await prisma.document.findUnique({ where: { id }, select: { uploaderId: true } });
+    if (!doc) return res.status(404).json({ error: "Document not found" });
+
+    const allowed = await canAccessDocument(userId, me.role, doc.uploaderId);
+    if (!allowed) return res.status(403).json({ error: "Not allowed" });
+
+    const comment = await prisma.comment.create({
+      data: {
+        documentId: id,
+        commenterId: userId,
+        commentText: commentText.trim(),
+      },
+      select: commentSelect,
+    });
+
+    return res.status(201).json({ data: comment });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal server error" });

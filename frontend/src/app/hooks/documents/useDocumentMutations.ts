@@ -1,5 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { uploadDocumentFile, deleteDocument } from "./query";
+import {
+  uploadDocumentFile,
+  deleteDocument,
+  addDocumentComment,
+} from "./query";
 import { documentKeys } from "./useDocuments";
 
 export const useUploadDocument = () => {
@@ -18,6 +22,25 @@ export const useDeleteDocument = () => {
     mutationFn: (id: string) => deleteDocument(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: documentKeys.all });
+    },
+  });
+};
+
+export const useAddDocumentComment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      documentId,
+      commentText,
+    }: {
+      documentId: string;
+      commentText: string;
+    }) => addDocumentComment(documentId, commentText),
+    onSuccess: (_, { documentId }) => {
+      queryClient.invalidateQueries({ queryKey: documentKeys.list() });
+      queryClient.invalidateQueries({
+        queryKey: ["documents", "comments", documentId],
+      });
     },
   });
 };

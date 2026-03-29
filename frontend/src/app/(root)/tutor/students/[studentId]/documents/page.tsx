@@ -10,14 +10,24 @@ import {
   CircularProgress,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import DocumentsToolbar, { type DocumentsFilterValue } from "@/app/components/documents/DocumentsToolbar";
-import DocumentsDataTable, { type DocumentTableRow } from "@/app/components/documents/DocumentsDataTable";
-import { getFormatCategory } from "@/app/components/documents/documentFormatUtils";
+import DocumentsToolbar, {
+  type DocumentsFilterValue,
+} from "@/app/components/documents/DocumentsToolbar";
+import DocumentsDataTable, {
+  type DocumentTableRow,
+} from "@/app/components/documents/DocumentsDataTable";
+import DocumentCommentsDialog from "@/app/components/documents/DocumentCommentsDialog";
 import { useDocuments } from "@/app/hooks/documents/useDocuments";
-import { downloadDocumentFile, type DocumentRecord } from "@/app/hooks/documents/query";
+import {
+  downloadDocumentFile,
+  type DocumentRecord,
+} from "@/app/hooks/documents/query";
 import { useTutorMyStudents } from "@/app/hooks/tutors/useTutors";
+import { getFormatCategory } from "@/app/components/documents/documentFormatUtils";
 
-function mapToRows(data: { data: DocumentRecord[] } | undefined): DocumentTableRow[] {
+function mapToRows(
+  data: { data: DocumentRecord[] } | undefined,
+): DocumentTableRow[] {
   if (!data?.data) return [];
   return data.data.map((d) => ({
     id: d.id,
@@ -33,10 +43,16 @@ function mapToRows(data: { data: DocumentRecord[] } | undefined): DocumentTableR
 export default function TutorStudentDocumentsPage() {
   const params = useParams();
   const router = useRouter();
-  const studentId = typeof params.studentId === "string" ? params.studentId : "";
+  const studentId =
+    typeof params.studentId === "string" ? params.studentId : "";
 
   const [filter, setFilter] = useState<DocumentsFilterValue>("all");
   const [search, setSearch] = useState("");
+  const [commentDialogOpen, setCommentDialogOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState<null | {
+    id: string;
+    fileName: string;
+  }>(null);
 
   const { data: students, isLoading: studentsLoading } = useTutorMyStudents();
 
@@ -50,10 +66,13 @@ export default function TutorStudentDocumentsPage() {
     [students, studentId],
   );
 
-  const { data, isLoading: docsLoading, isError } = useDocuments(
-    studentId || undefined,
-    { enabled: Boolean(studentId) && assigned },
-  );
+  const {
+    data,
+    isLoading: docsLoading,
+    isError,
+  } = useDocuments(studentId || undefined, {
+    enabled: Boolean(studentId) && assigned,
+  });
 
   const rows = useMemo(() => mapToRows(data), [data]);
 
@@ -63,7 +82,10 @@ export default function TutorStudentDocumentsPage() {
       const cat = getFormatCategory(row.fileName, row.fileFormat);
       if (filter !== "all" && cat !== filter) return false;
       if (!q) return true;
-      return row.fileName.toLowerCase().includes(q) || row.uploadedBy.toLowerCase().includes(q);
+      return (
+        row.fileName.toLowerCase().includes(q) ||
+        row.uploadedBy.toLowerCase().includes(q)
+      );
     });
   }, [rows, filter, search]);
 
@@ -80,7 +102,11 @@ export default function TutorStudentDocumentsPage() {
     return (
       <Box sx={{ p: { xs: 2, md: 4 } }}>
         <Typography color="error">Invalid student.</Typography>
-        <Button startIcon={<ArrowBackIcon />} onClick={() => router.push("/tutor/students")} sx={{ mt: 2 }}>
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={() => router.push("/tutor/students")}
+          sx={{ mt: 2 }}
+        >
           Back to students
         </Button>
       </Box>
@@ -89,7 +115,14 @@ export default function TutorStudentDocumentsPage() {
 
   if (studentsLoading) {
     return (
-      <Box sx={{ p: { xs: 2, md: 4 }, display: "flex", justifyContent: "center", py: 10 }}>
+      <Box
+        sx={{
+          p: { xs: 2, md: 4 },
+          display: "flex",
+          justifyContent: "center",
+          py: 10,
+        }}
+      >
         <CircularProgress />
       </Box>
     );
@@ -98,8 +131,14 @@ export default function TutorStudentDocumentsPage() {
   if (!assigned) {
     return (
       <Box sx={{ p: { xs: 2, md: 4 } }}>
-        <Typography color="text.secondary">This student is not assigned to you.</Typography>
-        <Button startIcon={<ArrowBackIcon />} onClick={() => router.push("/tutor/students")} sx={{ mt: 2 }}>
+        <Typography color="text.secondary">
+          This student is not assigned to you.
+        </Typography>
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={() => router.push("/tutor/students")}
+          sx={{ mt: 2 }}
+        >
           Back to students
         </Button>
       </Box>
@@ -117,10 +156,17 @@ export default function TutorStudentDocumentsPage() {
       </Button>
 
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" sx={{ fontWeight: 800, color: "text.primary", mb: 0.5 }}>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: 800, color: "text.primary", mb: 0.5 }}
+        >
           Documents
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ fontWeight: 500 }}
+        >
           Files uploaded by {studentName}
         </Typography>
       </Box>
@@ -143,9 +189,27 @@ export default function TutorStudentDocumentsPage() {
             search={search}
             onSearchChange={setSearch}
           />
-          <DocumentsDataTable rows={filteredRows} showEdit={false} onView={handleView} />
+          <DocumentsDataTable
+            rows={filteredRows}
+            showEdit={false}
+            onView={handleView}
+            onComment={(row) => {
+              setSelectedDocument({ id: row.id, fileName: row.fileName });
+              setCommentDialogOpen(true);
+            }}
+          />
         </Stack>
       )}
+
+      <DocumentCommentsDialog
+        open={commentDialogOpen}
+        documentId={selectedDocument?.id ?? null}
+        documentName={selectedDocument?.fileName ?? "Document"}
+        onClose={() => {
+          setCommentDialogOpen(false);
+          setSelectedDocument(null);
+        }}
+      />
     </Box>
   );
 }

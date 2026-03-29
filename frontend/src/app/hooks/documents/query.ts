@@ -20,7 +20,9 @@ export interface DocumentsListResponse {
   data: DocumentRecord[];
 }
 
-export const fetchDocuments = async (filterByStudentId?: string): Promise<DocumentsListResponse> => {
+export const fetchDocuments = async (
+  filterByStudentId?: string,
+): Promise<DocumentsListResponse> => {
   const response = await api.get<DocumentsListResponse>("/api/documents", {
     params: filterByStudentId ? { studentId: filterByStudentId } : undefined,
   });
@@ -53,7 +55,10 @@ export const deleteDocument = async (id: string): Promise<void> => {
   await api.delete(`/api/documents/${id}`);
 };
 
-export async function downloadDocumentFile(id: string, suggestedName: string): Promise<void> {
+export async function downloadDocumentFile(
+  id: string,
+  suggestedName: string,
+): Promise<void> {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
   const res = await fetch(`${API_BASE_URL}/api/documents/${id}/download`, {
@@ -71,3 +76,41 @@ export async function downloadDocumentFile(id: string, suggestedName: string): P
   a.click();
   URL.revokeObjectURL(url);
 }
+
+export interface DocumentComment {
+  id: string;
+  commentText: string;
+  createdAt: string;
+  commenterId: string;
+  commenter: {
+    id: string;
+    name: string | null;
+    role: string;
+  };
+}
+
+export interface DocumentCommentsResponse {
+  data: DocumentComment[];
+}
+
+export const fetchDocumentComments = async (
+  documentId: string,
+): Promise<DocumentCommentsResponse> => {
+  const response = await api.get<DocumentCommentsResponse>(
+    `/api/documents/${documentId}/comments`,
+  );
+  return response.data;
+};
+
+export const addDocumentComment = async (
+  documentId: string,
+  commentText: string,
+): Promise<{ data: DocumentComment }> => {
+  const response = await api.post<{ data: DocumentComment }>(
+    `/api/documents/${documentId}/comments`,
+    {
+      commentText,
+    },
+  );
+  return response.data;
+};

@@ -67,6 +67,9 @@ import {
   uploadDocument,
   downloadDocument,
   deleteDocument,
+  getDocument,
+  getDocumentComments,
+  addDocumentComment,
 } from "./controllers/documents.js";
 import {
   listNotifications,
@@ -236,6 +239,9 @@ app.post(
   documentUpload.single("file"),
   uploadDocument,
 );
+app.get("/api/documents/:id", requireSignin, getDocument);
+app.get("/api/documents/:id/comments", requireSignin, getDocumentComments);
+app.post("/api/documents/:id/comments", requireSignin, addDocumentComment);
 app.get("/api/documents/:id/download", requireSignin, downloadDocument);
 app.delete("/api/documents/:id", requireSignin, deleteDocument);
 

@@ -14,9 +14,14 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import StorageIcon from "@mui/icons-material/Storage";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import DashboardStatsCard from "@/app/components/dashboard/DashboardStatsCard";
-import DocumentsToolbar, { type DocumentsFilterValue } from "@/app/components/documents/DocumentsToolbar";
-import DocumentsDataTable, { type DocumentTableRow } from "@/app/components/documents/DocumentsDataTable";
+import DocumentsToolbar, {
+  type DocumentsFilterValue,
+} from "@/app/components/documents/DocumentsToolbar";
+import DocumentsDataTable, {
+  type DocumentTableRow,
+} from "@/app/components/documents/DocumentsDataTable";
 import UploadDocumentDialog from "@/app/components/documents/UploadDocumentDialog";
+import DocumentCommentsDialog from "@/app/components/documents/DocumentCommentsDialog";
 import {
   getFormatCategory,
   STUDENT_DOCUMENT_ACCEPT,
@@ -24,10 +29,18 @@ import {
   isAllowedStudentUploadFile,
 } from "@/app/components/documents/documentFormatUtils";
 import { useDocuments } from "@/app/hooks/documents/useDocuments";
-import { useUploadDocument, useDeleteDocument } from "@/app/hooks/documents/useDocumentMutations";
-import { downloadDocumentFile, type DocumentRecord } from "@/app/hooks/documents/query";
+import {
+  useUploadDocument,
+  useDeleteDocument,
+} from "@/app/hooks/documents/useDocumentMutations";
+import {
+  downloadDocumentFile,
+  type DocumentRecord,
+} from "@/app/hooks/documents/query";
 
-function mapToRows(data: { data: DocumentRecord[] } | undefined): DocumentTableRow[] {
+function mapToRows(
+  data: { data: DocumentRecord[] } | undefined,
+): DocumentTableRow[] {
   if (!data?.data) return [];
   return data.data.map((d) => ({
     id: d.id,
@@ -44,6 +57,11 @@ export default function StudentDocumentsPage() {
   const [filter, setFilter] = useState<DocumentsFilterValue>("all");
   const [search, setSearch] = useState("");
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [commentDialogOpen, setCommentDialogOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState<null | {
+    id: string;
+    fileName: string;
+  }>(null);
 
   const { data, isLoading } = useDocuments();
   const uploadMutation = useUploadDocument();
@@ -60,7 +78,9 @@ export default function StudentDocumentsPage() {
   const stats = useMemo(() => {
     const total = rows.length;
     const totalBytes = rows.reduce((s, r) => s + r.sizeBytes, 0);
-    const recent = rows.filter((r) => new Date(r.uploadedAt) >= sevenDaysAgo).length;
+    const recent = rows.filter(
+      (r) => new Date(r.uploadedAt) >= sevenDaysAgo,
+    ).length;
     return { total, totalBytes, recent };
   }, [rows, sevenDaysAgo]);
 
@@ -110,10 +130,17 @@ export default function StudentDocumentsPage() {
         }}
       >
         <Box>
-          <Typography variant="h4" sx={{ fontWeight: 800, color: "text.primary", mb: 0.5 }}>
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: 800, color: "text.primary", mb: 0.5 }}
+          >
             Documents
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 500 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ fontWeight: 500 }}
+          >
             Upload and manage your files (PDF, Word, Excel, PowerPoint)
           </Typography>
         </Box>
@@ -196,9 +223,23 @@ export default function StudentDocumentsPage() {
             showEdit={false}
             onView={handleView}
             onDelete={handleDelete}
+            onComment={(row) => {
+              setSelectedDocument({ id: row.id, fileName: row.fileName });
+              setCommentDialogOpen(true);
+            }}
           />
         </Stack>
       )}
+
+      <DocumentCommentsDialog
+        open={commentDialogOpen}
+        documentId={selectedDocument?.id ?? null}
+        documentName={selectedDocument?.fileName ?? "Document"}
+        onClose={() => {
+          setCommentDialogOpen(false);
+          setSelectedDocument(null);
+        }}
+      />
     </Box>
   );
 }
