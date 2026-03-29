@@ -86,6 +86,41 @@ export function buildNotificationEmail(type, recipientName, message, metadata) {
       };
     }
 
+    case "meeting_pending": {
+      const meetingName = escapeHtml(metadata?.meetingName || "a meeting");
+      const scheduledAt = metadata?.scheduledAt
+        ? new Date(metadata.scheduledAt).toLocaleString("en-US", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : null;
+      const meetingType = escapeHtml(metadata?.meetingType || "");
+      const location = metadata?.location ? escapeHtml(metadata.location) : null;
+      const meetingLink = metadata?.meetingLink ? escapeHtml(metadata.meetingLink) : null;
+
+      const detailRows = [
+        scheduledAt ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Date</td><td style="padding:4px 0;">${scheduledAt}</td></tr>` : "",
+        meetingType ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Type</td><td style="padding:4px 0;">${meetingType}</td></tr>` : "",
+        location ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Location</td><td style="padding:4px 0;">${location}</td></tr>` : "",
+        meetingLink ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Link</td><td style="padding:4px 0;"><a href="${meetingLink}">${meetingLink}</a></td></tr>` : "",
+      ].filter(Boolean).join("");
+
+      return {
+        subject: `${APP_NAME}: Meeting request — ${escapeHtml(metadata?.meetingName || "Meeting")}`,
+        body: emailLayout(`
+          <h2>Meeting Request</h2>
+          <p>Dear ${name},</p>
+          <p>You have a pending meeting request: <strong>${meetingName}</strong>.</p>
+          ${detailRows ? `<table style="margin:16px 0;border-collapse:collapse;">${detailRows}</table>` : ""}
+          <p>Please log in to <strong>${APP_NAME}</strong> to accept or reject this meeting.</p>
+        `),
+      };
+    }
+
     case "meeting_accepted": {
       const meetingName = escapeHtml(metadata?.meetingName || "the meeting");
       const acceptedBy = escapeHtml(metadata?.actionBy || "the other participant");
@@ -110,6 +145,19 @@ export function buildNotificationEmail(type, recipientName, message, metadata) {
           <p>Dear ${name},</p>
           <p><strong>${rejectedBy}</strong> has rejected the meeting: <strong>${meetingName}</strong>.</p>
           <p>Please log in to <strong>${APP_NAME}</strong> to reschedule if needed.</p>
+        `),
+      };
+    }
+
+    case "meeting_updated": {
+      const meetingName = escapeHtml(metadata?.meetingName || "the meeting");
+      return {
+        subject: `${APP_NAME}: Meeting cancelled — ${escapeHtml(metadata?.meetingName || "Meeting")}`,
+        body: emailLayout(`
+          <h2>Meeting Cancelled</h2>
+          <p>Dear ${name},</p>
+          <p>The meeting <strong>${meetingName}</strong> has been cancelled.</p>
+          <p>Please log in to <strong>${APP_NAME}</strong> for more details.</p>
         `),
       };
     }
