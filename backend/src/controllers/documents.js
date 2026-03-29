@@ -8,6 +8,7 @@ import {
   STUDENT_DOCUMENT_ERROR,
 } from "../utils/documentValidation.js";
 import { hasStudentTutorLink } from "../utils/relationship.js";
+import { createNotification } from "./notifications.js";
 
 const documentSelect = {
   id: true,
@@ -134,6 +135,10 @@ export const uploadDocument = async (req, res) => {
     }
 
     const relativePath = `documents/${file.filename}`;
+    const uploader = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { name: true },
+    });
     const doc = await prisma.document.create({
       data: {
         uploaderId: userId,
@@ -145,6 +150,40 @@ export const uploadDocument = async (req, res) => {
       select: documentSelect,
     });
     logUserActivity(userId, "document_uploaded");
+
+    // Notify the other party when a document is uploaded
+    if (me.role === "tutor") {
+      // Notify all assigned students
+      const allocations = await prisma.allocation.findMany({
+        where: { tutorId: userId },
+        select: { studentId: true },
+      });
+      for (const { studentId } of allocations) {
+        createNotification({
+          userId: studentId,
+          type: "new_document",
+          title: "New Document Shared",
+          message: `${uploader?.name || "Your tutor"} shared "${file.originalname || file.filename}" with you.`,
+          metadata: { documentId: doc.id, fileName: file.originalname || file.filename, sharedBy: uploader?.name || null },
+        });
+      }
+    } else if (me.role === "student") {
+      // Notify the assigned tutor
+      const allocation = await prisma.allocation.findUnique({
+        where: { studentId: userId },
+        select: { tutorId: true },
+      });
+      if (allocation?.tutorId) {
+        createNotification({
+          userId: allocation.tutorId,
+          type: "new_document",
+          title: "New Document Shared",
+          message: `${uploader?.name || "Your student"} shared "${file.originalname || file.filename}" with you.`,
+          metadata: { documentId: doc.id, fileName: file.originalname || file.filename, sharedBy: uploader?.name || null },
+        });
+      }
+    }
+
     return res.status(201).json({ data: doc });
   } catch (err) {
     console.error(err);

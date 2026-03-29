@@ -68,6 +68,11 @@ import {
   downloadDocument,
   deleteDocument,
 } from "./controllers/documents.js";
+import {
+  listNotifications,
+  markNotificationRead,
+  markAllNotificationsRead,
+} from "./controllers/notifications.js";
 import { documentUpload } from "./utils/documentUpload.js";
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js";
 
@@ -217,6 +222,11 @@ app.put("/api/blogs/:id", requireSignin, isTutor, updateBlog);
 app.delete("/api/blogs/:id", requireSignin, isTutor, deleteBlog);
 app.get("/api/blogs/:id/comments", requireSignin, getComments);
 app.post("/api/blogs/:id/comments", requireSignin, addComment);
+
+// Notification endpoints (student only)
+app.get("/api/notifications", requireSignin, listNotifications);
+app.put("/api/notifications/read-all", requireSignin, markAllNotificationsRead);
+app.put("/api/notifications/:id/read", requireSignin, markNotificationRead);
 
 // Documents (tutor + assigned students share visibility; upload for student/tutor)
 app.get("/api/documents", requireSignin, listDocuments);

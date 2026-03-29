@@ -1,6 +1,7 @@
 import { prisma } from "../utils/prisma.js"
 import { getUserBasic, hasStudentTutorLink } from "../utils/relationship.js"
 import { logUserActivity } from "../utils/activityLog.js"
+import { createNotification } from "./notifications.js"
 
 const meetingSelect = {
   id: true,
@@ -159,6 +160,46 @@ export const createMeeting = async (req, res) => {
     })
 
     logUserActivity(userId, "meeting_created")
+    // Notify the other party
+    const scheduledDate = new Date(scheduledAt)
+    const dateStr = scheduledDate.toLocaleDateString("en-US", { year: "numeric", month: "numeric", day: "numeric" })
+    const meetingTypeLabel = meetingType === "in_person" ? "In Person" : "Virtual"
+
+    if (me.role === "tutor") {
+      // Notify the student
+      createNotification({
+        userId: studentId,
+        type: "meeting_scheduled",
+        title: "New Meeting Scheduled",
+        message: `${me.name || "Your tutor"} scheduled a meeting: ${notes || "Meeting"}.`,
+        metadata: {
+          meetingId: data.id,
+          meetingName: notes || null,
+          scheduledAt: data.scheduledDate,
+          meetingType: meetingTypeLabel,
+          location: location || null,
+          meetingLink: meetingLink || null,
+          meetingStatus: "scheduled",
+        },
+      })
+    } else if (me.role === "student") {
+      // Notify the tutor
+      createNotification({
+        userId: tutorId,
+        type: "meeting_scheduled",
+        title: "New Meeting Scheduled",
+        message: `${me.name || "A student"} requested a meeting: ${notes || "Meeting"}.`,
+        metadata: {
+          meetingId: data.id,
+          meetingName: notes || null,
+          scheduledAt: data.scheduledDate,
+          meetingType: meetingTypeLabel,
+          location: location || null,
+          meetingLink: meetingLink || null,
+          meetingStatus: "scheduled",
+        },
+      })
+    }
 
     return res.status(201).json({ data: toMeetingApi(data) })
   } catch (err) {
@@ -219,6 +260,33 @@ export const updateMeeting = async (req, res) => {
       data,
       select: meetingSelect,
     })
+
+    // If status changed to completed/cancelled, notify the other party
+    if (meetingStatus === "completed" || meetingStatus === "cancelled") {
+      const me = await getUserBasic(userId)
+      const isAccepted = meetingStatus === "completed"
+      const notifType = isAccepted ? "meeting_accepted" : "meeting_rejected"
+      const actionLabel = isAccepted ? "accepted" : "rejected"
+      const meetingName = updated.meetingName || "Meeting"
+
+      // Notify the party who did NOT make the change
+      const otherPartyId = userId === existing.studentId ? existing.tutorId : existing.studentId
+      createNotification({
+        userId: otherPartyId,
+        type: notifType,
+        title: isAccepted ? "Meeting Accepted" : "Meeting Rejected",
+        message: `${me?.name || "The other participant"} ${actionLabel} the meeting: ${meetingName}.`,
+        metadata: {
+          meetingId: id,
+          meetingName,
+          actionBy: me?.name || null,
+          scheduledAt: updated.scheduledDate,
+          meetingType: updated.meetingType === "in_person" ? "In Person" : "Virtual",
+          location: updated.location || null,
+        },
+      })
+    }
+
     return res.json({ data: toMeetingApi(updated) })
   } catch (err) {
     console.error(err)

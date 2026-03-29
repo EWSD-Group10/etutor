@@ -3,7 +3,6 @@
 import React from "react";
 import {
   Dialog,
-  DialogTitle,
   DialogContent,
   Stack,
   Box,
@@ -22,6 +21,7 @@ import {
   InputAdornment,
   Chip,
   Divider,
+  DialogTitle,
 } from "@mui/material";
 import {
   School as SchoolIcon,
@@ -31,6 +31,7 @@ import {
 } from "@mui/icons-material";
 import { useTutors } from "@/app/hooks/tutors/useTutors";
 import { useUnassignedStudents } from "@/app/hooks/allocations/useAllocations";
+import { useStudents } from "@/app/hooks/students/useStudents";
 
 interface BulkAllocationDialogProps {
   open: boolean;
@@ -51,8 +52,11 @@ export const BulkAllocationDialog: React.FC<BulkAllocationDialogProps> = ({
   isLoading = false,
 }) => {
   const { data: tutorsData, isLoading: tutorsLoading } = useTutors(1, 1000);
-  const { data: studentsData, isLoading: studentsLoading } =
-    useUnassignedStudents();
+  const { data: allStudentsData, isLoading: studentsLoading } = useStudents(
+    1,
+    1000,
+  );
+  const { data: unassignedData } = useUnassignedStudents();
 
   const [tutorId, setTutorId] = React.useState("");
   const [selectedStudents, setSelectedStudents] = React.useState<Set<string>>(
@@ -83,20 +87,20 @@ export const BulkAllocationDialog: React.FC<BulkAllocationDialogProps> = ({
   const selectedTutor = tutorsData?.data.find((t: any) => t.id === tutorId);
 
   const filteredStudents =
-    studentsData?.data.filter(
+    allStudentsData?.data.filter(
       (s: any) =>
         s.name.toLowerCase().includes(studentFilter.toLowerCase()) ||
         s.email.toLowerCase().includes(studentFilter.toLowerCase()),
     ) || [];
 
   const handleStudentToggle = (studentId: string) => {
-    const newSelected = new Set(selectedStudents);
-    if (newSelected.has(studentId)) {
-      newSelected.delete(studentId);
+    const next = new Set(selectedStudents);
+    if (next.has(studentId)) {
+      next.delete(studentId);
     } else {
-      newSelected.add(studentId);
+      next.add(studentId);
     }
-    setSelectedStudents(newSelected);
+    setSelectedStudents(next);
   };
 
   const handleSelectAllVisible = () => {
@@ -113,13 +117,9 @@ export const BulkAllocationDialog: React.FC<BulkAllocationDialogProps> = ({
   };
 
   const handleSubmit = () => {
-    if (!tutorId || selectedStudents.size === 0) {
-      alert("Please select a tutor and at least one student");
-      return;
-    }
-
+    if (!selectedTutor || selectedStudents.size === 0) return;
     onSubmit({
-      tutorId,
+      tutorId: selectedTutor.id,
       studentIds: Array.from(selectedStudents),
       reason: reason || undefined,
       notes: notes || undefined,
