@@ -26,6 +26,7 @@ enum MeetingType {
 }
 
 enum MeetingStatus {
+  pending
   scheduled
   completed
   cancelled
@@ -35,8 +36,10 @@ enum NotificationType {
   tutor_assigned
   tutor_reallocated
   meeting_scheduled
+  meeting_pending
   meeting_accepted
   meeting_rejected
+  meeting_updated
   new_document
   student_assigned
 }
@@ -199,7 +202,7 @@ model Meeting {
   meetingName     String?       @map("notes") @db.Text
   meetingCreator  String        @map("created_by_id") @db.Uuid
   meetingType     MeetingType   @default(virtual) @map("meeting_type")
-  meetingStatus   MeetingStatus @default(scheduled) @map("meeting_status")
+  meetingStatus   MeetingStatus @default(pending) @map("meeting_status")
   scheduledDate   DateTime      @map("scheduled_at")
   durationMinutes Int           @default(30) @map("duration_minutes")
   location        String?       @db.VarChar(255)
