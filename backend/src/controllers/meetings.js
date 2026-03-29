@@ -29,7 +29,7 @@ function toMeetingApi(m) {
 }
 
 const VALID_TYPES = new Set(["virtual", "in_person"])
-const VALID_STATUSES = new Set(["scheduled", "completed", "cancelled"])
+const VALID_STATUSES = new Set(["pending", "scheduled", "completed", "cancelled"])
 
 // GET /api/meetings
 export const listMeetings = async (req, res) => {
@@ -149,7 +149,7 @@ export const createMeeting = async (req, res) => {
         tutorId,
         meetingCreator: userId,
         meetingType,
-        meetingStatus: "scheduled",
+        meetingStatus: "pending",
         scheduledDate: new Date(scheduledAt),
         durationMinutes,
         location,
@@ -160,18 +160,15 @@ export const createMeeting = async (req, res) => {
     })
 
     logUserActivity(userId, "meeting_created")
-    // Notify the other party
-    const scheduledDate = new Date(scheduledAt)
-    const dateStr = scheduledDate.toLocaleDateString("en-US", { year: "numeric", month: "numeric", day: "numeric" })
+
     const meetingTypeLabel = meetingType === "in_person" ? "In Person" : "Virtual"
 
     if (me.role === "tutor") {
-      // Notify the student
       createNotification({
         userId: studentId,
-        type: "meeting_scheduled",
-        title: "New Meeting Scheduled",
-        message: `${me.name || "Your tutor"} scheduled a meeting: ${notes || "Meeting"}.`,
+        type: "meeting_pending",
+        title: "Meeting Request",
+        message: `${me.name || "Your tutor"} has requested a meeting: ${notes || "Meeting"}. Please accept or reject.`,
         metadata: {
           meetingId: data.id,
           meetingName: notes || null,
@@ -179,16 +176,15 @@ export const createMeeting = async (req, res) => {
           meetingType: meetingTypeLabel,
           location: location || null,
           meetingLink: meetingLink || null,
-          meetingStatus: "scheduled",
+          meetingStatus: "pending",
         },
       })
     } else if (me.role === "student") {
-      // Notify the tutor
       createNotification({
         userId: tutorId,
-        type: "meeting_scheduled",
-        title: "New Meeting Scheduled",
-        message: `${me.name || "A student"} requested a meeting: ${notes || "Meeting"}.`,
+        type: "meeting_pending",
+        title: "Meeting Request",
+        message: `${me.name || "A student"} has requested a meeting: ${notes || "Meeting"}. Please accept or reject.`,
         metadata: {
           meetingId: data.id,
           meetingName: notes || null,
@@ -196,7 +192,7 @@ export const createMeeting = async (req, res) => {
           meetingType: meetingTypeLabel,
           location: location || null,
           meetingLink: meetingLink || null,
-          meetingStatus: "scheduled",
+          meetingStatus: "pending",
         },
       })
     }
@@ -208,12 +204,11 @@ export const createMeeting = async (req, res) => {
   }
 }
 
-// PUT /api/meetings/:id - full update (tutor/student who can access the meeting)
+// PUT /api/meetings/:id - creator edits, partner accepts/rejects
 export const updateMeeting = async (req, res) => {
   try {
     const userId = req.user?.id
     const { id } = req.params
-    // Only read fields that are actually sent (no defaults), so status-only update keeps name/location
     const {
       notes,
       meetingType,
@@ -228,31 +223,76 @@ export const updateMeeting = async (req, res) => {
 
     const existing = await prisma.meeting.findUnique({
       where: { id },
-      select: { id: true, studentId: true, tutorId: true },
+      select: {
+        id: true,
+        studentId: true,
+        tutorId: true,
+        meetingCreator: true,
+        meetingStatus: true,
+        meetingName: true,
+        scheduledDate: true,
+        meetingType: true,
+        location: true,
+        meetingLink: true,
+      },
     })
     if (!existing) return res.status(404).json({ error: "Meeting not found" })
     if (existing.studentId !== userId && existing.tutorId !== userId) {
       return res.status(403).json({ error: "Not allowed" })
     }
 
-    // Only update fields present in body (e.g. status-only update keeps name/location as record)
-    const data = {}
-    if (notes !== undefined) data.meetingName = notes || null
-    if (meetingType !== undefined && VALID_TYPES.has(meetingType)) {
-      data.meetingType = meetingType
-      // Switching type: virtual → clear location; in_person → clear meeting link
-      if (meetingType === "virtual") data.location = null
-      else if (meetingType === "in_person") data.meetingLink = null
+    const isCreator = existing.meetingCreator === userId
+    const isPartner = !isCreator
+
+    // Partner can only accept (scheduled) or reject (cancelled)
+    if (isPartner) {
+      if (meetingStatus === undefined) {
+        return res.status(403).json({ error: "Only the meeting creator can edit meeting details" })
+      }
+      if (meetingStatus !== "scheduled" && meetingStatus !== "cancelled") {
+        return res.status(400).json({ error: "Partner can only accept (scheduled) or reject (cancelled) a meeting" })
+      }
+      // Guard: meeting must be pending to accept/reject
+      if (existing.meetingStatus !== "pending") {
+        return res.status(409).json({ error: "This meeting is no longer available for acceptance" })
+      }
     }
-    if (scheduledAt !== undefined) data.scheduledDate = new Date(scheduledAt)
-    if (durationMinutes !== undefined) data.durationMinutes = durationMinutes
-    if (location !== undefined) data.location = location || null
-    if (meetingLink !== undefined) data.meetingLink = meetingLink || null
-    if (meetingStatus !== undefined && VALID_STATUSES.has(meetingStatus)) data.meetingStatus = meetingStatus
+
+    // Build update data
+    const data = {}
+
+    if (isCreator) {
+      if (notes !== undefined) data.meetingName = notes || null
+      if (meetingType !== undefined && VALID_TYPES.has(meetingType)) {
+        data.meetingType = meetingType
+        if (meetingType === "virtual") data.location = null
+        else if (meetingType === "in_person") data.meetingLink = null
+      }
+      if (scheduledAt !== undefined) data.scheduledDate = new Date(scheduledAt)
+      if (durationMinutes !== undefined) data.durationMinutes = durationMinutes
+      if (location !== undefined) data.location = location || null
+      if (meetingLink !== undefined) data.meetingLink = meetingLink || null
+      if (meetingStatus !== undefined && meetingStatus === "cancelled") {
+        data.meetingStatus = "cancelled"
+      }
+    }
+
+    if (isPartner && meetingStatus !== undefined) {
+      data.meetingStatus = meetingStatus
+    }
 
     if (Object.keys(data).length === 0) {
       const current = await prisma.meeting.findUnique({ where: { id }, select: meetingSelect })
       return res.json({ data: toMeetingApi(current) })
+    }
+
+    // Check if creator is making a significant change (re-pending)
+    const significantChange =
+      isCreator &&
+      (scheduledAt !== undefined || location !== undefined || meetingLink !== undefined || meetingType !== undefined)
+
+    if (significantChange && existing.meetingStatus !== "cancelled") {
+      data.meetingStatus = "pending"
     }
 
     const updated = await prisma.meeting.update({
@@ -261,21 +301,49 @@ export const updateMeeting = async (req, res) => {
       select: meetingSelect,
     })
 
-    // If status changed to completed/cancelled, notify the other party
-    if (meetingStatus === "completed" || meetingStatus === "cancelled") {
-      const me = await getUserBasic(userId)
-      const isAccepted = meetingStatus === "completed"
-      const notifType = isAccepted ? "meeting_accepted" : "meeting_rejected"
-      const actionLabel = isAccepted ? "accepted" : "rejected"
-      const meetingName = updated.meetingName || "Meeting"
+    const me = await getUserBasic(userId)
+    const otherPartyId = userId === existing.studentId ? existing.tutorId : existing.studentId
+    const meetingName = updated.meetingName || "Meeting"
 
-      // Notify the party who did NOT make the change
-      const otherPartyId = userId === existing.studentId ? existing.tutorId : existing.studentId
+    // Notify based on what happened
+    if (significantChange && updated.meetingStatus === "pending") {
+      // Creator edited — re-request from partner
       createNotification({
         userId: otherPartyId,
-        type: notifType,
-        title: isAccepted ? "Meeting Accepted" : "Meeting Rejected",
-        message: `${me?.name || "The other participant"} ${actionLabel} the meeting: ${meetingName}.`,
+        type: "meeting_pending",
+        title: "Meeting Updated — Action Required",
+        message: `${me?.name || "The other participant"} updated the meeting: ${meetingName}. Please accept or reject.`,
+        metadata: {
+          meetingId: id,
+          meetingName,
+          scheduledAt: updated.scheduledDate,
+          meetingType: updated.meetingType === "in_person" ? "In Person" : "Virtual",
+          location: updated.location || null,
+          meetingLink: updated.meetingLink || null,
+          meetingStatus: "pending",
+        },
+      })
+    } else if (isCreator && data.meetingStatus === "cancelled") {
+      // Creator cancelled — informational to partner
+      createNotification({
+        userId: otherPartyId,
+        type: "meeting_updated",
+        title: "Meeting Cancelled",
+        message: `${me?.name || "The other participant"} cancelled the meeting: ${meetingName}.`,
+        metadata: {
+          meetingId: id,
+          meetingName,
+          scheduledAt: updated.scheduledDate,
+          meetingType: updated.meetingType === "in_person" ? "In Person" : "Virtual",
+        },
+      })
+    } else if (isPartner && meetingStatus === "scheduled") {
+      // Partner accepted — notify creator
+      createNotification({
+        userId: otherPartyId,
+        type: "meeting_accepted",
+        title: "Meeting Accepted",
+        message: `${me?.name || "The other participant"} accepted the meeting: ${meetingName}.`,
         metadata: {
           meetingId: id,
           meetingName,
@@ -283,6 +351,21 @@ export const updateMeeting = async (req, res) => {
           scheduledAt: updated.scheduledDate,
           meetingType: updated.meetingType === "in_person" ? "In Person" : "Virtual",
           location: updated.location || null,
+        },
+      })
+    } else if (isPartner && meetingStatus === "cancelled") {
+      // Partner rejected — notify creator
+      createNotification({
+        userId: otherPartyId,
+        type: "meeting_rejected",
+        title: "Meeting Rejected",
+        message: `${me?.name || "The other participant"} rejected the meeting: ${meetingName}.`,
+        metadata: {
+          meetingId: id,
+          meetingName,
+          actionBy: me?.name || null,
+          scheduledAt: updated.scheduledDate,
+          meetingType: updated.meetingType === "in_person" ? "In Person" : "Virtual",
         },
       })
     }
