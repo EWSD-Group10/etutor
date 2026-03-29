@@ -61,7 +61,6 @@ function getNotificationIcon(type: Notification["type"]) {
     case "student_assigned":
       return { icon: <PersonIcon />, bg: "#1976d2" };
     case "meeting_scheduled":
-    case "meeting_pending":
       return { icon: <EventIcon />, bg: "#7b1fa2" };
     case "meeting_accepted":
       return { icon: <CheckIcon />, bg: "#2e7d32" };
@@ -91,14 +90,14 @@ function NotificationItem({
   const { icon, bg } = getNotificationIcon(notification.type);
   const meta = notification.metadata as NotificationMetadata | null;
 
-  // Tutor sees Accept/Reject for unread meeting_scheduled notifications from students
+  // Accept/Reject shown for unread meeting_scheduled notifications with pending status
   const isPendingMeeting =
-    notification.type === "meeting_pending" &&
+    notification.type === "meeting_scheduled" &&
     meta?.meetingStatus === "pending" &&
     !notification.isRead;
 
   const getStatusBadge = () => {
-    if (notification.type !== "meeting_pending" && notification.type !== "meeting_scheduled") return null;
+    if (notification.type !== "meeting_scheduled") return null;
     if (!notification.isRead && meta?.meetingStatus === "pending")
       return null; // show buttons instead
     if (meta?.meetingStatus === "pending") return null;

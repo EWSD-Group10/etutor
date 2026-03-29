@@ -65,7 +65,6 @@ function getNotificationIcon(type: Notification["type"]) {
     case "tutor_reallocated":
       return { icon: <SyncIcon {...iconProps} />, bg: "#ed6c02" };
     case "meeting_scheduled":
-    case "meeting_pending":
       return { icon: <EventIcon {...iconProps} />, bg: "#7b1fa2" };
     case "meeting_accepted":
       return { icon: <CheckIcon {...iconProps} />, bg: "#2e7d32" };
@@ -98,7 +97,7 @@ function NotificationItem({
   const { icon, bg } = getNotificationIcon(notification.type);
   const meta = notification.metadata as NotificationMetadata | null;
   const isPendingMeeting =
-    notification.type === "meeting_pending" &&
+    notification.type === "meeting_scheduled" &&
     meta?.meetingStatus === "pending" &&
     !notification.isRead;
 
@@ -109,7 +108,7 @@ function NotificationItem({
   };
 
   const getStatusBadge = () => {
-    if (notification.type !== "meeting_pending" && notification.type !== "meeting_scheduled") return null;
+    if (notification.type !== "meeting_scheduled") return null;
     if (!notification.isRead && meta?.meetingStatus === "pending")
       return null; // show buttons instead
     if (meta?.meetingStatus === "pending") return null;

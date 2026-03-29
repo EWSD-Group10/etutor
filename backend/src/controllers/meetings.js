@@ -166,9 +166,9 @@ export const createMeeting = async (req, res) => {
     if (me.role === "tutor") {
       createNotification({
         userId: studentId,
-        type: "meeting_pending",
-        title: "Meeting Request",
-        message: `${me.name || "Your tutor"} has requested a meeting: ${notes || "Meeting"}. Please accept or reject.`,
+        type: "meeting_scheduled",
+        title: "Meeting Scheduled",
+        message: `${me.name || "Your tutor"} has scheduled a meeting: ${notes || "Meeting"}. Please accept or reject.`,
         metadata: {
           meetingId: data.id,
           meetingName: notes || null,
@@ -182,9 +182,9 @@ export const createMeeting = async (req, res) => {
     } else if (me.role === "student") {
       createNotification({
         userId: tutorId,
-        type: "meeting_pending",
-        title: "Meeting Request",
-        message: `${me.name || "A student"} has requested a meeting: ${notes || "Meeting"}. Please accept or reject.`,
+        type: "meeting_scheduled",
+        title: "Meeting Scheduled",
+        message: `${me.name || "A student"} has scheduled a meeting: ${notes || "Meeting"}. Please accept or reject.`,
         metadata: {
           meetingId: data.id,
           meetingName: notes || null,
@@ -310,7 +310,7 @@ export const updateMeeting = async (req, res) => {
       // Creator edited — re-request from partner
       createNotification({
         userId: otherPartyId,
-        type: "meeting_pending",
+        type: "meeting_scheduled",
         title: "Meeting Updated — Action Required",
         message: `${me?.name || "The other participant"} updated the meeting: ${meetingName}. Please accept or reject.`,
         metadata: {
@@ -321,6 +321,7 @@ export const updateMeeting = async (req, res) => {
           location: updated.location || null,
           meetingLink: updated.meetingLink || null,
           meetingStatus: "pending",
+          isUpdate: true,
         },
       })
     } else if (isCreator && data.meetingStatus === "cancelled") {

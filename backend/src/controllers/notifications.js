@@ -27,7 +27,7 @@ export const listNotifications = async (req, res) => {
     } else if (filter === "allocations") {
       where.type = { in: ["tutor_assigned", "tutor_reallocated", "student_assigned"] }
     } else if (filter === "meetings") {
-      where.type = { in: ["meeting_scheduled", "meeting_pending", "meeting_accepted", "meeting_rejected", "meeting_updated"] }
+      where.type = { in: ["meeting_scheduled", "meeting_accepted", "meeting_rejected", "meeting_updated"] }
     } else if (filter === "documents") {
       where.type = "new_document"
     }
@@ -51,7 +51,7 @@ export const listNotifications = async (req, res) => {
       where: {
         userId,
         isRead: false,
-        type: "meeting_pending",
+        type: "meeting_scheduled",
       },
     })
 

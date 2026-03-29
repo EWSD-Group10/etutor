@@ -6,6 +6,7 @@ export type NotificationType =
   | "meeting_scheduled"
   | "meeting_accepted"
   | "meeting_rejected"
+  | "meeting_updated"
   | "new_document"
   | "student_assigned";
 

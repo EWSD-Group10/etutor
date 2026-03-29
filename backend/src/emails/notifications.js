@@ -66,55 +66,27 @@ export function buildNotificationEmail(type, recipientName, message, metadata) {
       const meetingType = escapeHtml(metadata?.meetingType || "");
       const location = metadata?.location ? escapeHtml(metadata.location) : null;
       const meetingLink = metadata?.meetingLink ? escapeHtml(metadata.meetingLink) : null;
+      const isUpdate = metadata?.isUpdate === true;
 
       const detailRows = [
-        scheduledAt ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Date</td><td style="padding:4px 0;">${scheduledAt}</td></tr>` : "",
+        scheduledAt ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Date &amp; Time</td><td style="padding:4px 0;">${scheduledAt}</td></tr>` : "",
         meetingType ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Type</td><td style="padding:4px 0;">${meetingType}</td></tr>` : "",
         location ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Location</td><td style="padding:4px 0;">${location}</td></tr>` : "",
         meetingLink ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Link</td><td style="padding:4px 0;"><a href="${meetingLink}">${meetingLink}</a></td></tr>` : "",
       ].filter(Boolean).join("");
 
-      return {
-        subject: `${APP_NAME}: New meeting scheduled — ${escapeHtml(metadata?.meetingName || "Meeting")}`,
-        body: emailLayout(`
-          <h2>New Meeting Scheduled</h2>
-          <p>Dear ${name},</p>
-          <p>A new meeting has been scheduled: <strong>${meetingName}</strong>.</p>
-          ${detailRows ? `<table style="margin:16px 0;border-collapse:collapse;">${detailRows}</table>` : ""}
-          <p>Please log in to <strong>${APP_NAME}</strong> to accept or reject this meeting.</p>
-        `),
-      };
-    }
-
-    case "meeting_pending": {
-      const meetingName = escapeHtml(metadata?.meetingName || "a meeting");
-      const scheduledAt = metadata?.scheduledAt
-        ? new Date(metadata.scheduledAt).toLocaleString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-          })
-        : null;
-      const meetingType = escapeHtml(metadata?.meetingType || "");
-      const location = metadata?.location ? escapeHtml(metadata.location) : null;
-      const meetingLink = metadata?.meetingLink ? escapeHtml(metadata.meetingLink) : null;
-
-      const detailRows = [
-        scheduledAt ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Date</td><td style="padding:4px 0;">${scheduledAt}</td></tr>` : "",
-        meetingType ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Type</td><td style="padding:4px 0;">${meetingType}</td></tr>` : "",
-        location ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Location</td><td style="padding:4px 0;">${location}</td></tr>` : "",
-        meetingLink ? `<tr><td style="padding:4px 12px 4px 0;color:#666;font-weight:600;">Link</td><td style="padding:4px 0;"><a href="${meetingLink}">${meetingLink}</a></td></tr>` : "",
-      ].filter(Boolean).join("");
+      const subjectPrefix = isUpdate ? "Meeting updated" : "Meeting scheduled";
+      const heading = isUpdate ? "Meeting Updated" : "Meeting Scheduled";
+      const intro = isUpdate
+        ? `A meeting has been updated: <strong>${meetingName}</strong>.`
+        : `A new meeting has been scheduled: <strong>${meetingName}</strong>.`;
 
       return {
-        subject: `${APP_NAME}: Meeting request — ${escapeHtml(metadata?.meetingName || "Meeting")}`,
+        subject: `${APP_NAME}: ${subjectPrefix} — ${escapeHtml(metadata?.meetingName || "Meeting")}${scheduledAt ? ` on ${scheduledAt}` : ""}`,
         body: emailLayout(`
-          <h2>Meeting Request</h2>
+          <h2>${heading}</h2>
           <p>Dear ${name},</p>
-          <p>You have a pending meeting request: <strong>${meetingName}</strong>.</p>
+          <p>${intro}</p>
           ${detailRows ? `<table style="margin:16px 0;border-collapse:collapse;">${detailRows}</table>` : ""}
           <p>Please log in to <strong>${APP_NAME}</strong> to accept or reject this meeting.</p>
         `),
