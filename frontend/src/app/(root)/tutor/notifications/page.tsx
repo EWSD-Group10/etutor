@@ -61,10 +61,12 @@ function getNotificationIcon(type: Notification["type"]) {
     case "student_assigned":
       return { icon: <PersonIcon />, bg: "#1976d2" };
     case "meeting_scheduled":
+    case "meeting_pending":
       return { icon: <EventIcon />, bg: "#7b1fa2" };
     case "meeting_accepted":
-      return { icon: <CheckCircleIcon />, bg: "#2e7d32" };
+      return { icon: <CheckIcon />, bg: "#2e7d32" };
     case "meeting_rejected":
+    case "meeting_updated":
       return { icon: <CloseIcon />, bg: "#d32f2f" };
     case "new_document":
       return { icon: <DescriptionIcon />, bg: "#2e7d32" };
@@ -76,7 +78,7 @@ function getNotificationIcon(type: Notification["type"]) {
 interface NotificationItemProps {
   notification: Notification;
   onRead: (id: string) => void;
-  onMeetingAction: (meetingId: string, status: "completed" | "cancelled") => void;
+  onMeetingAction: (meetingId: string, status: "scheduled" | "cancelled") => void;
   isMeetingUpdating: boolean;
 }
 
@@ -91,11 +93,15 @@ function NotificationItem({
 
   // Tutor sees Accept/Reject for unread meeting_scheduled notifications from students
   const isPendingMeeting =
-    notification.type === "meeting_scheduled" &&
-    meta?.meetingStatus === "scheduled" &&
+    notification.type === "meeting_pending" &&
+    meta?.meetingStatus === "pending" &&
     !notification.isRead;
 
   const getStatusBadge = () => {
+    if (notification.type !== "meeting_pending" && notification.type !== "meeting_scheduled") return null;
+    if (!notification.isRead && meta?.meetingStatus === "pending")
+      return null; // show buttons instead
+    if (meta?.meetingStatus === "pending") return null;
     if (notification.type === "meeting_accepted") {
       return (
         <Chip
@@ -271,7 +277,7 @@ function NotificationItem({
                 startIcon={<CheckIcon sx={{ fontSize: 14 }} />}
                 disabled={isMeetingUpdating}
                 onClick={() => {
-                  onMeetingAction(meta.meetingId!, "completed");
+                  onMeetingAction(meta.meetingId!, "scheduled");
                   onRead(notification.id);
                 }}
                 sx={{
@@ -327,7 +333,7 @@ export default function TutorNotificationsPage() {
   const notifications = data?.data ?? [];
   const stats = data?.stats ?? { total: 0, unread: 0, pendingActions: 0 };
 
-  const handleMeetingAction = (meetingId: string, status: "completed" | "cancelled") => {
+  const handleMeetingAction = (meetingId: string, status: "scheduled" | "cancelled") => {
     updateMeeting.mutate({ meetingId, input: { meetingStatus: status } });
   };
 
