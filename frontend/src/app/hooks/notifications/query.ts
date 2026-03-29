@@ -4,10 +4,8 @@ export type NotificationType =
   | "tutor_assigned"
   | "tutor_reallocated"
   | "meeting_scheduled"
-  | "meeting_pending"
   | "meeting_accepted"
   | "meeting_rejected"
-  | "meeting_updated"
   | "new_document"
   | "student_assigned";
 

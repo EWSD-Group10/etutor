@@ -8,9 +8,10 @@ export const useTutors = (page: number = 1, limit: number = 20) => {
   });
 };
 
-export const useTutorMyStudents = () => {
+export const useTutorMyStudents = (enabled = true) => {
   return useQuery({
     queryKey: ["tutorMyStudents"],
     queryFn: fetchTutorMyStudents,
+    enabled,
   });
 };

@@ -27,7 +27,6 @@ import { EditMeetingDialog } from "@/app/components/meetings/EditMeetingDialog";
 import { MeetingDetailsDialog } from "@/app/components/meetings/MeetingDetailsDialog";
 import { useMeetings, MeetingStatus } from "@/app/hooks/meetings/useMeetings";
 import { useCreateMeeting, useUpdateMeeting } from "@/app/hooks/meetings/useMeetingMutations";
-import { useTutorMyStudents } from "@/app/hooks/tutors/useTutors";
 import { CreateMeetingInput, Meeting, UpdateMeetingInput } from "@/app/hooks/meetings/query";
 
 type TabValue = "all" | MeetingStatus;
@@ -43,7 +42,6 @@ export default function TutorMeetingsPage() {
 
   const createMeeting = useCreateMeeting();
   const updateMeeting = useUpdateMeeting();
-  const { data: tutorStudents = [], isLoading: tutorStudentsLoading } = useTutorMyStudents();
 
   // Determine status filter based on tab
   const statusFilter = activeTab === "all" ? undefined : activeTab;
@@ -147,8 +145,6 @@ export default function TutorMeetingsPage() {
         onSubmit={(data: CreateMeetingInput) => createMeeting.mutate(data)}
         isLoading={createMeeting.isPending}
         role="tutor"
-        tutorStudents={tutorStudents}
-        tutorStudentsLoading={tutorStudentsLoading}
       />
 
       <MeetingDetailsDialog
