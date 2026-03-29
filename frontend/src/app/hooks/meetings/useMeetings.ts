@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchMeetings, fetchAllMeetings, MeetingsResponse } from "./query";
 
-export type MeetingStatus = "scheduled" | "completed" | "cancelled" | undefined;
+export type MeetingStatus = "pending" | "scheduled" | "completed" | "cancelled" | undefined;
 
 // Hook to fetch meetings with pagination and status filter
 export const useMeetings = (

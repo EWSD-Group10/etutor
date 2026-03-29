@@ -12,6 +12,7 @@ export const useNotifications = (filter?: NotificationFilter, search?: string) =
   return useQuery({
     queryKey: [NOTIFICATIONS_KEY, filter, search],
     queryFn: () => fetchNotifications(filter, search),
+    refetchInterval: 10000,
   });
 };
 
