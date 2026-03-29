@@ -522,12 +522,30 @@ export const deleteAllocation = async (req, res) => {
       return res.status(400).json({ error: "Invalid allocation ID format" });
     }
 
-    const existing = await prisma.allocation.findUnique({ where: { id } });
+    const existing = await prisma.allocation.findUnique({
+      where: { id },
+      select: allocationSelect,
+    });
     if (!existing) {
       return res.status(404).json({ error: "Allocation not found" });
     }
 
     await prisma.allocation.delete({ where: { id } });
+
+    createNotification({
+      userId: existing.student.id,
+      type: "tutor_removed",
+      title: "Tutor Assignment Removed",
+      message: "Your personal tutor assignment has been removed by an administrator.",
+      metadata: { tutorId: existing.tutor.id, tutorName: existing.tutor.name },
+    });
+    createNotification({
+      userId: existing.tutor.id,
+      type: "student_removed",
+      title: "Student Removed",
+      message: `${existing.student.name} has been removed from your student list.`,
+      metadata: { studentId: existing.student.id, studentName: existing.student.name },
+    });
 
     res.json({ message: "Allocation removed successfully" });
   } catch (err) {

@@ -162,6 +162,31 @@ export function buildNotificationEmail(type, recipientName, message, metadata) {
       };
     }
 
+    case "tutor_removed": {
+      return {
+        subject: `${APP_NAME}: Your tutor assignment has been removed`,
+        body: emailLayout(`
+          <h2>Tutor Assignment Removed</h2>
+          <p>Dear ${name},</p>
+          <p>Your personal tutor assignment has been removed by an administrator.</p>
+          <p>Please log in to <strong>${APP_NAME}</strong> for more information.</p>
+        `),
+      };
+    }
+
+    case "student_removed": {
+      const studentName = escapeHtml(metadata?.studentName || "A student");
+      return {
+        subject: `${APP_NAME}: A student has been removed from your list`,
+        body: emailLayout(`
+          <h2>Student Removed</h2>
+          <p>Dear ${name},</p>
+          <p><strong>${studentName}</strong> has been removed from your student list by an administrator.</p>
+          <p>Please log in to <strong>${APP_NAME}</strong> for more information.</p>
+        `),
+      };
+    }
+
     case "new_document": {
       const fileName = escapeHtml(metadata?.fileName || "a document");
       const sharedBy = escapeHtml(metadata?.sharedBy || "someone");
