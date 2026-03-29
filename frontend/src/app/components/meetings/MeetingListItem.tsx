@@ -20,7 +20,7 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
-export type MeetingStatus = "scheduled" | "completed" | "cancelled";
+export type MeetingStatus = "pending" | "scheduled" | "completed" | "cancelled";
 export type MeetingType = "in person" | "virtual";
 
 interface MeetingListItemProps {
@@ -64,6 +64,8 @@ const MeetingListItem: React.FC<MeetingListItemProps> = ({
 }) => {
   const getStatusColor = (status: MeetingStatus) => {
     switch (status) {
+      case "pending":
+        return "#ed6c02";
       case "scheduled":
         return "#1976d2";
       case "completed":

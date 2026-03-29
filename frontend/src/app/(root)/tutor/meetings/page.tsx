@@ -242,6 +242,7 @@ export default function TutorMeetingsPage() {
           }}
         >
           <Tab value="all" label="All" />
+          <Tab value="pending" label="Pending" />
           <Tab value="scheduled" label="Scheduled" />
           <Tab value="completed" label="Completed" />
           <Tab value="cancelled" label="Cancelled" />
