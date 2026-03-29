@@ -225,6 +225,8 @@ model UserActivityEvent {
   id        String         @id @default(uuid()) @db.Uuid
   userId    String         @map("user_id") @db.Uuid
   action    ActivityAction
+  userAgent String?        @map("user_agent") @db.Text
+  ipAddress String?        @map("ip_address") @db.VarChar(100)
   createdAt DateTime       @default(now()) @map("created_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

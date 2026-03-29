@@ -11,6 +11,8 @@ import {
   getAdminViewAsStudentDashboard,
   getAdminViewAsTutorDashboard,
   getMostActiveUsers,
+  getUserActivity,
+  getCurrentUserActivity,
 } from "./controllers/admin.js";
 import {
   listStudents,
@@ -134,6 +136,9 @@ app.post("/api/refresh", refresh);
 // Get current user endpoint
 app.get("/api/current-user", requireSignin, currentUser);
 
+// Current user activity endpoint
+app.get("/api/users/me/activity", requireSignin, getCurrentUserActivity);
+
 // testing for admin and tutor role
 app.get("/api/tutor-only", requireSignin, isTutor, (req, res) => {
   res.json({ message: "Welcome, Tutor!" });
@@ -142,6 +147,13 @@ app.get("/api/tutor-only", requireSignin, isTutor, (req, res) => {
 app.get("/api/admin-only", requireSignin, isAdmin, (req, res) => {
   res.json({ message: "Welcome, Admin!" });
 });
+
+app.get(
+  "/api/admin/reports/user-activity",
+  requireSignin,
+  isAdmin,
+  getUserActivity,
+);
 
 // Student CRUD endpoints (admin only)
 app.get("/api/students", requireSignin, isAdmin, listStudents);

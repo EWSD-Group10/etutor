@@ -289,6 +289,14 @@ export default function AdminDashboard() {
                 (dashboard preview, read-only)
               </span>
             </p>
+            <p className="mt-2">
+              <Link
+                href="/admin/user-activity"
+                className="text-sm font-semibold text-blue-600 hover:underline"
+              >
+                Audit login activity (User-Agent + IP)
+              </Link>
+            </p>
           </div>
 
           {/* Stats grid */}

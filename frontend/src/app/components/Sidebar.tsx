@@ -28,6 +28,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import ArticleIcon from "@mui/icons-material/Article";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import LogoutIcon from "@mui/icons-material/Logout";
+import HistoryIcon from "@mui/icons-material/History";
 import { useLogout } from "@/app/hooks/auth/useLogout";
 import { useAuth } from "@/app/context/AuthContext";
 
@@ -80,6 +81,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       href: "/admin/allocations",
       icon: <AssignmentIcon />,
     },
+    {
+      label: "Login Activity",
+      href: "/admin/activity",
+      icon: <HistoryIcon />,
+    },
   ];
 
   const tutorItems = [
@@ -92,6 +98,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: "Notifications",
       href: "/tutor/notifications",
       icon: <NotificationsIcon />,
+    },
+    {
+      label: "Login Activity",
+      href: "/tutor/activity",
+      icon: <HistoryIcon />,
     },
   ];
 
@@ -109,6 +120,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: "Notifications",
       href: "/student/notifications",
       icon: <NotificationsIcon />,
+    },
+    {
+      label: "Login Activity",
+      href: "/student/activity",
+      icon: <EventIcon />,
     },
   ];
 

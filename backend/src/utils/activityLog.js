@@ -8,7 +8,7 @@ import { prisma } from "./prisma.js";
  * @param {string} userId
  * @param {ActivityActionValue} action
  */
-export function logUserActivity(userId, action) {
+export function logUserActivity(userId, action, userAgent = null, ipAddress = null) {
   if (!userId || !action) return;
   const delegate = prisma.userActivityEvent;
   if (!delegate || typeof delegate.create !== "function") {
@@ -16,7 +16,12 @@ export function logUserActivity(userId, action) {
   }
   delegate
     .create({
-      data: { userId, action },
+      data: {
+        userId,
+        action,
+        userAgent,
+        ipAddress,
+      },
     })
     .catch((err) => console.error("logUserActivity:", err.message));
 }

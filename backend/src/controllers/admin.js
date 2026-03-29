@@ -139,6 +139,75 @@ export const getAdminDashboard = async (req, res) => {
   }
 };
 
+// GET /api/admin/reports/user-activity?userId=<uuid>&limit=50
+export const getUserActivity = async (req, res) => {
+  try {
+    const { userId } = req.query;
+    const limit = Math.min(
+      200,
+      Math.max(1, parseInt(String(req.query.limit || "50"), 10) || 50),
+    );
+
+    const where = {};
+    if (userId) {
+      if (!UUID_REGEX.test(String(userId))) {
+        return res.status(400).json({ error: "Invalid userId" });
+      }
+      where.userId = String(userId);
+    }
+
+    const events = await prisma.userActivityEvent.findMany({
+      where,
+      select: {
+        id: true,
+        userId: true,
+        action: true,
+        userAgent: true,
+        ipAddress: true,
+        createdAt: true,
+        user: {
+          select: { id: true, name: true, email: true },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+      take: limit,
+    });
+
+    return res.json({ data: { events } });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// GET /api/users/me/activity
+export const getCurrentUserActivity = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const events = await prisma.userActivityEvent.findMany({
+      where: { userId },
+      select: {
+        id: true,
+        userId: true,
+        action: true,
+        userAgent: true,
+        ipAddress: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return res.json({ data: { events } });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 // GET /api/admin/reports/most-active-users?days=7|30&limit=10
 export const getMostActiveUsers = async (req, res) => {
   try {
@@ -177,9 +246,9 @@ export const getMostActiveUsers = async (req, res) => {
     const users =
       userIds.length > 0
         ? await prisma.user.findMany({
-            where: { id: { in: userIds } },
-            select: { id: true, name: true, email: true, role: true },
-          })
+          where: { id: { in: userIds } },
+          select: { id: true, name: true, email: true, role: true },
+        })
         : [];
 
     const byId = new Map(users.map((u) => [u.id, u]));

@@ -53,7 +53,16 @@ export const login = async (req, res) => {
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
-    logUserActivity(user.id, "login");
+    const userAgent = req.headers["user-agent"] || null;
+    const ipAddress =
+      (req.headers["x-forwarded-for"] || "")
+        .toString()
+        .split(",")[0]
+        .trim() ||
+      req.ip ||
+      null;
+
+    logUserActivity(user.id, "login", userAgent, ipAddress);
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
