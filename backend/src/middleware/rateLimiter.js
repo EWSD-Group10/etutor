@@ -3,7 +3,7 @@ import rateLimit from "express-rate-limit";
 function retryAfterSeconds(res) {
   const reset = res.getHeader("RateLimit-Reset");
   if (!reset) return null;
-  return Math.ceil(Number(reset) - Date.now() / 1000);
+  return Math.ceil(Number(reset));
 }
 
 export const globalLimiter = rateLimit({
