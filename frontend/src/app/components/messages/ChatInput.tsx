@@ -77,9 +77,6 @@ const ChatInput: React.FC<ChatInputProps> = ({
           startAdornment: (
             <InputAdornment position="start">
               <IconButton size="small" sx={{ color: "text.secondary" }}>
-                <SentimentSatisfiedAltIcon fontSize="small" />
-              </IconButton>
-              <IconButton size="small" sx={{ color: "text.secondary" }}>
                 <AttachFileIcon fontSize="small" />
               </IconButton>
             </InputAdornment>

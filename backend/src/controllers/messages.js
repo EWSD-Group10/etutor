@@ -33,7 +33,18 @@ export const listMessages = async (req, res) => {
     }
 
     const allowed = await canDirectInteract(userId, withUserId)
-    if (!allowed) return res.status(403).json({ error: "Not allowed" })
+    if (!allowed) {
+      // Allow fetching existing message history even if relationship has changed
+      const existingCount = await prisma.message.count({
+        where: {
+          OR: [
+            { senderId: userId, recipientId: withUserId },
+            { senderId: withUserId, recipientId: userId },
+          ],
+        },
+      })
+      if (existingCount === 0) return res.status(403).json({ error: "Not allowed" })
+    }
 
     // Get total count for pagination
     const total = await prisma.message.count({

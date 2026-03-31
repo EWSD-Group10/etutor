@@ -15,7 +15,11 @@ import ChatListItem from "@/app/components/messages/ChatListItem";
 import ChatHeader from "@/app/components/messages/ChatHeader";
 import ChatMessage from "@/app/components/messages/ChatMessage";
 import ChatInput from "@/app/components/messages/ChatInput";
-import { useInbox, useMessageContacts, useMessages } from "@/app/hooks/messages/useMessages";
+import {
+  useInbox,
+  useMessageContacts,
+  useMessages,
+} from "@/app/hooks/messages/useMessages";
 import { useSendMessage } from "@/app/hooks/messages/useSendMessage";
 import { useAuth } from "@/app/context/AuthContext";
 import { Message } from "@/app/hooks/messages/query";
@@ -36,17 +40,17 @@ export default function TutorMessagesPage() {
 
   // Fetch inbox (conversations)
   const { data: inboxData, isLoading: inboxLoading } = useInbox();
-  
+
   // Fetch contacts (people you can message)
   const { data: contactsData } = useMessageContacts();
 
   // Fetch messages when a chat is selected
-  const { data: messagesData, isLoading: messagesLoading, refetch: refetchMessages } = useMessages(
-    activeChatId || "",
-    messagePage,
-    20
-  );
-
+  const {
+    data: messagesData,
+    isLoading: messagesLoading,
+    refetch: refetchMessages,
+  } = useMessages(activeChatId || "", messagePage, 20);
+  console.log("messagesData", messagesData);
   // Reset accumulated messages when chat changes
   useEffect(() => {
     setMessagePage(1);
@@ -63,7 +67,9 @@ export default function TutorMessagesPage() {
         // Older page - append to accumulated (filter out duplicates)
         setAccumulatedMessages((prev) => {
           const existingIds = new Set(prev.map((m) => m.id));
-          const newMessages = messagesData.data.filter((m) => !existingIds.has(m.id));
+          const newMessages = messagesData.data.filter(
+            (m) => !existingIds.has(m.id),
+          );
           return [...prev, ...newMessages];
         });
       }
@@ -74,7 +80,7 @@ export default function TutorMessagesPage() {
   const sendMessageMutation = useSendMessage();
 
   // Get the current active chat peer info (from inbox OR selected contact)
-  const activeChat = activeChatId 
+  const activeChat = activeChatId
     ? inboxData?.data.find((item) => item.peer.id === activeChatId)
     : null;
 
@@ -82,18 +88,24 @@ export default function TutorMessagesPage() {
   const displayPeer = activeChat?.peer || selectedPeer;
 
   // Filter contacts based on search
-  const filteredContacts = contactsData?.data.filter((contact) =>
-    contact.name?.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+  const filteredContacts =
+    contactsData?.data.filter((contact) =>
+      contact.name?.toLowerCase().includes(searchQuery.toLowerCase()),
+    ) || [];
 
   // Format time from ISO string
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-    
+    const diffDays = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24),
+    );
+
     if (diffDays === 0) {
-      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     } else if (diffDays === 1) {
       return "Yesterday";
     } else {
@@ -104,14 +116,14 @@ export default function TutorMessagesPage() {
   const handleSendMessage = (content: string) => {
     const recipientId = activeChatId || selectedPeer?.id;
     if (!recipientId || !content.trim()) return;
-    
+
     sendMessageMutation.mutate(
       { recipientId, content },
       {
         onSuccess: () => {
           refetchMessages();
         },
-      }
+      },
     );
   };
 
@@ -122,11 +134,20 @@ export default function TutorMessagesPage() {
   // Get initials helper
   const getInitials = (name: string | null | undefined) => {
     if (!name) return "?";
-    return name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
   };
 
   // Handle selecting a contact (from search or conversation)
-  const handleSelectContact = (contact: { id: string; name: string | null; role: string }) => {
+  const handleSelectContact = (contact: {
+    id: string;
+    name: string | null;
+    role: string;
+  }) => {
     setActiveChatId(contact.id);
     setSelectedPeer(contact);
     setMessagePage(1);
@@ -134,13 +155,20 @@ export default function TutorMessagesPage() {
   };
 
   // Check if there are more pages
-  const hasMore = messagesData?.pagination 
-    ? messagesData.pagination.page < messagesData.pagination.totalPages 
+  const hasMore = messagesData?.pagination
+    ? messagesData.pagination.page < messagesData.pagination.totalPages
     : false;
 
   if (inboxLoading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
         <CircularProgress />
       </Box>
     );
@@ -196,53 +224,58 @@ export default function TutorMessagesPage() {
             }}
           />
         </Box>
-        
+
         <List sx={{ flexGrow: 1, overflowY: "auto", px: 1 }}>
           {/* Show contacts if searching */}
-          {searchQuery && filteredContacts.length > 0 ? (
-            filteredContacts.map((contact) => (
-              <ChatListItem
-                key={contact.id}
-                id={contact.id}
-                name={contact.name || "Unknown"}
-                lastMessage="Click to start conversation"
-                time=""
-                unreadCount={0}
-                isActive={activeChatId === contact.id}
-                onClick={() => handleSelectContact(contact)}
-                initials={getInitials(contact.name)}
-              />
-            ))
-          ) : (
-            /* Show conversations */
-            inboxData?.data
-              .filter((chat) =>
-                chat.peer.name?.toLowerCase().includes(searchQuery.toLowerCase())
-              )
-              .map((chat) => (
+          {searchQuery && filteredContacts.length > 0
+            ? filteredContacts.map((contact) => (
                 <ChatListItem
-                  key={chat.peer.id}
-                  id={chat.peer.id}
-                  name={chat.peer.name || "Unknown"}
-                  lastMessage={chat.lastMessage?.messageBody || ""}
-                  time={chat.lastMessage?.sentAt ? formatTime(chat.lastMessage.sentAt) : ""}
-                  unreadCount={chat.unreadCount}
-                  isActive={activeChatId === chat.peer.id}
-                  onClick={() => {
-                    handleSelectContact(chat.peer);
-                  }}
-                  initials={getInitials(chat.peer.name)}
+                  key={contact.id}
+                  id={contact.id}
+                  name={contact.name || "Unknown"}
+                  lastMessage="Click to start conversation"
+                  time=""
+                  unreadCount={0}
+                  isActive={activeChatId === contact.id}
+                  onClick={() => handleSelectContact(contact)}
+                  initials={getInitials(contact.name)}
                 />
               ))
-          )}
-          
-          {(!inboxData?.data || inboxData.data.length === 0) && !searchQuery && (
-            <Box sx={{ p: 3, textAlign: "center" }}>
-              <Typography variant="body2" color="text.secondary">
-                No conversations yet. Search to start one!
-              </Typography>
-            </Box>
-          )}
+            : /* Show conversations */
+              inboxData?.data
+                .filter((chat) =>
+                  chat.peer.name
+                    ?.toLowerCase()
+                    .includes(searchQuery.toLowerCase()),
+                )
+                .map((chat) => (
+                  <ChatListItem
+                    key={chat.peer.id}
+                    id={chat.peer.id}
+                    name={chat.peer.name || "Unknown"}
+                    lastMessage={chat.lastMessage?.messageBody || ""}
+                    time={
+                      chat.lastMessage?.sentAt
+                        ? formatTime(chat.lastMessage.sentAt)
+                        : ""
+                    }
+                    unreadCount={chat.unreadCount}
+                    isActive={activeChatId === chat.peer.id}
+                    onClick={() => {
+                      handleSelectContact(chat.peer);
+                    }}
+                    initials={getInitials(chat.peer.name)}
+                  />
+                ))}
+
+          {(!inboxData?.data || inboxData.data.length === 0) &&
+            !searchQuery && (
+              <Box sx={{ p: 3, textAlign: "center" }}>
+                <Typography variant="body2" color="text.secondary">
+                  No conversations yet. Search to start one!
+                </Typography>
+              </Box>
+            )}
         </List>
       </Box>
 
@@ -279,7 +312,10 @@ export default function TutorMessagesPage() {
                   <Typography
                     variant="body2"
                     color="primary"
-                    sx={{ cursor: "pointer", "&:hover": { textDecoration: "underline" } }}
+                    sx={{
+                      cursor: "pointer",
+                      "&:hover": { textDecoration: "underline" },
+                    }}
                     onClick={handleLoadMore}
                   >
                     Load More
@@ -305,7 +341,9 @@ export default function TutorMessagesPage() {
                     />
                   ))
               ) : (
-                <Box sx={{ textAlign: "center", py: 4, color: "text.secondary" }}>
+                <Box
+                  sx={{ textAlign: "center", py: 4, color: "text.secondary" }}
+                >
                   <Typography variant="body2">
                     No messages yet. Send the first message!
                   </Typography>

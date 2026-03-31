@@ -83,7 +83,10 @@ const ChatListItem: React.FC<ChatListItemProps> = ({
           >
             <Typography
               variant="subtitle2"
-              sx={{ fontWeight: unreadCount > 0 ? 700 : 600, color: "text.primary" }}
+              sx={{
+                fontWeight: unreadCount > 0 ? 700 : 600,
+                color: "text.primary",
+              }}
             >
               {name}
             </Typography>

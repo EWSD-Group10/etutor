@@ -77,12 +77,6 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({
       </Stack>
       <Stack direction="row" spacing={1}>
         <IconButton size="small" sx={{ color: "text.secondary" }}>
-          <PhoneIcon fontSize="small" />
-        </IconButton>
-        <IconButton size="small" sx={{ color: "text.secondary" }}>
-          <VideocamIcon fontSize="small" />
-        </IconButton>
-        <IconButton size="small" sx={{ color: "text.secondary" }}>
           <MoreVertIcon fontSize="small" />
         </IconButton>
       </Stack>
