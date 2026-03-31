@@ -164,7 +164,7 @@ export default function StudentDocumentsPage() {
       <UploadDocumentDialog
         open={uploadOpen}
         onClose={() => setUploadOpen(false)}
-        onUpload={(file) => uploadMutation.mutateAsync(file)}
+        onUpload={(file) => uploadMutation?.mutateAsync(file)}
         isUploading={uploadMutation.isPending}
         accept={STUDENT_DOCUMENT_ACCEPT}
         hint={STUDENT_UPLOAD_HINT}
@@ -176,7 +176,7 @@ export default function StudentDocumentsPage() {
       />
 
       <Grid container spacing={2} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <DashboardStatsCard
             label="Total Documents"
             value={String(stats.total)}
@@ -185,7 +185,7 @@ export default function StudentDocumentsPage() {
             isLoading={isLoading}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <DashboardStatsCard
             label="Total Storage Used"
             value={formatStorage(stats.totalBytes)}
@@ -194,7 +194,7 @@ export default function StudentDocumentsPage() {
             isLoading={isLoading}
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <DashboardStatsCard
             label="Recent Uploads (7d)"
             value={String(stats.recent)}

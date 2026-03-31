@@ -26,8 +26,15 @@ import { ScheduleMeetingDialog } from "@/app/components/meetings/ScheduleMeeting
 import { EditMeetingDialog } from "@/app/components/meetings/EditMeetingDialog";
 import { MeetingDetailsDialog } from "@/app/components/meetings/MeetingDetailsDialog";
 import { useMeetings, MeetingStatus } from "@/app/hooks/meetings/useMeetings";
-import { useCreateMeeting, useUpdateMeeting } from "@/app/hooks/meetings/useMeetingMutations";
-import { CreateMeetingInput, Meeting, UpdateMeetingInput } from "@/app/hooks/meetings/query";
+import {
+  useCreateMeeting,
+  useUpdateMeeting,
+} from "@/app/hooks/meetings/useMeetingMutations";
+import {
+  CreateMeetingInput,
+  Meeting,
+  UpdateMeetingInput,
+} from "@/app/hooks/meetings/query";
 
 type TabValue = "all" | MeetingStatus;
 
@@ -52,11 +59,20 @@ export default function StudentMeetingsPage() {
   // Calculate stats from data
   const allMeetings = meetingsData?.data || [];
   const totalMeetings = allMeetings.length;
-  const scheduledCount = allMeetings.filter((m) => m.meetingStatus === "scheduled").length;
-  const completedCount = allMeetings.filter((m) => m.meetingStatus === "completed").length;
-  const cancelledCount = allMeetings.filter((m) => m.meetingStatus === "cancelled").length;
+  const scheduledCount = allMeetings.filter(
+    (m) => m.meetingStatus === "scheduled",
+  ).length;
+  const completedCount = allMeetings.filter(
+    (m) => m.meetingStatus === "completed",
+  ).length;
+  const cancelledCount = allMeetings.filter(
+    (m) => m.meetingStatus === "cancelled",
+  ).length;
 
-  const handleTabChange = (_event: React.SyntheticEvent, newValue: TabValue) => {
+  const handleTabChange = (
+    _event: React.SyntheticEvent,
+    newValue: TabValue,
+  ) => {
     setActiveTab(newValue);
     setPage(1); // Reset to first page when changing tabs
   };
@@ -64,7 +80,10 @@ export default function StudentMeetingsPage() {
   const pagination = meetingsData?.pagination;
   const totalPages = Math.max(1, pagination?.totalPages ?? 1);
 
-  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
     setPage(value);
   };
 
@@ -111,14 +130,26 @@ export default function StudentMeetingsPage() {
   };
 
   const handleCompleteMeeting = (id: string) => {
-    if (typeof window !== "undefined" && window.confirm("Are you sure you want to mark this meeting as completed?")) {
-      updateMeeting.mutate({ meetingId: id, input: { meetingStatus: "completed" } });
+    if (
+      typeof window !== "undefined" &&
+      window.confirm("Are you sure you want to mark this meeting as completed?")
+    ) {
+      updateMeeting.mutate({
+        meetingId: id,
+        input: { meetingStatus: "completed" },
+      });
     }
   };
 
   const handleCancelMeetingFromList = (id: string) => {
-    if (typeof window !== "undefined" && window.confirm("Are you sure you want to cancel this meeting?")) {
-      updateMeeting.mutate({ meetingId: id, input: { meetingStatus: "cancelled" } });
+    if (
+      typeof window !== "undefined" &&
+      window.confirm("Are you sure you want to cancel this meeting?")
+    ) {
+      updateMeeting.mutate({
+        meetingId: id,
+        input: { meetingStatus: "cancelled" },
+      });
     }
   };
 
@@ -190,8 +221,8 @@ export default function StudentMeetingsPage() {
       />
 
       {/* Stats row */}
-      <Grid container spacing={2} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
+      <Grid container spacing={2} sx={{ mb: 3 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <DashboardStatsCard
             label="Total Meetings"
             value={String(totalMeetings)}
@@ -199,7 +230,7 @@ export default function StudentMeetingsPage() {
             color="#1976d2"
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <DashboardStatsCard
             label="Scheduled"
             value={String(scheduledCount)}
@@ -207,7 +238,7 @@ export default function StudentMeetingsPage() {
             color="#ed6c02"
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <DashboardStatsCard
             label="Completed"
             value={String(completedCount)}
@@ -215,7 +246,7 @@ export default function StudentMeetingsPage() {
             color="#2e7d32"
           />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <DashboardStatsCard
             label="Cancelled"
             value={String(cancelledCount)}
@@ -310,17 +341,24 @@ export default function StudentMeetingsPage() {
                   title={meeting.notes || "Meeting"}
                   date={{
                     day: new Date(meeting.scheduledAt).getDate().toString(),
-                    month: new Date(meeting.scheduledAt).toLocaleString("default", { month: "short" }),
+                    month: new Date(meeting.scheduledAt).toLocaleString(
+                      "default",
+                      { month: "short" },
+                    ),
                   }}
                   time={new Date(meeting.scheduledAt).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}
                   duration={`${meeting.durationMinutes} min`}
-                  location={meeting.location || meeting.meetingLink || "No location"}
+                  location={
+                    meeting.location || meeting.meetingLink || "No location"
+                  }
                   participant={meeting.tutor?.name || "Unknown"}
-                  status={meeting.meetingStatus as MeetingStatus}
-                  type={meeting.meetingType === "virtual" ? "virtual" : "in person"}
+                  status={meeting?.meetingStatus as MeetingStatus}
+                  type={
+                    meeting.meetingType === "virtual" ? "virtual" : "in person"
+                  }
                   onView={handleViewMeeting}
                   onEdit={handleEditMeeting}
                   onComplete={handleCompleteMeeting}
@@ -352,7 +390,11 @@ export default function StudentMeetingsPage() {
                 borderColor: "#0000001a",
               }}
             >
-              <Typography variant="subtitle1" color="text.secondary" sx={{ fontWeight: 600 }}>
+              <Typography
+                variant="subtitle1"
+                color="text.secondary"
+                sx={{ fontWeight: 600 }}
+              >
                 No meetings found
               </Typography>
               <Typography variant="body2" color="text.disabled">

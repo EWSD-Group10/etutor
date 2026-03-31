@@ -12,11 +12,12 @@ import {
   Typography,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { DocumentRecord } from "@/app/hooks/documents/query";
 
 interface UploadDocumentDialogProps {
   open: boolean;
   onClose: () => void;
-  onUpload: (file: File) => Promise<void>;
+  onUpload: (file: File) => Promise<DocumentRecord>;
   isUploading?: boolean;
   /** e.g. ".pdf,.doc,.docx" — narrows system file picker */
   accept?: string;
@@ -63,7 +64,12 @@ const UploadDocumentDialog: React.FC<UploadDocumentDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={isUploading ? undefined : onClose} maxWidth="sm" fullWidth>
+    <Dialog
+      open={open}
+      onClose={isUploading ? undefined : onClose}
+      maxWidth="sm"
+      fullWidth
+    >
       <DialogTitle>Upload document</DialogTitle>
       <DialogContent>
         <Box sx={{ py: 1 }}>
@@ -76,7 +82,9 @@ const UploadDocumentDialog: React.FC<UploadDocumentDialogProps> = ({
           />
           <Button
             variant="outlined"
-            startIcon={isUploading ? <CircularProgress size={18} /> : <CloudUploadIcon />}
+            startIcon={
+              isUploading ? <CircularProgress size={18} /> : <CloudUploadIcon />
+            }
             onClick={handlePick}
             disabled={isUploading}
             fullWidth
@@ -85,14 +93,22 @@ const UploadDocumentDialog: React.FC<UploadDocumentDialogProps> = ({
             {isUploading ? "Uploading…" : "Choose file"}
           </Button>
           {hint && (
-            <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 1.5 }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ display: "block", mt: 1.5 }}
+            >
               {hint}
             </Typography>
           )}
         </Box>
       </DialogContent>
       <DialogActions sx={{ px: 3, pb: 2 }}>
-        <Button onClick={onClose} disabled={isUploading} sx={{ textTransform: "none" }}>
+        <Button
+          onClick={onClose}
+          disabled={isUploading}
+          sx={{ textTransform: "none" }}
+        >
           Cancel
         </Button>
       </DialogActions>

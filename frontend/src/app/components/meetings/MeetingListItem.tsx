@@ -35,7 +35,7 @@ interface MeetingListItemProps {
   location: string;
   link?: string;
   participant: string;
-  status: MeetingStatus;
+  status?: MeetingStatus;
   type: MeetingType;
   onView?: (id: string) => void;
   onEdit?: (id: string) => void;
