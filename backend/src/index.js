@@ -80,6 +80,7 @@ import {
 } from "./controllers/notifications.js";
 import { documentUpload } from "./utils/documentUpload.js";
 import { requireSignin, isAdmin, isTutor } from "./middleware/auth.js";
+import { globalLimiter, authLimiter } from "./middleware/rateLimiter.js";
 
 dotenv.config();
 
@@ -94,6 +95,7 @@ app.use(
     credentials: true,
   }),
 );
+app.use(globalLimiter);
 
 // Test database connection endpoint
 app.get("/", async (req, res) => {
@@ -125,13 +127,13 @@ app.get("/health", async (req, res) => {
 });
 
 // login endpoint
-app.post("/api/login", login);
+app.post("/api/login", authLimiter, login);
 
 // Logout endpoint
 app.post("/api/logout", requireSignin, logout);
 
 // Refresh token endpoint
-app.post("/api/refresh", refresh);
+app.post("/api/refresh", authLimiter, refresh);
 
 // Get current user endpoint
 app.get("/api/current-user", requireSignin, currentUser);
