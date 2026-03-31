@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import helmet from "helmet";
 import { pool } from "./utils/db.js";
 import { sendEmail } from "./utils/mailer.js";
 import { startInactivityCron } from "./cron/inactivityCheck.js";
@@ -91,12 +92,21 @@ app.set('trust proxy', 1);
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(helmet());
+
+const allowedOrigin = process.env.FRONTEND_ORIGIN || "http://localhost:3000";
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: allowedOrigin,
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   }),
 );
+
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
 app.use(globalLimiter);
 
 // Test database connection endpoint

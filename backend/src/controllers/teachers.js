@@ -1,9 +1,24 @@
 import { prisma } from "../utils/prisma.js";
 import { hashPassword } from "../utils/auth.js";
+import { z } from "zod";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const createTutorSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(1),
+  degreeProgram: z.string().optional().nullable(),
+  department: z.string().min(1),
+});
+
+const updateTutorSchema = z.object({
+  email: z.string().email().optional(),
+  name: z.string().min(1).optional(),
+  degreeProgram: z.string().optional().nullable(),
+  department: z.string().min(1).optional(),
+});
 
 const teacherSelect = {
   id: true,
@@ -98,13 +113,13 @@ export const listMyStudents = async (req, res) => {
     const unreadRows =
       studentIds.length > 0
         ? await prisma.message.findMany({
-            where: {
-              recipientId: tutorId,
-              readAt: null,
-              senderId: { in: studentIds },
-            },
-            select: { senderId: true },
-          })
+          where: {
+            recipientId: tutorId,
+            readAt: null,
+            senderId: { in: studentIds },
+          },
+          select: { senderId: true },
+        })
         : [];
 
     const unreadFromStudentById = new Map();
@@ -153,19 +168,12 @@ export const getTutor = async (req, res) => {
 // POST /api/tutors
 export const createTutor = async (req, res) => {
   try {
-    const { email, name, degreeProgram, department } = req.body;
-    const errors = [];
-
-    if (!email) errors.push("Email is required");
-    else if (!EMAIL_REGEX.test(email)) errors.push("Invalid email format");
-
-    if (!name) errors.push("Name is required");
-    // if (!degreeProgram) errors.push("Degree program is required")
-    if (!department) errors.push("Department is required");
-
-    if (errors.length > 0) {
-      return res.status(400).json({ errors });
+    const parseResult = createTutorSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      return res.status(400).json({ errors: parseResult.error.issues });
     }
+
+    const { email, name, degreeProgram, department } = parseResult.data;
 
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
@@ -199,22 +207,21 @@ export const updateTutor = async (req, res) => {
       return res.status(400).json({ error: "Invalid teacher ID format" });
     }
 
-    const { email, name, degreeProgram, department } = req.body;
-    const errors = [];
+    const parseResult = updateTutorSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      return res.status(400).json({ errors: parseResult.error.issues });
+    }
+
+    const { email, name, degreeProgram, department } = parseResult.data;
     const data = {};
 
     if (email !== undefined) {
-      if (!EMAIL_REGEX.test(email)) errors.push("Invalid email format");
-      else data.email = email;
+      data.email = email;
     }
 
     if (name !== undefined) data.name = name;
     if (degreeProgram !== undefined) data.degreeProgram = degreeProgram;
     if (department !== undefined) data.department = department;
-
-    if (errors.length > 0) {
-      return res.status(400).json({ errors });
-    }
 
     if (Object.keys(data).length === 0) {
       return res
@@ -306,13 +313,13 @@ export async function buildTutorDashboardPayload(tutorId) {
   const unreadRows =
     studentIds.length > 0
       ? await prisma.message.findMany({
-          where: {
-            recipientId: tutorId,
-            readAt: null,
-            senderId: { in: studentIds },
-          },
-          select: { senderId: true },
-        })
+        where: {
+          recipientId: tutorId,
+          readAt: null,
+          senderId: { in: studentIds },
+        },
+        select: { senderId: true },
+      })
       : [];
 
   const unreadFromStudentById = new Map();
@@ -368,18 +375,18 @@ export async function buildTutorDashboardPayload(tutorId) {
     }),
     studentIds.length > 0
       ? prisma.message.findMany({
-          where: {
-            recipientId: tutorId,
-            senderId: { in: studentIds },
-          },
-          orderBy: { createdAt: "desc" },
-          take: 50,
-          select: {
-            senderId: true,
-            content: true,
-            sender: { select: { id: true, name: true } },
-          },
-        })
+        where: {
+          recipientId: tutorId,
+          senderId: { in: studentIds },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 50,
+        select: {
+          senderId: true,
+          content: true,
+          sender: { select: { id: true, name: true } },
+        },
+      })
       : Promise.resolve([]),
   ]);
 

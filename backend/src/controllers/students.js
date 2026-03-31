@@ -1,9 +1,22 @@
 import { prisma } from "../utils/prisma.js";
 import { hashPassword } from "../utils/auth.js";
+import { z } from "zod";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const createStudentSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(1),
+  degreeProgram: z.string().optional().nullable(),
+});
+
+const updateStudentSchema = z.object({
+  email: z.string().email().optional(),
+  name: z.string().min(1).optional(),
+  degreeProgram: z.string().optional().nullable(),
+});
 
 const studentSelect = {
   id: true,
@@ -234,17 +247,12 @@ export const getStudent = async (req, res) => {
 // POST /api/students
 export const createStudent = async (req, res) => {
   try {
-    const { email, name, degreeProgram } = req.body;
-    const errors = [];
-
-    if (!email) errors.push("Email is required");
-    else if (!EMAIL_REGEX.test(email)) errors.push("Invalid email format");
-
-    if (!name) errors.push("Name is required");
-
-    if (errors.length > 0) {
-      return res.status(400).json({ errors });
+    const parseResult = createStudentSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      return res.status(400).json({ errors: parseResult.error.issues });
     }
+
+    const { email, name, degreeProgram } = parseResult.data;
 
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
@@ -277,22 +285,21 @@ export const updateStudent = async (req, res) => {
       return res.status(400).json({ error: "Invalid student ID format" });
     }
 
-    const { email, name, degreeProgram } = req.body;
-    const errors = [];
+    const parseResult = updateStudentSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      return res.status(400).json({ errors: parseResult.error.issues });
+    }
+
+    const { email, name, degreeProgram } = parseResult.data;
     const data = {};
 
     if (email !== undefined) {
-      if (!EMAIL_REGEX.test(email)) errors.push("Invalid email format");
-      else data.email = email;
+      data.email = email;
     }
 
     if (name !== undefined) data.name = name;
 
     if (degreeProgram !== undefined) data.degreeProgram = degreeProgram;
-
-    if (errors.length > 0) {
-      return res.status(400).json({ errors });
-    }
 
     if (Object.keys(data).length === 0) {
       return res
@@ -457,20 +464,20 @@ export async function buildStudentDashboardPayload(studentId) {
     },
     nextMeeting: nextMeeting
       ? {
-          id: nextMeeting.id,
-          scheduledAt: nextMeeting.scheduledDate.toISOString(),
-          title: nextMeeting.meetingName || null,
-          location: nextMeeting.location,
-          meetingLink: nextMeeting.meetingLink,
-          meetingType: nextMeeting.meetingType,
-        }
+        id: nextMeeting.id,
+        scheduledAt: nextMeeting.scheduledDate.toISOString(),
+        title: nextMeeting.meetingName || null,
+        location: nextMeeting.location,
+        meetingLink: nextMeeting.meetingLink,
+        meetingType: nextMeeting.meetingType,
+      }
       : null,
     assignedTutor: allocation
       ? {
-          id: allocation.tutor.id,
-          name: allocation.tutor.name,
-          department: allocation.tutor.department,
-        }
+        id: allocation.tutor.id,
+        name: allocation.tutor.name,
+        department: allocation.tutor.department,
+      }
       : null,
     recentDocuments: recentDocuments.map((doc) => ({
       id: doc.id,

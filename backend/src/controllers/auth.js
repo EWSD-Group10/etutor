@@ -7,14 +7,21 @@ import {
 import { prisma } from "../utils/prisma.js";
 import { sendEmail } from "../utils/mailer.js";
 import { logUserActivity } from "../utils/activityLog.js";
+import { z } from "zod";
+
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email and password are required" });
+    const parseResult = loginSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      return res.status(400).json({ errors: parseResult.error.issues });
     }
+
+    const { email, password } = parseResult.data;
 
     const user = await prisma.user.findUnique({
       where: { email },
