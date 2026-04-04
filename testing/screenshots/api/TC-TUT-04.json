@@ -1,0 +1,28 @@
+{
+  "testId": "TC-TUT-04",
+  "title": "Update Tutor",
+  "request": {
+    "method": "PUT",
+    "url": "http://localhost:8080/api/tutors/8f880ba9-e55f-44ae-a0a1-232a2b168f87",
+    "body": {
+      "name": "Updated Tutor"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "8f880ba9-e55f-44ae-a0a1-232a2b168f87",
+        "email": "tutor_1774831341179@test.com",
+        "name": "Updated Tutor",
+        "role": "tutor",
+        "degreeProgram": null,
+        "department": "CS",
+        "isActive": true,
+        "createdAt": "2026-03-30T00:42:21.234Z"
+      }
+    }
+  },
+  "duration": "6ms",
+  "timestamp": "2026-03-30T00:42:21.278Z"
+}

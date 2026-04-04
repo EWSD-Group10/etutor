@@ -1,0 +1,148 @@
+{
+  "testId": "TC-ALLOC-03",
+  "request": {
+    "tutorId": "ab4d5984-196b-411c-941a-6df9ce2d325b",
+    "studentIds": [
+      "868655ab-7962-4ebb-97e6-5af1c0d50784",
+      "ee238dbd-bf52-454d-a319-8e53232b1567",
+      "8a8830b7-7805-44bd-a360-bd1159dc97a0",
+      "e5672a38-b724-41d0-b6c4-4edbc5999c3c",
+      "9ff15cd1-f5ed-4500-91ec-b2137f0f4d4c",
+      "3cd9f7a7-7865-432a-b1eb-041c8440084f",
+      "7967d6fc-42d6-42af-8501-abeb5a2120d9",
+      "9aef1b1d-673a-40c6-9686-33d57b5d692e",
+      "b5bc1018-7878-45d0-ad86-de00b96e1949",
+      "9ebb200a-4f81-4c46-b590-08b46a956f39"
+    ]
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "data": [
+        {
+          "id": "6576e571-312c-4706-b1fc-e061de56db9e",
+          "studentId": "868655ab-7962-4ebb-97e6-5af1c0d50784",
+          "studentName": "Bulk 0",
+          "studentEmail": "bulk_0_1774831341654@test.com",
+          "tutorId": "ab4d5984-196b-411c-941a-6df9ce2d325b",
+          "tutorName": "Bulk Tutor",
+          "tutorEmail": "bulk_t_1774831341596@test.com",
+          "reason": "Bulk",
+          "notes": null,
+          "allocatedAt": "2026-03-30T00:42:22.228Z"
+        },
+        {
+          "id": "a5796b7e-36c5-4463-bb2b-3936bf44557c",
+          "studentId": "ee238dbd-bf52-454d-a319-8e53232b1567",
+          "studentName": "Bulk 1",
+          "studentEmail": "bulk_1_1774831341714@test.com",
+          "tutorId": "ab4d5984-196b-411c-941a-6df9ce2d325b",
+          "tutorName": "Bulk Tutor",
+          "tutorEmail": "bulk_t_1774831341596@test.com",
+          "reason": "Bulk",
+          "notes": null,
+          "allocatedAt": "2026-03-30T00:42:22.231Z"
+        },
+        {
+          "id": "56bf3fca-c56f-4182-8024-7fc2e45182f7",
+          "studentId": "8a8830b7-7805-44bd-a360-bd1159dc97a0",
+          "studentName": "Bulk 2",
+          "studentEmail": "bulk_2_1774831341777@test.com",
+          "tutorId": "ab4d5984-196b-411c-941a-6df9ce2d325b",
+          "tutorName": "Bulk Tutor",
+          "tutorEmail": "bulk_t_1774831341596@test.com",
+          "reason": "Bulk",
+          "notes": null,
+          "allocatedAt": "2026-03-30T00:42:22.236Z"
+        },
+        {
+          "id": "7095a619-12d1-456b-bcef-1753e7166e19",
+          "studentId": "e5672a38-b724-41d0-b6c4-4edbc5999c3c",
+          "studentName": "Bulk 3",
+          "studentEmail": "bulk_3_1774831341834@test.com",
+          "tutorId": "ab4d5984-196b-411c-941a-6df9ce2d325b",
+          "tutorName": "Bulk Tutor",
+          "tutorEmail": "bulk_t_1774831341596@test.com",
+          "reason": "Bulk",
+          "notes": null,
+          "allocatedAt": "2026-03-30T00:42:22.238Z"
+        },
+        {
+          "id": "c6b8e281-e01c-465e-8ec0-54fd412ed6e6",
+          "studentId": "9ff15cd1-f5ed-4500-91ec-b2137f0f4d4c",
+          "studentName": "Bulk 4",
+          "studentEmail": "bulk_4_1774831341890@test.com",
+          "tutorId": "ab4d5984-196b-411c-941a-6df9ce2d325b",
+          "tutorName": "Bulk Tutor",
+          "tutorEmail": "bulk_t_1774831341596@test.com",
+          "reason": "Bulk",
+          "notes": null,
+          "allocatedAt": "2026-03-30T00:42:22.241Z"
+        },
+        {
+          "id": "3e834c85-8f67-4e7c-9f8a-98b078037cd4",
+          "studentId": "3cd9f7a7-7865-432a-b1eb-041c8440084f",
+          "studentName": "Bulk 5",
+          "studentEmail": "bulk_5_1774831341945@test.com",
+          "tutorId": "ab4d5984-196b-411c-941a-6df9ce2d325b",
+          "tutorName": "Bulk Tutor",
+          "tutorEmail": "bulk_t_1774831341596@test.com",
+          "reason": "Bulk",
+          "notes": null,
+          "allocatedAt": "2026-03-30T00:42:22.243Z"
+        },
+        {
+          "id": "5adc1e4e-4ef7-4a10-883f-4024e05697b7",
+          "studentId": "7967d6fc-42d6-42af-8501-abeb5a2120d9",
+          "studentName": "Bulk 6",
+          "studentEmail": "bulk_6_1774831341999@test.com",
+          "tutorId": "ab4d5984-196b-411c-941a-6df9ce2d325b",
+          "tutorName": "Bulk Tutor",
+          "tutorEmail": "bulk_t_1774831341596@test.com",
+          "reason": "Bulk",
+          "notes": null,
+          "allocatedAt": "2026-03-30T00:42:22.246Z"
+        },
+        {
+          "id": "5183ca4d-1212-407a-8d3e-00df394d061e",
+          "studentId": "9aef1b1d-673a-40c6-9686-33d57b5d692e",
+          "studentName": "Bulk 7",
+          "studentEmail": "bulk_7_1774831342052@test.com",
+          "tutorId": "ab4d5984-196b-411c-941a-6df9ce2d325b",
+          "tutorName": "Bulk Tutor",
+          "tutorEmail": "bulk_t_1774831341596@test.com",
+          "reason": "Bulk",
+          "notes": null,
+          "allocatedAt": "2026-03-30T00:42:22.249Z"
+        },
+        {
+          "id": "654dd152-8ee1-40c8-ada7-a027908f6b76",
+          "studentId": "b5bc1018-7878-45d0-ad86-de00b96e1949",
+          "studentName": "Bulk 8",
+          "studentEmail": "bulk_8_1774831342108@test.com",
+          "tutorId": "ab4d5984-196b-411c-941a-6df9ce2d325b",
+          "tutorName": "Bulk Tutor",
+          "tutorEmail": "bulk_t_1774831341596@test.com",
+          "reason": "Bulk",
+          "notes": null,
+          "allocatedAt": "2026-03-30T00:42:22.253Z"
+        },
+        {
+          "id": "c517b4d7-39c5-4135-affe-c53142950d34",
+          "studentId": "9ebb200a-4f81-4c46-b590-08b46a956f39",
+          "studentName": "Bulk 9",
+          "studentEmail": "bulk_9_1774831342169@test.com",
+          "tutorId": "ab4d5984-196b-411c-941a-6df9ce2d325b",
+          "tutorName": "Bulk Tutor",
+          "tutorEmail": "bulk_t_1774831341596@test.com",
+          "reason": "Bulk",
+          "notes": null,
+          "allocatedAt": "2026-03-30T00:42:22.278Z"
+        }
+      ],
+      "summary": {
+        "total": 10
+      }
+    }
+  }
+}

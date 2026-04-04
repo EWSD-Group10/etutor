@@ -1,0 +1,193 @@
+{
+  "testId": "TC-RPT-05",
+  "title": "Stats Report 1 - Tutor Count",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/admin/dashboard",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZWFlNzc0ZC1kYzk5LTRkODAtODk2Zi0xNmRjY2U1ZGFhNDAiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzUzMjk4MjEsImV4cCI6MTc3NTMzMDcyMX0.9yzO8y092obQOyHNl3Jmok4qEdkHKQi8h8MnGVCSHNo"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9951",
+      "ratelimit-reset": "813",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "2537",
+      "etag": "W/\"9e9-XS/v8aznV9dNOOoeKG2kygYw2Cs\"",
+      "date": "Sat, 04 Apr 2026 19:10:21 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "statCards": [
+          {
+            "label": "Total Students",
+            "value": "50"
+          },
+          {
+            "label": "Active Tutors",
+            "value": "27"
+          },
+          {
+            "label": "Students — no meetings (6 wks)",
+            "value": "22"
+          },
+          {
+            "label": "Meetings created (6 wks)",
+            "value": "84"
+          }
+        ],
+        "weeklyMeetings": [
+          {
+            "week": "Wk 1",
+            "count": 0
+          },
+          {
+            "week": "Wk 2",
+            "count": 0
+          },
+          {
+            "week": "Wk 3",
+            "count": 0
+          },
+          {
+            "week": "Wk 4",
+            "count": 0
+          },
+          {
+            "week": "Wk 5",
+            "count": 0
+          },
+          {
+            "week": "Wk 6",
+            "count": 0
+          }
+        ],
+        "distributionData": [
+          {
+            "subject": "BSc ",
+            "students": 35
+          },
+          {
+            "subject": "BSc ",
+            "students": 4
+          },
+          {
+            "subject": "BEng",
+            "students": 4
+          },
+          {
+            "subject": "BSc ",
+            "students": 4
+          }
+        ],
+        "atRiskStudents": [
+          {
+            "id": "00a41da0-f445-49e3-a0d3-eb7ea31c09b7",
+            "name": "Abigail Clark",
+            "course": "BSc Data Science",
+            "tutorName": "Dr. Emily Brown",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "7c78b403-e8f7-438d-b0d5-65bd6c85c762",
+            "name": "Alexander Moore",
+            "course": "BEng Electrical Engineering",
+            "tutorName": "Dr. James Wilson",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "805e369b-c866-4d79-87f8-f3a0363c67fa",
+            "name": "Amelia Jackson",
+            "course": "BSc Mathematics",
+            "tutorName": "Dr. James Wilson",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "d5a319e0-da6d-4778-bd99-c514b25b3c47",
+            "name": "Ava Rodriguez",
+            "course": "BEng Software Engineering",
+            "tutorName": "Dr. Sarah Chen",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "4c854733-1143-4962-b9b5-4d962ffc1e8b",
+            "name": "Benjamin White",
+            "course": "BSc Data Science",
+            "tutorName": "Dr. Emily Brown",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "bd4c2a6b-e4ad-45d3-83b3-f9097d3f171e",
+            "name": "Charlotte Anderson",
+            "course": "BSc Computer Science",
+            "tutorName": "Dr. Olivia Taylor",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "2d6dfa89-63ad-4005-87f7-b6596c1a8aaa",
+            "name": "Daniel Lewis",
+            "course": "BEng Software Engineering",
+            "tutorName": "Updated Tutor Name",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "588c2a3c-d7e8-4ecc-b37e-3bcf3b572578",
+            "name": "Ella Walker",
+            "course": "BSc Computer Science",
+            "tutorName": "Test Tutor Admin",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "3ecc4090-39a7-4fc0-854c-0ae40224e8ba",
+            "name": "Evelyn Thompson",
+            "course": "BSc Mathematics",
+            "tutorName": "Dr. Sarah Chen",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "f1c1c8fb-2d2d-45d1-871a-e8dd458a9985",
+            "name": "Harper Harris",
+            "course": "BEng Software Engineering",
+            "tutorName": "Dr. Michael Lee",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          }
+        ],
+        "atRiskDefinition": "Assigned students with zero meetings recorded in the last 6 weeks (UTC)."
+      }
+    }
+  },
+  "duration": "7ms",
+  "timestamp": "2026-04-04T19:10:21.650Z"
+}

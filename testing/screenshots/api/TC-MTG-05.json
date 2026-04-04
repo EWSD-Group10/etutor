@@ -1,0 +1,614 @@
+{
+  "testId": "TC-MTG-05",
+  "title": "Meeting History",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/meetings",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYjlhMjE0Ni03NzA5LTQxYjEtYTQzMS03YzZlNDc2ZjgwMjkiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NTMyODA4NiwiZXhwIjoxNzc1MzI4OTg2fQ.L6pxh6lQ9sLo1hAeM0vUeo0xOS9OpKdmzl2WZ63tfwY"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9689",
+      "ratelimit-reset": "425",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "12509",
+      "etag": "W/\"30dd-WauQMv5k3ICiCUiDHjhIGlkIr/U\"",
+      "date": "Sat, 04 Apr 2026 18:41:26 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": [
+        {
+          "id": "31c29c19-fcd2-4216-8ddc-411927a9534e",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:41:26.905Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:41:26.906Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:41:26.905Z",
+          "notes": null
+        },
+        {
+          "id": "9587b8d4-120f-4dc0-a70a-e02040186a00",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:41:26.905Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:41:26.906Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:41:26.905Z",
+          "notes": null
+        },
+        {
+          "id": "87064c04-ab09-482a-91f3-4d53d0196648",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:41:26.894Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:41:26.895Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:41:26.894Z",
+          "notes": null
+        },
+        {
+          "id": "a07425f0-798f-49c1-9ad2-3a1de6dfd9ea",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:41:26.891Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:41:26.894Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:41:26.891Z",
+          "notes": null
+        },
+        {
+          "id": "c46ae23f-5702-4329-8ea3-f3ba048b0f71",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:41:26.863Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": "https://meet.example.com/123",
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:41:26.865Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          },
+          "scheduledAt": "2026-04-11T18:41:26.863Z",
+          "notes": null
+        },
+        {
+          "id": "f304b2bc-cd7f-40a6-a41c-eff2a08a0d90",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:41:26.858Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:41:26.861Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          },
+          "scheduledAt": "2026-04-11T18:41:26.858Z",
+          "notes": null
+        },
+        {
+          "id": "057a5355-9722-42e8-9b4c-17e0f3d72927",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:44.215Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:44.217Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:37:44.215Z",
+          "notes": null
+        },
+        {
+          "id": "6efc4f53-6b12-4bac-8648-bfa34edbf3d5",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:44.214Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:44.217Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:37:44.214Z",
+          "notes": null
+        },
+        {
+          "id": "de7e81dd-250b-4eb6-80ea-36e200daa1e4",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:44.203Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:44.205Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:37:44.203Z",
+          "notes": null
+        },
+        {
+          "id": "e62365a9-f361-4c16-8ac7-eb2034727c22",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:44.203Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:44.205Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:37:44.203Z",
+          "notes": null
+        },
+        {
+          "id": "98f93f47-7072-470f-a293-d1c961f87a2a",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:44.159Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": "https://meet.example.com/123",
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:44.161Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          },
+          "scheduledAt": "2026-04-11T18:37:44.159Z",
+          "notes": null
+        },
+        {
+          "id": "63cb9c9c-3bb2-4cfa-a787-484cd66a4dcc",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:44.158Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:44.161Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          },
+          "scheduledAt": "2026-04-11T18:37:44.158Z",
+          "notes": null
+        },
+        {
+          "id": "d99ec29a-73ae-40e0-98ba-4d7793a240b2",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:17.329Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:17.329Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:37:17.329Z",
+          "notes": null
+        },
+        {
+          "id": "e7f86756-4e2f-4772-b889-dfff835b2d46",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:17.329Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:17.329Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:37:17.329Z",
+          "notes": null
+        },
+        {
+          "id": "15092d14-0d9a-4a43-9715-15fa47b5b326",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:17.312Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:17.313Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:37:17.312Z",
+          "notes": null
+        },
+        {
+          "id": "5c8f0ca2-9c78-43bc-9c8c-e9e5ef3e4132",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:17.309Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:17.311Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:37:17.309Z",
+          "notes": null
+        },
+        {
+          "id": "68b5eea1-b78d-413f-8ff4-25c8ce99c734",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:17.256Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": "https://meet.example.com/123",
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:17.254Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          },
+          "scheduledAt": "2026-04-11T18:37:17.256Z",
+          "notes": null
+        },
+        {
+          "id": "db367b19-c515-4198-b77f-dd5ac9acc21b",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:17.254Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:17.253Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          },
+          "scheduledAt": "2026-04-11T18:37:17.254Z",
+          "notes": null
+        },
+        {
+          "id": "ce27f9b5-4ddc-45d5-abcb-87bdd3a67ec6",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:06.820Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:06.817Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:37:06.820Z",
+          "notes": null
+        },
+        {
+          "id": "80127efc-41db-4abb-aced-f01fbb84fcd4",
+          "meetingType": "virtual",
+          "meetingStatus": "pending",
+          "scheduledDate": "2026-04-11T18:37:06.818Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-04-04T18:37:06.815Z",
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-11T18:37:06.818Z",
+          "notes": null
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 66,
+        "totalPages": 4
+      }
+    }
+  },
+  "duration": "4ms",
+  "timestamp": "2026-04-04T18:41:26.921Z"
+}

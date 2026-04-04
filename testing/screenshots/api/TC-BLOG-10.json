@@ -1,0 +1,32 @@
+{
+  "testId": "TC-BLOG-10",
+  "title": "Get Non-existent Blog",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/blogs/00000000-0000-0000-0000-000000000000",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTBkOGYyMS04YzY1LTQyNTktYWY4Ni1iNmE3OGE4ZmNhOWIiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NDgzMTMzOSwiZXhwIjoxNzc0ODMyMjM5fQ.pnulE4rkSLwt_pWhpxujBqYKHG0SQU2fVVoLWXFmCRM"
+    }
+  },
+  "response": {
+    "status": 404,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "26",
+      "etag": "W/\"1a-DZ6zKUsLYjdqamDOxAdBdrRSzms\"",
+      "date": "Mon, 30 Mar 2026 00:42:19 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "error": "Blog not found"
+    }
+  },
+  "duration": "5ms",
+  "timestamp": "2026-03-30T00:42:19.970Z"
+}

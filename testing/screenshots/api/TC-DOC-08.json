@@ -1,0 +1,32 @@
+{
+  "testId": "TC-DOC-08",
+  "title": "Download Non-existent Document",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/documents/00000000-0000-0000-0000-000000000000/download",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzIxM2YxZS1iYWM1LTRmMDYtYWYwZC03NWM0YTEyMTRhOGUiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzQ4MzEzNDEsImV4cCI6MTc3NDgzMjI0MX0.Z54LZP_-0GaCL3x67bESzRRasjIZRGjRXjpJTDsbgv8"
+    }
+  },
+  "response": {
+    "status": 404,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "30",
+      "etag": "W/\"1e-XkFf0+6QVIlXu3POdI7KUqZaAbM\"",
+      "date": "Mon, 30 Mar 2026 00:42:21 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "error": "Document not found"
+    }
+  },
+  "duration": "6ms",
+  "timestamp": "2026-03-30T00:42:21.766Z"
+}

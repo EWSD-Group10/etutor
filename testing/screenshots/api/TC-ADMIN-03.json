@@ -1,0 +1,173 @@
+{
+  "testId": "TC-ADMIN-03",
+  "title": "Admin View As Tutor",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/admin/view-as/tutor/97213f1e-bac5-4f06-af0d-75c4a1214a8e/dashboard",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YzI4YzAyOS1iNGM1LTQyOTAtOTcxMS1jOGExNjcyMWYzMzUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzQ4MzEzMzYsImV4cCI6MTc3NDgzMjIzNn0.wfUt-399C-tGM4jPTB97OYhCdv0Yp96851smYvwCsKM"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "3267",
+      "etag": "W/\"cc3-8rGx1ypLOvhgGzUHzo+1Js+UjA0\"",
+      "date": "Mon, 30 Mar 2026 00:42:16 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "studentsCount": 12,
+        "tuteesWithUnread": 1,
+        "upcomingMeetingsCount": 5,
+        "upcomingMeetings": [
+          {
+            "id": "2d145d28-5e9e-40ac-bb4c-1e66f521dfcd",
+            "time": "09:36 PM",
+            "date": "Mar 30",
+            "location": "Virtual",
+            "subject": "Liam Johnson"
+          },
+          {
+            "id": "556d34ad-a9da-44c4-b27b-aa5c8046988f",
+            "time": "09:36 PM",
+            "date": "Mar 31",
+            "location": "Room 204, CS Building",
+            "subject": "Emma Williams"
+          },
+          {
+            "id": "20d156ab-6466-468c-8dae-a87a25952344",
+            "time": "04:00 PM",
+            "date": "Apr 4",
+            "location": "Virtual",
+            "subject": "Liam Johnson"
+          }
+        ],
+        "unreadMessagesCount": 2,
+        "recentMessages": [
+          {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "sender": "Liam Johnson",
+            "message": "Hi Dr. Chen, I have a question about the assignment deadline.",
+            "unreadCount": 1
+          }
+        ],
+        "tutees": [
+          {
+            "id": "a74aea6c-c346-4aab-8fdd-aae37fdd9189",
+            "name": "Benjamin White",
+            "email": "student13@etutor.com",
+            "degreeProgram": "BSc Data Science",
+            "allocatedAt": "2026-03-28T22:39:33.390Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "79af97df-1f43-49cd-88d7-55c2b818c46b",
+            "name": "Harper Harris",
+            "email": "student14@etutor.com",
+            "degreeProgram": "BEng Software Engineering",
+            "allocatedAt": "2026-03-28T22:39:33.385Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "f3e16017-d0fd-47c9-a829-2e54e3a0f06f",
+            "name": "Jack Martin",
+            "email": "student15@etutor.com",
+            "degreeProgram": "BSc Computer Science",
+            "allocatedAt": "2026-03-28T22:39:33.379Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "fe699da4-73d1-40c2-b28a-afb41e5561f0",
+            "name": "Evelyn Thompson",
+            "email": "student16@etutor.com",
+            "degreeProgram": "BSc Mathematics",
+            "allocatedAt": "2026-03-28T22:39:33.376Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "0ccc72f2-4991-49f9-b535-1c72fd1caf50",
+            "name": "Alexander Moore",
+            "email": "student17@etutor.com",
+            "degreeProgram": "BEng Electrical Engineering",
+            "allocatedAt": "2026-03-28T22:39:33.371Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "df003276-17af-43d4-b320-a3b3b9a069ca",
+            "name": "Abigail Clark",
+            "email": "student18@etutor.com",
+            "degreeProgram": "BSc Data Science",
+            "allocatedAt": "2026-03-28T22:39:33.364Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "62c3ac73-fc13-4457-9b4b-f604e6d12cf0",
+            "name": "Daniel Lewis",
+            "email": "student19@etutor.com",
+            "degreeProgram": "BEng Software Engineering",
+            "allocatedAt": "2026-03-28T22:39:33.356Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "3129c723-aacc-4806-9242-ca42a740cd83",
+            "name": "Ella Walker",
+            "email": "student20@etutor.com",
+            "degreeProgram": "BSc Computer Science",
+            "allocatedAt": "2026-03-28T22:39:33.344Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "b94ba1f0-bc32-4b54-b1be-d6559f358574",
+            "name": "James",
+            "email": "Tester_updated@gmail.com",
+            "degreeProgram": "Applied ML",
+            "allocatedAt": "2026-03-28T22:39:33.257Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "da5bc5e3-2673-426a-9d95-aca399c574e7",
+            "name": "Henry Thomas",
+            "email": "student11@etutor.com",
+            "degreeProgram": "BEng Electrical Engineering",
+            "allocatedAt": "2026-03-28T21:36:36.154Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "d5d6b052-b64b-4951-bf92-c445ae2317d8",
+            "name": "Ava Rodriguez",
+            "email": "student6@etutor.com",
+            "degreeProgram": "BEng Software Engineering",
+            "allocatedAt": "2026-03-28T21:36:36.146Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com",
+            "degreeProgram": "BSc Computer Science",
+            "allocatedAt": "2026-03-28T21:36:36.133Z",
+            "unreadFromStudent": 1
+          }
+        ],
+        "viewAs": {
+          "userId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "name": "Dr. Sarah Chen",
+          "email": "tutor1@etutor.com",
+          "role": "tutor",
+          "isActive": true
+        }
+      }
+    }
+  },
+  "duration": "17ms",
+  "timestamp": "2026-03-30T00:42:16.257Z"
+}

@@ -1,0 +1,85 @@
+{
+  "testId": "TC-DOC-03",
+  "title": "List Documents",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/documents",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzIxM2YxZS1iYWM1LTRmMDYtYWYwZC03NWM0YTEyMTRhOGUiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzQ4MzEzMzksImV4cCI6MTc3NDgzMjIzOX0.HoErbjtbi-9aPHIidOSrF98S90B5TMfMZ385xuYh630"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "1214",
+      "etag": "W/\"4be-f0ZaOHkqvk04mz9DmrUT+rkSJDg\"",
+      "date": "Mon, 30 Mar 2026 00:42:19 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": [
+        {
+          "id": "882e2c60-bd35-4b1d-b0d4-916db40c003f",
+          "fileName": "syllabus-cs101.pdf",
+          "filePath": "/uploads/syllabus-cs101.pdf",
+          "fileSize": 512000,
+          "fileFormat": "application/pdf",
+          "uploadedAt": "2026-03-29T13:52:47.354Z",
+          "uploader": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "d6d6929d-dc0a-4c96-b47d-e5012b0aa07a",
+          "fileName": "assignment1.pdf",
+          "filePath": "/uploads/assignment1.pdf",
+          "fileSize": 204800,
+          "fileFormat": "application/pdf",
+          "uploadedAt": "2026-03-29T13:52:47.349Z",
+          "uploader": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "role": "student"
+          }
+        },
+        {
+          "id": "67f91ecf-19a7-40a6-9f3a-bf2e67e7e2bf",
+          "fileName": "syllabus-cs101.pdf",
+          "filePath": "/uploads/syllabus-cs101.pdf",
+          "fileSize": 512000,
+          "fileFormat": "application/pdf",
+          "uploadedAt": "2026-03-28T21:36:36.171Z",
+          "uploader": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "3896fc94-1168-4dee-8a5a-56032b2eaa1b",
+          "fileName": "assignment1.pdf",
+          "filePath": "/uploads/assignment1.pdf",
+          "fileSize": 204800,
+          "fileFormat": "application/pdf",
+          "uploadedAt": "2026-03-28T21:36:36.169Z",
+          "uploader": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "role": "student"
+          }
+        }
+      ]
+    }
+  },
+  "duration": "4ms",
+  "timestamp": "2026-03-30T00:42:19.608Z"
+}

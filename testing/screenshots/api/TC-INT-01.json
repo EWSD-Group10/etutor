@@ -1,0 +1,12 @@
+{
+  "testId": "TC-INT-01",
+  "workflow": "Student Lifecycle",
+  "steps": {
+    "create": 201,
+    "read": 200,
+    "update": 200,
+    "delete": 200
+  },
+  "studentId": "69b3f026-2fa5-4497-b11f-357c4bcc6859",
+  "timestamp": "2026-03-30T00:42:17.240Z"
+}

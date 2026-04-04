@@ -1,0 +1,235 @@
+{
+  "testId": "TC-MEET-03",
+  "title": "List Meetings (Tutor)",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/meetings",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzIxM2YxZS1iYWM1LTRmMDYtYWYwZC03NWM0YTEyMTRhOGUiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzQ4MzEzNDEsImV4cCI6MTc3NDgzMjI0MX0.Z54LZP_-0GaCL3x67bESzRRasjIZRGjRXjpJTDsbgv8"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "4502",
+      "etag": "W/\"1196-mISmULRZa5p4HSs4Va4Jv01nHFQ\"",
+      "date": "Mon, 30 Mar 2026 00:42:21 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": [
+        {
+          "id": "8a27587e-d6da-44a9-86da-2318765d8b98",
+          "meetingType": "virtual",
+          "meetingStatus": "scheduled",
+          "scheduledDate": "2026-04-07T13:00:00.000Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-03-30T00:36:09.933Z",
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-07T13:00:00.000Z",
+          "notes": null
+        },
+        {
+          "id": "a30e9e18-aecd-4af0-ae98-ed2cb6f07598",
+          "meetingType": "virtual",
+          "meetingStatus": "scheduled",
+          "scheduledDate": "2026-04-05T15:00:00.000Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-03-30T00:42:19.313Z",
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-05T15:00:00.000Z",
+          "notes": null
+        },
+        {
+          "id": "95d6cfd9-eabe-47f4-86f5-7e4cc8b3fc41",
+          "meetingType": "in_person",
+          "meetingStatus": "scheduled",
+          "scheduledDate": "2026-04-04T21:36:36.195Z",
+          "durationMinutes": 60,
+          "location": "Conference Room A",
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-03-28T21:36:36.208Z",
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "9c28c029-b4c5-4290-9711-c8a16721f335",
+            "name": "Alice Admin",
+            "role": "admin"
+          },
+          "scheduledAt": "2026-04-04T21:36:36.195Z",
+          "notes": null
+        },
+        {
+          "id": "20d156ab-6466-468c-8dae-a87a25952344",
+          "meetingType": "virtual",
+          "meetingStatus": "scheduled",
+          "scheduledDate": "2026-04-04T16:00:00.000Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-03-30T00:36:09.173Z",
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-04-04T16:00:00.000Z",
+          "notes": null
+        },
+        {
+          "id": "556d34ad-a9da-44c4-b27b-aa5c8046988f",
+          "meetingType": "in_person",
+          "meetingStatus": "scheduled",
+          "scheduledDate": "2026-03-31T21:36:36.195Z",
+          "durationMinutes": 60,
+          "location": "Room 204, CS Building",
+          "meetingLink": null,
+          "meetingName": null,
+          "createdAt": "2026-03-28T21:36:36.200Z",
+          "student": {
+            "id": "29bfa9a0-4089-45b8-8792-bc94a2148606",
+            "name": "Emma Williams",
+            "email": "student2@etutor.com"
+          },
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          },
+          "scheduledAt": "2026-03-31T21:36:36.195Z",
+          "notes": null
+        },
+        {
+          "id": "9d4a51a4-ad5d-4ed1-b49c-8939729bf5f3",
+          "meetingType": "virtual",
+          "meetingStatus": "scheduled",
+          "scheduledDate": "2026-03-31T15:00:00.000Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": "https://meet.test.com/bm8mc7",
+          "meetingName": null,
+          "createdAt": "2026-03-30T00:42:18.467Z",
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "role": "student"
+          },
+          "scheduledAt": "2026-03-31T15:00:00.000Z",
+          "notes": null
+        },
+        {
+          "id": "2d145d28-5e9e-40ac-bb4c-1e66f521dfcd",
+          "meetingType": "virtual",
+          "meetingStatus": "scheduled",
+          "scheduledDate": "2026-03-30T21:36:36.195Z",
+          "durationMinutes": 30,
+          "location": null,
+          "meetingLink": "https://meet.etutor.com/room-101",
+          "meetingName": null,
+          "createdAt": "2026-03-28T21:36:36.196Z",
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "createdBy": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          },
+          "scheduledAt": "2026-03-30T21:36:36.195Z",
+          "notes": null
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 20,
+        "total": 7,
+        "totalPages": 1
+      }
+    }
+  },
+  "duration": "6ms",
+  "timestamp": "2026-03-30T00:42:21.398Z"
+}

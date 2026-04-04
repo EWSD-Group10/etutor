@@ -1,0 +1,700 @@
+{
+  "testId": "TC-ADM-08",
+  "title": "Login Audit Log",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/admin/reports/user-activity",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZWFlNzc0ZC1kYzk5LTRkODAtODk2Zi0xNmRjY2U1ZGFhNDAiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzUzMjgwODIsImV4cCI6MTc3NTMyODk4Mn0.HY52-Fw6PfRLEKmhyy2b2lLHNUD2qcKbzjucxuuXZS8"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9726",
+      "ratelimit-reset": "430",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "16982",
+      "etag": "W/\"4256-Ur6+N3HkyzT1m6JyzuDQQm//3Og\"",
+      "date": "Sat, 04 Apr 2026 18:41:22 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "events": [
+          {
+            "id": "a32819f9-4fb3-4b15-8179-7efd8743b86d",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:22.480Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "a332d789-d17b-4eca-839e-85fdb241d8a7",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:22.478Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "4ef1a400-2c24-4d28-88ff-7a3426f3f18d",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:21.133Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "2eec340a-c0a5-4c9b-89c4-3f525e3b5b36",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:21.073Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "687ca53c-0963-4c67-b364-07651516f4de",
+            "userId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:21.012Z",
+            "user": {
+              "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "dc947074-59f5-4d22-b88f-31999444f633",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:20.932Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "39b3cb65-0a95-42da-a9d3-a48471609d92",
+            "userId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:20.877Z",
+            "user": {
+              "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "3f54dcec-c53d-4ff4-970e-8a17e24d5af9",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:20.821Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "7150151a-e7e9-4c17-962f-a94ea9a2d3d2",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:20.757Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "32df6e22-a3c1-4572-b348-1c9ab9ffcf48",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:41:16.294Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "24fed240-cf40-4e7e-9ad4-bef4e302d476",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:41:16.287Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "b8ba2ba7-a542-43b8-aec7-7eeb9b7f3b4e",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:41:16.247Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "ec17aba1-7998-47ad-a120-9829458f5b46",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:41:16.233Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "9ac3e828-8732-4f35-b937-0d3f1bce98e8",
+            "userId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:16.182Z",
+            "user": {
+              "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "023f46d1-89d3-47b8-afc0-40f2ee79d6bc",
+            "userId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:16.180Z",
+            "user": {
+              "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "a0dcf242-2f04-45de-9b2c-67629cac5815",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:16.123Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "40ac00a1-476b-4a47-abb8-c3b62280dd84",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:16.119Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "c441bc8f-9018-4c09-8ce1-a5968e7789a1",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:16.057Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "32d54ca7-2cf7-43a5-b28d-d1956d9831e1",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:16.057Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "983a1328-85ff-4b27-9e1e-4ace0e555521",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:41:00.686Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "6246c983-09e2-4a6c-a1c8-e970c7104106",
+            "userId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:00.646Z",
+            "user": {
+              "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "26e3881b-c97f-4a38-9526-59914c42f32e",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:00.591Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "bf872c5c-ec31-4697-a7fa-619da6a355c5",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:41:00.529Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "48658c47-1fcc-482c-8519-1fe888940948",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:40:59.881Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "003ab99f-2b32-4d79-a41e-715b0f69eded",
+            "userId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:59.840Z",
+            "user": {
+              "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "7382a847-34d0-4b4a-91de-b10d337e4675",
+            "userId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:59.838Z",
+            "user": {
+              "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "c0b8ae8f-39d0-4e71-b36f-7e1401dd7820",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:59.783Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "4c6dc085-9dc4-4d0b-b861-4abae4d980d4",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:59.780Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "47dadcf1-c452-4804-b6af-8102442e237c",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:59.718Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "c3b4f8fd-57c8-4b4c-b48f-268b8b22d14e",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:59.717Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "3d657eb1-6e29-4014-a9e6-31434db577dc",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:40:59.122Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "4d9c0c34-955e-4c8e-aebe-c3a868f73d70",
+            "userId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:59.085Z",
+            "user": {
+              "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "b9176a03-058a-48de-aa12-5b82835d123e",
+            "userId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:59.082Z",
+            "user": {
+              "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "5b606796-757d-4ca4-abf9-cbf9867b30b2",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:59.025Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "a1000f97-5bdb-4beb-9f43-258b9b7a815c",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:59.024Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "513a8c0f-3e8b-43cb-bfb5-5429109262cc",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:58.965Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "6b926987-3eed-4f1e-9674-371b91cf2c90",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:58.964Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "b1506bd2-84f6-47b7-9a69-6cd92c6553c3",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:40:58.353Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "5b69d255-1b57-490a-be65-8301b3bad65b",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:40:58.352Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "d838ebee-c6ff-4b98-a22c-87f68667402e",
+            "userId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:58.293Z",
+            "user": {
+              "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "1723b115-b887-4923-b0b3-c20c2c862bff",
+            "userId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:58.292Z",
+            "user": {
+              "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "f7118577-f746-45aa-83d4-89c8d500fbd3",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:58.230Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "9811faa0-c92f-4077-8295-4b43e9e558a9",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:58.229Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "4b93a00f-a09e-40b6-886e-15836356a166",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:58.166Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "d2e6ec63-8ccb-4956-bcfd-7ce0b478dfa2",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Playwright/1.58.2 (arm64; macOS 26.3) node/20.20",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:58.166Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          },
+          {
+            "id": "71166ee1-211b-4a4b-87a1-eb7ed0249af4",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:40:35.775Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "200c8ef4-cf01-4bc6-8c51-b11b4572ba93",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:40:35.761Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "13a71356-4cd2-4d67-a443-aab479b1794b",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:40:35.576Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "11bb337b-6c85-4026-a1de-0660d9c63460",
+            "userId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "action": "document_uploaded",
+            "userAgent": null,
+            "ipAddress": null,
+            "createdAt": "2026-04-04T18:40:35.575Z",
+            "user": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            }
+          },
+          {
+            "id": "89578d58-cbab-48da-8267-d59383e0f450",
+            "userId": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+            "action": "login",
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+            "ipAddress": "::ffff:192.168.65.1",
+            "createdAt": "2026-04-04T18:40:35.158Z",
+            "user": {
+              "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+              "name": "Alice Admin",
+              "email": "admin1@etutor.com"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "duration": "4ms",
+  "timestamp": "2026-04-04T18:41:22.746Z"
+}

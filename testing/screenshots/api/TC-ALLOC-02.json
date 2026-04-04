@@ -1,0 +1,32 @@
+{
+  "testId": "TC-ALLOC-02",
+  "title": "Reallocate",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/allocations",
+    "body": {
+      "studentId": "72a4c640-73fd-4ab0-ad65-668492f6e7f5",
+      "tutorId": "f52da701-a5ec-431b-9cbb-1380189c16c6",
+      "reason": "Re-allocation"
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "4d0bd953-0489-4b7f-9c4f-13050379347b",
+        "studentId": "72a4c640-73fd-4ab0-ad65-668492f6e7f5",
+        "studentName": "Alloc Student",
+        "studentEmail": "alloc_s_1774831341363@test.com",
+        "tutorId": "f52da701-a5ec-431b-9cbb-1380189c16c6",
+        "tutorName": "Alloc Tutor",
+        "tutorEmail": "alloc_t_1774831341425@test.com",
+        "reason": "Re-allocation",
+        "notes": null,
+        "allocatedAt": "2026-03-30T00:42:21.523Z"
+      }
+    }
+  },
+  "duration": "10ms",
+  "timestamp": "2026-03-30T00:42:21.529Z"
+}

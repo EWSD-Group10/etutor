@@ -1,0 +1,57 @@
+{
+  "testId": "TC-ADM-04",
+  "title": "Update Student",
+  "request": {
+    "method": "PUT",
+    "url": "http://localhost:8080/api/students/ce70d07c-ae39-480b-b8ad-c503c5a436df",
+    "body": {
+      "name": "Updated Student Name"
+    },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZWFlNzc0ZC1kYzk5LTRkODAtODk2Zi0xNmRjY2U1ZGFhNDAiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzUzMjgwODIsImV4cCI6MTc3NTMyODk4Mn0.HY52-Fw6PfRLEKmhyy2b2lLHNUD2qcKbzjucxuuXZS8"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9734",
+      "ratelimit-reset": "430",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "201",
+      "etag": "W/\"c9-sdnN4d/uCm+XZxijB5iPywAI/Gg\"",
+      "date": "Sat, 04 Apr 2026 18:41:22 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "id": "ce70d07c-ae39-480b-b8ad-c503c5a436df",
+        "email": "test@test.com",
+        "name": "Updated Student Name",
+        "role": "student",
+        "degreeProgram": "CS",
+        "isActive": true,
+        "createdAt": "2026-04-04T18:24:30.382Z"
+      }
+    }
+  },
+  "duration": "4ms",
+  "timestamp": "2026-04-04T18:41:22.682Z"
+}

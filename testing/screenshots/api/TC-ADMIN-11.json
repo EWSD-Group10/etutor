@@ -1,0 +1,32 @@
+{
+  "testId": "TC-ADMIN-11",
+  "title": "Tutor-Only Endpoint",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/tutor-only",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzIxM2YxZS1iYWM1LTRmMDYtYWYwZC03NWM0YTEyMTRhOGUiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzQ4MzEzMzYsImV4cCI6MTc3NDgzMjIzNn0.4heIsi1xXCsf_wBMY3H6sDFPdZ9lnauU2BtT3fOopxY"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "29",
+      "etag": "W/\"1d-AoWAJmE5MHByFG58a92rbsqrkxM\"",
+      "date": "Mon, 30 Mar 2026 00:42:16 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "message": "Welcome, Tutor!"
+    }
+  },
+  "duration": "7ms",
+  "timestamp": "2026-03-30T00:42:16.480Z"
+}

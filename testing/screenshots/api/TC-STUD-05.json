@@ -1,0 +1,17 @@
+{
+  "testId": "TC-STUD-05",
+  "title": "Non-existent Student",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/students/00000000-0000-0000-0000-000000000000",
+    "body": null
+  },
+  "response": {
+    "status": 404,
+    "body": {
+      "error": "Student not found"
+    }
+  },
+  "duration": "5ms",
+  "timestamp": "2026-03-30T00:42:21.089Z"
+}

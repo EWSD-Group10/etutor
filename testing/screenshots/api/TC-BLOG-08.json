@@ -1,0 +1,32 @@
+{
+  "testId": "TC-BLOG-08",
+  "title": "Get Blog Group",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/blogs/group/test-group-001",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzIxM2YxZS1iYWM1LTRmMDYtYWYwZC03NWM0YTEyMTRhOGUiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzQ4MzEzMzgsImV4cCI6MTc3NDgzMjIzOH0.oaTikX7-VfXqcasYMAUUMVJx6F_dm55PN-Ewq4BUCo4"
+    }
+  },
+  "response": {
+    "status": 500,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "33",
+      "etag": "W/\"21-u8tno/8IdqEY6PFcopkQe0syfE4\"",
+      "date": "Mon, 30 Mar 2026 00:42:18 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "error": "Internal server error"
+    }
+  },
+  "duration": "7ms",
+  "timestamp": "2026-03-30T00:42:19.005Z"
+}

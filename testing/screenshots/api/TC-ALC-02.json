@@ -1,0 +1,121 @@
+{
+  "testId": "TC-ALC-02",
+  "title": "Bulk Allocation",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/allocations/bulk",
+    "body": {
+      "tutorId": "a525b55d-416d-44c9-af19-3a4e406546d1",
+      "studentIds": [
+        "ce70d07c-ae39-480b-b8ad-c503c5a436df",
+        "e7b1d1c7-1daa-4a19-bebc-a98030255bd8",
+        "b59f3372-06cd-4446-a616-30be31a29498",
+        "bc7c4696-9ebc-4fb9-8830-c4cf7218daaf",
+        "5f8c51ff-1404-4637-9ce6-131f8768d17d"
+      ],
+      "reason": "Bulk test allocation"
+    },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZWFlNzc0ZC1kYzk5LTRkODAtODk2Zi0xNmRjY2U1ZGFhNDAiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzUzMjgwODMsImV4cCI6MTc3NTMyODk4M30.ez-4ucYQLUzrW_QSzypkKXzZP0H4Synk333BRdpknwk"
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9720",
+      "ratelimit-reset": "428",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "2052",
+      "etag": "W/\"804-UncP5+BDvm72y93zW8ofDyKqpgs\"",
+      "date": "Sat, 04 Apr 2026 18:41:24 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": [
+        {
+          "id": "6e2a7b50-77cf-4faa-b738-ac3c89698251",
+          "studentId": "ce70d07c-ae39-480b-b8ad-c503c5a436df",
+          "studentName": "Updated Student Name",
+          "studentEmail": "test@test.com",
+          "tutorId": "a525b55d-416d-44c9-af19-3a4e406546d1",
+          "tutorName": "Test Tutor Admin",
+          "tutorEmail": "admin_test_tutor_1775328082610@test.com",
+          "reason": "Bulk test allocation",
+          "notes": null,
+          "allocatedAt": "2026-04-04T18:41:24.024Z"
+        },
+        {
+          "id": "2530d706-d776-411a-9111-a5373f027d2a",
+          "studentId": "e7b1d1c7-1daa-4a19-bebc-a98030255bd8",
+          "studentName": "Updated Student Name",
+          "studentEmail": "admin_test_student_1775326502207@test.com",
+          "tutorId": "a525b55d-416d-44c9-af19-3a4e406546d1",
+          "tutorName": "Test Tutor Admin",
+          "tutorEmail": "admin_test_tutor_1775328082610@test.com",
+          "reason": "Bulk test allocation",
+          "notes": null,
+          "allocatedAt": "2026-04-04T18:41:24.025Z"
+        },
+        {
+          "id": "e84e1dc9-979e-48ec-82ba-c81375cf47d6",
+          "studentId": "b59f3372-06cd-4446-a616-30be31a29498",
+          "studentName": "Updated Student Name",
+          "studentEmail": "admin_test_student_1775326494689@test.com",
+          "tutorId": "a525b55d-416d-44c9-af19-3a4e406546d1",
+          "tutorName": "Test Tutor Admin",
+          "tutorEmail": "admin_test_tutor_1775328082610@test.com",
+          "reason": "Bulk test allocation",
+          "notes": null,
+          "allocatedAt": "2026-04-04T18:41:24.026Z"
+        },
+        {
+          "id": "4d4dfbc9-887f-4bac-a36d-3a06c0e23ea1",
+          "studentId": "bc7c4696-9ebc-4fb9-8830-c4cf7218daaf",
+          "studentName": "Updated Student Name",
+          "studentEmail": "student_1775317392485@test.com",
+          "tutorId": "a525b55d-416d-44c9-af19-3a4e406546d1",
+          "tutorName": "Test Tutor Admin",
+          "tutorEmail": "admin_test_tutor_1775328082610@test.com",
+          "reason": "Bulk test allocation",
+          "notes": null,
+          "allocatedAt": "2026-04-04T18:41:24.029Z"
+        },
+        {
+          "id": "e3e5afc2-5972-44d6-bc62-010eb2e646b9",
+          "studentId": "5f8c51ff-1404-4637-9ce6-131f8768d17d",
+          "studentName": "Updated Student Name",
+          "studentEmail": "student_1775317366609@test.com",
+          "tutorId": "a525b55d-416d-44c9-af19-3a4e406546d1",
+          "tutorName": "Test Tutor Admin",
+          "tutorEmail": "admin_test_tutor_1775328082610@test.com",
+          "reason": "Bulk test allocation",
+          "notes": null,
+          "allocatedAt": "2026-04-04T18:41:24.031Z"
+        }
+      ],
+      "summary": {
+        "total": 5
+      }
+    }
+  },
+  "duration": "14ms",
+  "timestamp": "2026-04-04T18:41:24.038Z"
+}

@@ -1,0 +1,58 @@
+{
+  "testId": "TC-SEC-03",
+  "title": "Last Login Display",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/login",
+    "body": {
+      "email": "admin1@etutor.com",
+      "password": "admin123"
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9914",
+      "ratelimit-reset": "449",
+      "set-cookie": "refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZWFlNzc0ZC1kYzk5LTRkODAtODk2Zi0xNmRjY2U1ZGFhNDAiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzUzMjg0MTksImV4cCI6MTc3NTkzMzIxOX0.NiSDyVSpbJaVlV4oaUkFL4DuE3iFUo2sacXXFKqJJoU; Max-Age=604800; Path=/; Expires=Sat, 11 Apr 2026 18:46:59 GMT; HttpOnly; SameSite=Lax",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "384",
+      "etag": "W/\"180-6I6ImcA4AEjd55NDwgnA3wZndy4\"",
+      "date": "Sat, 04 Apr 2026 18:46:59 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZWFlNzc0ZC1kYzk5LTRkODAtODk2Zi0xNmRjY2U1ZGFhNDAiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzUzMjg0MTksImV4cCI6MTc3NTMyOTMxOX0.FlgY5mIcysycVVnpdr1Yp8XCHnMlyuj1ANBZn9k-GUU",
+      "user": {
+        "id": "eeae774d-dc99-4d80-896f-16dcce5daa40",
+        "email": "admin1@etutor.com",
+        "name": "Alice Admin",
+        "role": "ADMIN"
+      },
+      "lastLoginAt": "2026-04-04T18:45:31.666Z"
+    }
+  },
+  "duration": "87ms",
+  "timestamp": "2026-04-04T18:46:59.197Z"
+}

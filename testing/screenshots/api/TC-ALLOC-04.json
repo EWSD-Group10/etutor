@@ -1,0 +1,9 @@
+{
+  "testId": "TC-ALLOC-04",
+  "lifecycle": {
+    "create": 201,
+    "read": 200,
+    "update": 200,
+    "delete": 200
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "testId": "TC-ADMIN-01",
+  "title": "Get Admin Dashboard",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/admin/dashboard",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YzI4YzAyOS1iNGM1LTQyOTAtOTcxMS1jOGExNjcyMWYzMzUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzQ4MzEzMzYsImV4cCI6MTc3NDgzMjIzNn0.wfUt-399C-tGM4jPTB97OYhCdv0Yp96851smYvwCsKM"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "2389",
+      "etag": "W/\"955-tVlARrIrm09UvDU6v/2KXK9DDH4\"",
+      "date": "Mon, 30 Mar 2026 00:42:16 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "statCards": [
+          {
+            "label": "Total Students",
+            "value": "412"
+          },
+          {
+            "label": "Active Tutors",
+            "value": "217"
+          },
+          {
+            "label": "Students — no meetings (6 wks)",
+            "value": "195"
+          },
+          {
+            "label": "Meetings created (6 wks)",
+            "value": "10"
+          }
+        ],
+        "weeklyMeetings": [
+          {
+            "week": "Wk 1",
+            "count": 0
+          },
+          {
+            "week": "Wk 2",
+            "count": 0
+          },
+          {
+            "week": "Wk 3",
+            "count": 0
+          },
+          {
+            "week": "Wk 4",
+            "count": 0
+          },
+          {
+            "week": "Wk 5",
+            "count": 0
+          },
+          {
+            "week": "Wk 6",
+            "count": 8
+          }
+        ],
+        "distributionData": [
+          {
+            "subject": "BSc ",
+            "students": 19
+          },
+          {
+            "subject": "BSc ",
+            "students": 4
+          },
+          {
+            "subject": "BEng",
+            "students": 4
+          },
+          {
+            "subject": "BSc ",
+            "students": 4
+          }
+        ],
+        "atRiskStudents": [
+          {
+            "id": "df003276-17af-43d4-b320-a3b3b9a069ca",
+            "name": "Abigail Clark",
+            "course": "BSc Data Science",
+            "tutorName": "Dr. Sarah Chen",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "0ccc72f2-4991-49f9-b535-1c72fd1caf50",
+            "name": "Alexander Moore",
+            "course": "BEng Electrical Engineering",
+            "tutorName": "Dr. Sarah Chen",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "7c687cbb-30d3-47f1-9cbb-6fe1c06cc211",
+            "name": "Alloc Student",
+            "course": "Unknown",
+            "tutorName": "Alloc Tutor",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "30b47d27-01f2-41d3-a449-f5c1c6b94b6b",
+            "name": "Alloc Student",
+            "course": "Unknown",
+            "tutorName": "Alloc Tutor",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "3f829ebb-10f9-4984-a79f-ecc2745215a1",
+            "name": "Alloc Student",
+            "course": "Unknown",
+            "tutorName": "Alloc Tutor",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "28ef1609-a196-4d0d-9689-ccd7905197d1",
+            "name": "Alloc Student",
+            "course": "Unknown",
+            "tutorName": "Alloc Tutor",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "4d228a17-8393-4844-9498-fe48201ea5c8",
+            "name": "Alloc Student",
+            "course": "Unknown",
+            "tutorName": "Alloc Tutor",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "2b2564f7-9473-418c-b227-1db45b11e325",
+            "name": "Alloc Student",
+            "course": "Unknown",
+            "tutorName": "Alloc Tutor",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "943308a5-a11f-4c17-bf61-1b1c1fb4b6d2",
+            "name": "Alloc Student",
+            "course": "Unknown",
+            "tutorName": "Alloc Tutor",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          },
+          {
+            "id": "87000c6e-1775-477d-bac0-f759afc499b1",
+            "name": "Alloc Student",
+            "course": "Unknown",
+            "tutorName": "Alloc Tutor",
+            "meetingsInLast6Weeks": 0,
+            "status": "No meetings (6 wks)"
+          }
+        ],
+        "atRiskDefinition": "Assigned students with zero meetings recorded in the last 6 weeks (UTC)."
+      }
+    }
+  },
+  "duration": "19ms",
+  "timestamp": "2026-03-30T00:42:16.196Z"
+}

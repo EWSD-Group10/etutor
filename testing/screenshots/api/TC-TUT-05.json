@@ -1,0 +1,17 @@
+{
+  "testId": "TC-TUT-05",
+  "title": "Delete Tutor",
+  "request": {
+    "method": "DELETE",
+    "url": "http://localhost:8080/api/tutors/8f880ba9-e55f-44ae-a0a1-232a2b168f87",
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "message": "Teacher deactivated successfully"
+    }
+  },
+  "duration": "5ms",
+  "timestamp": "2026-03-30T00:42:21.292Z"
+}

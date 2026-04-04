@@ -1,0 +1,30 @@
+{
+  "testId": "TC-ALLOC-03-tutor",
+  "title": "Create Tutor",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/tutors",
+    "body": {
+      "name": "Bulk Tutor",
+      "email": "bulk_t_1774820816177@test.com",
+      "department": "CS"
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "0ccddc74-3231-4f4e-ac43-bd21e1756fbf",
+        "email": "bulk_t_1774820816177@test.com",
+        "name": "Bulk Tutor",
+        "role": "tutor",
+        "degreeProgram": null,
+        "department": "CS",
+        "isActive": true,
+        "createdAt": "2026-03-29T21:46:56.224Z"
+      }
+    }
+  },
+  "duration": "53ms",
+  "timestamp": "2026-03-29T21:46:56.231Z"
+}

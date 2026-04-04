@@ -1,0 +1,598 @@
+{
+  "testId": "TC-BLG-02",
+  "title": "View Blogs (Student)",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/blogs",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYjlhMjE0Ni03NzA5LTQxYjEtYTQzMS03YzZlNDc2ZjgwMjkiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NTMyODIzMSwiZXhwIjoxNzc1MzI5MTMxfQ.-B3D9nHSp7nh4m-Dviq10tICt7Zxw6J1wQFe-k59R8s"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9648",
+      "ratelimit-reset": "280",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "16155",
+      "etag": "W/\"3f1b-zNWDps9xT+BguokHSLuyXB9mCNI\"",
+      "date": "Sat, 04 Apr 2026 18:43:51 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": [
+        {
+          "id": "50b86d9b-b3ec-474f-a813-1e93013779ed",
+          "groupId": "1d811eaa-7164-48b5-a430-4278fad45bc4",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post 1775328231943",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T18:43:51.953Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "76eb2507-7813-4a7d-b33d-35a5881673ce",
+          "groupId": "7c9f0d7b-bb13-4236-96be-9c9110df1dd7",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post 1775328088302",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T18:41:28.305Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "232d5944-ad22-4ae3-aba2-5778f60337c7",
+          "groupId": "673d95f1-4d13-47e7-91e6-b59cd6150fba",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Updated Blog Title",
+          "content": "Updated content",
+          "sorting": null,
+          "createdAt": "2026-04-04T18:40:31.330Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "9b99f79f-1c82-4476-b92c-c6495c272c9e",
+          "groupId": "28cd2be3-3fbe-473a-a546-ea7064fe573a",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Updated Blog Title",
+          "content": "Updated content",
+          "sorting": null,
+          "createdAt": "2026-04-04T18:40:05.487Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "a2845423-c15b-4d7f-a27e-f84ec96687f9",
+          "groupId": "b8c1e61d-50b1-4b21-a928-9a76ae00f37c",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T18:39:27.972Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "b03ae077-6ab9-4f11-9da5-24bf2b016a29",
+          "groupId": "9d72abfc-3329-420a-bb7c-6418f20c7467",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T18:32:09.491Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "1d1752a4-0a0e-402e-9f47-3b99e2507745",
+          "groupId": "41bebedc-bdb2-4f02-af1d-2bd30e9f2937",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:46:31.987Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "a9082581-f5dc-4fa9-a01e-2f5f4c8ea976",
+          "groupId": "00d6c34d-f24f-4f69-902e-fea5c76e27e3",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:46:11.556Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "b4c1fdf6-f2ff-4bed-ae6d-d9102684572c",
+          "groupId": "b18871bd-345b-43c4-b130-b80a647ac2b3",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:45:58.806Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "d2b01dea-6cc0-4d16-acf6-bf4c3b1c57f0",
+          "groupId": "0f540905-024b-413d-85b6-72dae3c3bf7d",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:45:18.913Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "a079e990-38bf-4106-8425-0d67cdca5fb6",
+          "groupId": "c8fb92b5-10da-4ad9-9348-ebb44122bd77",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:45:02.858Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "2cfd28a0-791e-4ff3-b0ed-ea47ffa73506",
+          "groupId": "94f252a7-d73a-402d-b389-97bf3048b376",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:44:28.297Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "518d16ab-daf3-42d5-97d5-a757c685bbcf",
+          "groupId": "3bddbfa8-94aa-4421-9df1-66096efb27ce",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:44:12.556Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "b0ea2d1f-5907-4a7c-b4f9-4164f0d8dc80",
+          "groupId": "3a5c76da-db93-4763-9b85-57b7cab9e40e",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:43:21.130Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "7ab93a4d-8292-45bb-ada5-f7a404919b7c",
+          "groupId": "f98c3d84-1d14-40ed-a5a5-a0c75e489214",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:42:55.665Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "92fcc9e4-3d97-41fd-92c7-40373700d8cc",
+          "groupId": "15f93352-89bb-4ac0-b51a-e15fca95aad6",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:42:20.629Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "8f3e0128-110d-465c-97b0-455e4282049b",
+          "groupId": "d4d3be9b-258e-4a9e-8b35-77c29419842b",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:34:11.517Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "53101be4-1fbd-4df1-8067-c7ee48bd7d76",
+          "groupId": "5a79ff03-bce2-4c51-8f77-5ac224023bee",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Assignment Guidelines",
+          "content": "Here are the guidelines for your upcoming assignments:\n\n- Use proper citations\n- Follow the formatting guidelines\n- Submit through the portal before the deadline\n\nBest of luck!",
+          "sorting": 2,
+          "createdAt": "2026-04-04T15:33:51.507Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "71915b40-9894-472d-9aa7-5353fed80dba",
+          "groupId": "d7b822bd-d733-4cc7-9576-b7513e8967bb",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Welcome to the Course",
+          "content": "Welcome to the new semester! I'm excited to guide you through this course. Here are some tips for success:\n\n1. Attend all sessions\n2. Complete assignments on time\n3. Don't hesitate to ask questions\n\nLooking forward to a great semester!",
+          "sorting": 1,
+          "createdAt": "2026-04-04T15:33:51.497Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 1
+        },
+        {
+          "id": "dfad2f12-4a71-4abd-9083-da70271a0e06",
+          "groupId": "f3616329-d159-4409-8664-26f081c24f61",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:29:33.326Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "cffb5d6d-27ec-43dd-8b65-637e0a7478a6",
+          "groupId": "35e0bf5b-ebf8-4286-9f91-db78ff3c22c5",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Assignment Guidelines",
+          "content": "Here are the guidelines for your upcoming assignments:\n\n- Use proper citations\n- Follow the formatting guidelines\n- Submit through the portal before the deadline\n\nBest of luck!",
+          "sorting": 2,
+          "createdAt": "2026-04-04T15:29:12.872Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "925b78ea-e5b6-4fc4-80a1-c09b98604708",
+          "groupId": "a68b1c41-2ef0-40a3-991f-4600fd3764b9",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Welcome to the Course",
+          "content": "Welcome to the new semester! I'm excited to guide you through this course. Here are some tips for success:\n\n1. Attend all sessions\n2. Complete assignments on time\n3. Don't hesitate to ask questions\n\nLooking forward to a great semester!",
+          "sorting": 1,
+          "createdAt": "2026-04-04T15:29:12.864Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 1
+        },
+        {
+          "id": "40ba9c55-36fd-49b8-b24a-8b3573f4309a",
+          "groupId": "e28ec52e-48d5-4827-bc5b-e36816dd89b1",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Test Blog Post",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T15:28:33.382Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "6cba688a-ff2f-4b3b-9282-9a1828e2f2c3",
+          "groupId": "363086a3-9a3c-46bd-97e1-da6191bb95d1",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Assignment Guidelines",
+          "content": "Here are the guidelines for your upcoming assignments:\n\n- Use proper citations\n- Follow the formatting guidelines\n- Submit through the portal before the deadline\n\nBest of luck!",
+          "sorting": 2,
+          "createdAt": "2026-04-04T15:28:06.051Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "c188a3d2-e75a-4db5-ae26-fce2205f402a",
+          "groupId": "ece2115a-4a9b-4f06-87de-883e43fb3f23",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "title": "Welcome to the Course",
+          "content": "Welcome to the new semester! I'm excited to guide you through this course. Here are some tips for success:\n\n1. Attend all sessions\n2. Complete assignments on time\n3. Don't hesitate to ask questions\n\nLooking forward to a great semester!",
+          "sorting": 1,
+          "createdAt": "2026-04-04T15:28:06.045Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 1
+        }
+      ]
+    }
+  },
+  "duration": "6ms",
+  "timestamp": "2026-04-04T18:43:51.970Z"
+}

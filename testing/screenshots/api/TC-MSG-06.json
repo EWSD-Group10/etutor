@@ -1,0 +1,34 @@
+{
+  "testId": "TC-MSG-06",
+  "title": "Send Message Without Content",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/messages",
+    "body": {
+      "receiverId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e"
+    },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTBkOGYyMS04YzY1LTQyNTktYWY4Ni1iNmE3OGE4ZmNhOWIiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NDgzMTM0MCwiZXhwIjoxNzc0ODMyMjQwfQ.K0rFdndDk_vq8ptdMuOeQkrZxVgfxjthmThV7fPoxYM"
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "48",
+      "etag": "W/\"30-wHZAg+IggXW7GlykKGk4nLIYSuc\"",
+      "date": "Mon, 30 Mar 2026 00:42:20 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "error": "recipientId and content are required"
+    }
+  },
+  "duration": "2ms",
+  "timestamp": "2026-03-30T00:42:20.579Z"
+}

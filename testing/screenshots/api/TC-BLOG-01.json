@@ -1,0 +1,310 @@
+{
+  "testId": "TC-BLOG-01",
+  "title": "Create Blog (Tutor)",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/blogs",
+    "body": {
+      "title": "Introduction to Algorithms",
+      "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+      "category": "Research",
+      "isPublished": true
+    },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzIxM2YxZS1iYWM1LTRmMDYtYWYwZC03NWM0YTEyMTRhOGUiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzQ4MzEzMzcsImV4cCI6MTc3NDgzMjIzN30.MGCB7ebwQv-lLuZrJkFsHn65g5PgOdD02ofBGqhByN8"
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "12223",
+      "etag": "W/\"2fbf-0i1CrDR2gTTVlrKBG40/6O3G/iU\"",
+      "date": "Mon, 30 Mar 2026 00:42:17 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "master": {
+          "id": "322b81ed-80f1-41bb-9e68-d6bcf23d5c5a",
+          "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": null,
+          "title": "Introduction to Algorithms",
+          "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+          "sorting": null,
+          "createdAt": "2026-03-30T00:42:17.201Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": null
+        },
+        "copies": [
+          {
+            "id": "92c5c3e6-769c-444d-8db0-a950b80cee19",
+            "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+            "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "title": "Introduction to Algorithms",
+            "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+            "sorting": null,
+            "createdAt": "2026-03-30T00:42:17.203Z",
+            "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "tutor": {
+              "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "a7efa7ee-95a7-4b25-a562-5e607f3cc211",
+            "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+            "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "studentId": "d5d6b052-b64b-4951-bf92-c445ae2317d8",
+            "title": "Introduction to Algorithms",
+            "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+            "sorting": null,
+            "createdAt": "2026-03-30T00:42:17.203Z",
+            "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "tutor": {
+              "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "d5d6b052-b64b-4951-bf92-c445ae2317d8",
+              "name": "Ava Rodriguez",
+              "email": "student6@etutor.com"
+            }
+          },
+          {
+            "id": "327a987c-1766-460f-a515-b1240bb72d40",
+            "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+            "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "studentId": "da5bc5e3-2673-426a-9d95-aca399c574e7",
+            "title": "Introduction to Algorithms",
+            "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+            "sorting": null,
+            "createdAt": "2026-03-30T00:42:17.203Z",
+            "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "tutor": {
+              "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "da5bc5e3-2673-426a-9d95-aca399c574e7",
+              "name": "Henry Thomas",
+              "email": "student11@etutor.com"
+            }
+          },
+          {
+            "id": "16da5f69-1f18-4641-bf2f-6dc4b81645db",
+            "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+            "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "studentId": "b94ba1f0-bc32-4b54-b1be-d6559f358574",
+            "title": "Introduction to Algorithms",
+            "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+            "sorting": null,
+            "createdAt": "2026-03-30T00:42:17.203Z",
+            "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "tutor": {
+              "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "b94ba1f0-bc32-4b54-b1be-d6559f358574",
+              "name": "James",
+              "email": "Tester_updated@gmail.com"
+            }
+          },
+          {
+            "id": "d5d44e02-46c5-4246-865c-becfce465ca7",
+            "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+            "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "studentId": "3129c723-aacc-4806-9242-ca42a740cd83",
+            "title": "Introduction to Algorithms",
+            "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+            "sorting": null,
+            "createdAt": "2026-03-30T00:42:17.203Z",
+            "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "tutor": {
+              "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "3129c723-aacc-4806-9242-ca42a740cd83",
+              "name": "Ella Walker",
+              "email": "student20@etutor.com"
+            }
+          },
+          {
+            "id": "07b5198c-d1b0-47e7-a99d-6ea2525451d8",
+            "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+            "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "studentId": "62c3ac73-fc13-4457-9b4b-f604e6d12cf0",
+            "title": "Introduction to Algorithms",
+            "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+            "sorting": null,
+            "createdAt": "2026-03-30T00:42:17.203Z",
+            "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "tutor": {
+              "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "62c3ac73-fc13-4457-9b4b-f604e6d12cf0",
+              "name": "Daniel Lewis",
+              "email": "student19@etutor.com"
+            }
+          },
+          {
+            "id": "b8dc7fc2-4217-4b15-a375-2733b8e0a520",
+            "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+            "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "studentId": "df003276-17af-43d4-b320-a3b3b9a069ca",
+            "title": "Introduction to Algorithms",
+            "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+            "sorting": null,
+            "createdAt": "2026-03-30T00:42:17.203Z",
+            "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "tutor": {
+              "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "df003276-17af-43d4-b320-a3b3b9a069ca",
+              "name": "Abigail Clark",
+              "email": "student18@etutor.com"
+            }
+          },
+          {
+            "id": "5cc886d5-9d19-41f6-8323-75816cc740fd",
+            "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+            "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "studentId": "0ccc72f2-4991-49f9-b535-1c72fd1caf50",
+            "title": "Introduction to Algorithms",
+            "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+            "sorting": null,
+            "createdAt": "2026-03-30T00:42:17.203Z",
+            "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "tutor": {
+              "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "0ccc72f2-4991-49f9-b535-1c72fd1caf50",
+              "name": "Alexander Moore",
+              "email": "student17@etutor.com"
+            }
+          },
+          {
+            "id": "e03f4c5e-4531-4585-a2d8-350e3baf6aa5",
+            "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+            "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "studentId": "fe699da4-73d1-40c2-b28a-afb41e5561f0",
+            "title": "Introduction to Algorithms",
+            "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+            "sorting": null,
+            "createdAt": "2026-03-30T00:42:17.203Z",
+            "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "tutor": {
+              "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "fe699da4-73d1-40c2-b28a-afb41e5561f0",
+              "name": "Evelyn Thompson",
+              "email": "student16@etutor.com"
+            }
+          },
+          {
+            "id": "df079b30-7ff6-4191-9452-af89d5ce784c",
+            "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+            "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "studentId": "f3e16017-d0fd-47c9-a829-2e54e3a0f06f",
+            "title": "Introduction to Algorithms",
+            "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+            "sorting": null,
+            "createdAt": "2026-03-30T00:42:17.204Z",
+            "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "tutor": {
+              "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "f3e16017-d0fd-47c9-a829-2e54e3a0f06f",
+              "name": "Jack Martin",
+              "email": "student15@etutor.com"
+            }
+          },
+          {
+            "id": "faad9d65-ff6b-4c4c-b35a-3a13704ac0d4",
+            "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+            "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "studentId": "79af97df-1f43-49cd-88d7-55c2b818c46b",
+            "title": "Introduction to Algorithms",
+            "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+            "sorting": null,
+            "createdAt": "2026-03-30T00:42:17.207Z",
+            "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "tutor": {
+              "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "79af97df-1f43-49cd-88d7-55c2b818c46b",
+              "name": "Harper Harris",
+              "email": "student14@etutor.com"
+            }
+          },
+          {
+            "id": "df3f6512-9b3a-4854-8e57-ba96cc1a576a",
+            "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+            "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "studentId": "a74aea6c-c346-4aab-8fdd-aae37fdd9189",
+            "title": "Introduction to Algorithms",
+            "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+            "sorting": null,
+            "createdAt": "2026-03-30T00:42:17.208Z",
+            "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "tutor": {
+              "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "a74aea6c-c346-4aab-8fdd-aae37fdd9189",
+              "name": "Benjamin White",
+              "email": "student13@etutor.com"
+            }
+          }
+        ],
+        "totalStudents": 12
+      }
+    }
+  },
+  "duration": "13ms",
+  "timestamp": "2026-03-30T00:42:17.212Z"
+}

@@ -1,0 +1,28 @@
+{
+  "testId": "ALLOC-student",
+  "title": "Create Student",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/students",
+    "body": {
+      "name": "Alloc Student",
+      "email": "alloc_s_1774831341363@test.com"
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "72a4c640-73fd-4ab0-ad65-668492f6e7f5",
+        "email": "alloc_s_1774831341363@test.com",
+        "name": "Alloc Student",
+        "role": "student",
+        "degreeProgram": null,
+        "isActive": true,
+        "createdAt": "2026-03-30T00:42:21.420Z"
+      }
+    }
+  },
+  "duration": "61ms",
+  "timestamp": "2026-03-30T00:42:21.424Z"
+}

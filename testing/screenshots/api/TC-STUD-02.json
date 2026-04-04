@@ -1,0 +1,21 @@
+{
+  "testId": "TC-STUD-02",
+  "title": "Missing Email",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/students",
+    "body": {
+      "name": "No Email Student"
+    }
+  },
+  "response": {
+    "status": 400,
+    "body": {
+      "errors": [
+        "Email is required"
+      ]
+    }
+  },
+  "duration": "3ms",
+  "timestamp": "2026-03-30T00:42:21.043Z"
+}

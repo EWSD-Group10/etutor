@@ -1,0 +1,18 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "accessToken",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YzI4YzAyOS1iNGM1LTQyOTAtOTcxMS1jOGExNjcyMWYzMzUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzQ4MzE2MDcsImV4cCI6MTc3NDgzMjUwN30.zbLMGwBYQ6UQOg110SzByWkgALYi74ZYIJ4n_cFJUWg"
+        },
+        {
+          "name": "user",
+          "value": "{\"id\":\"9c28c029-b4c5-4290-9711-c8a16721f335\",\"email\":\"admin1@etutor.com\",\"name\":\"Alice Admin\",\"role\":\"ADMIN\"}"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "testId": "TC-AUTH-04-login",
+  "title": "Login for Refresh",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/login",
+    "body": {
+      "email": "admin1@etutor.com",
+      "password": "admin123"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YzI4YzAyOS1iNGM1LTQyOTAtOTcxMS1jOGExNjcyMWYzMzUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzQ4MzEzNDAsImV4cCI6MTc3NDgzMjI0MH0.rNQ_YY-X8JwKIhx7rftBa4tbuvzGy6vk9ziVnTvH394",
+      "user": {
+        "id": "9c28c029-b4c5-4290-9711-c8a16721f335",
+        "email": "admin1@etutor.com",
+        "name": "Alice Admin",
+        "role": "ADMIN"
+      },
+      "lastLoginAt": "2026-03-30T00:42:20.726Z"
+    }
+  },
+  "duration": "57ms",
+  "timestamp": "2026-03-30T00:42:20.841Z"
+}

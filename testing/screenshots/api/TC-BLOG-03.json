@@ -1,0 +1,407 @@
+{
+  "testId": "TC-BLOG-03",
+  "title": "List All Blogs",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/blogs",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTBkOGYyMS04YzY1LTQyNTktYWY4Ni1iNmE3OGE4ZmNhOWIiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NDgzMTMzOCwiZXhwIjoxNzc0ODMyMjM4fQ.hEmbjT5xcZzUxvNIBp5WA7Z_ZT9-mR1CgfX8sSthRMk"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "18205",
+      "etag": "W/\"471d-/FCU3qQYvWSjplPhc9QwbDcxZNg\"",
+      "date": "Mon, 30 Mar 2026 00:42:18 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": [
+        {
+          "id": "92c5c3e6-769c-444d-8db0-a950b80cee19",
+          "groupId": "64a9f215-604a-4d10-bc18-a2156d396dde",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Introduction to Algorithms",
+          "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+          "sorting": null,
+          "createdAt": "2026-03-30T00:42:17.203Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "c6a2ea69-524e-4c6d-af0c-e9b2fd30ec52",
+          "groupId": "68572293-a639-45bd-9894-e594804f2783",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Introduction to Algorithms",
+          "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+          "sorting": null,
+          "createdAt": "2026-03-30T00:42:16.241Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "1a7961a4-4eb0-4892-b0ed-cf3a674969da",
+          "groupId": "8a9ec2a3-6b56-4bd5-9b77-abdcba6eeefd",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Blog for Student Delete Test",
+          "content": "# Test Blog Post lcovnh\n\nThis is a comprehensive test blog post created on 2026-03-29T23:34:11.058Z.\n\n## Introduction\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n## Main Content\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n### Key Points\n1. First important point about testing\n2. Second point about automation\n3. Third point about quality assurance\n\n## Conclusion\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n---\n*Created for testing purposes*",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:34:11.065Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "4391e5ef-b5c9-4ef6-9013-b74eaf66ce0c",
+          "groupId": "81997550-e8f0-4cf6-9cf5-06959aee949f",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Blog to Delete",
+          "content": "# Test Blog Post q3dckc\n\nThis is a comprehensive test blog post created on 2026-03-29T23:34:10.994Z.\n\n## Introduction\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n## Main Content\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n### Key Points\n1. First important point about testing\n2. Second point about automation\n3. Third point about quality assurance\n\n## Conclusion\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n---\n*Created for testing purposes*",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:34:11.000Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "fcc5d866-3e90-4040-a799-bdc6c846b951",
+          "groupId": "527a781d-574a-4355-b728-a92fb4e09a3a",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Integration Test Blog Post",
+          "content": "This blog post is created as part of integration testing.",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:34:10.502Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "953c8082-ef77-49fe-86ea-e0ef88fbe0fc",
+          "groupId": "f8a1fe1b-4101-4322-acf4-3904121ce3dd",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Group Blog Post",
+          "content": "# Test Blog Post 992ifc\n\nThis is a comprehensive test blog post created on 2026-03-29T23:34:10.150Z.\n\n## Introduction\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n## Main Content\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n### Key Points\n1. First important point about testing\n2. Second point about automation\n3. Third point about quality assurance\n\n## Conclusion\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n---\n*Created for testing purposes*",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:34:10.158Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "2f7a082d-5649-439d-8ffd-1a7bb4d90db6",
+          "groupId": "8efc36f6-f8b5-4475-8521-9f7a70b224b2",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Integration Test Blog Post",
+          "content": "This blog post is created as part of integration testing.",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:34:09.494Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "faeaee71-4fc8-44bc-b692-544e6fcf9aff",
+          "groupId": "968b1e29-0df8-48e8-8b0e-95fff24df1ff",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Group Blog Post",
+          "content": "# Test Blog Post 3wlkbr\n\nThis is a comprehensive test blog post created on 2026-03-29T23:34:09.303Z.\n\n## Introduction\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n## Main Content\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n### Key Points\n1. First important point about testing\n2. Second point about automation\n3. Third point about quality assurance\n\n## Conclusion\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n---\n*Created for testing purposes*",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:34:09.323Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "98faff95-e76e-4ee4-a850-4b6e02c472b3",
+          "groupId": "1b0a8e5c-52b2-45ee-8e6b-ea85febc007b",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Introduction to Algorithms",
+          "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:34:08.421Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "5b7114a3-8c0d-432b-bd51-2159499426dc",
+          "groupId": "2772044f-fdcd-4538-8206-0b6bd1296ad2",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Introduction to Algorithms",
+          "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:34:07.397Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "8c071ed4-2028-48bc-88e4-b618d1fe8518",
+          "groupId": "4a837ed1-5a68-4042-99c6-f46602731bb5",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Blog for Student Delete Test",
+          "content": "# Test Blog Post 4huacw\n\nThis is a comprehensive test blog post created on 2026-03-29T23:27:50.712Z.\n\n## Introduction\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n## Main Content\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n### Key Points\n1. First important point about testing\n2. Second point about automation\n3. Third point about quality assurance\n\n## Conclusion\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n---\n*Created for testing purposes*",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:27:50.716Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "8392b375-144f-4ef8-988a-b09e9023d13d",
+          "groupId": "c0aee9c0-a50a-4638-bdba-88169b895f63",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Blog to Delete",
+          "content": "# Test Blog Post 9cf1ed\n\nThis is a comprehensive test blog post created on 2026-03-29T23:27:49.836Z.\n\n## Introduction\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n## Main Content\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n### Key Points\n1. First important point about testing\n2. Second point about automation\n3. Third point about quality assurance\n\n## Conclusion\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n---\n*Created for testing purposes*",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:27:49.840Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "d6a3af09-335b-41c9-ab36-f5f987372ed1",
+          "groupId": "39173172-9299-4fcd-8586-20e1617cce18",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Blog to Delete",
+          "content": "# Test Blog Post 8uaeel\n\nThis is a comprehensive test blog post created on 2026-03-29T23:27:49.122Z.\n\n## Introduction\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n## Main Content\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n### Key Points\n1. First important point about testing\n2. Second point about automation\n3. Third point about quality assurance\n\n## Conclusion\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n---\n*Created for testing purposes*",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:27:49.127Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "377f8499-600e-46bc-b4dc-599eb375054d",
+          "groupId": "e25da143-b5b7-48ec-8fbd-eb43d69126fd",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Group Blog Post",
+          "content": "# Test Blog Post w9ug0w\n\nThis is a comprehensive test blog post created on 2026-03-29T23:27:48.414Z.\n\n## Introduction\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n## Main Content\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n### Key Points\n1. First important point about testing\n2. Second point about automation\n3. Third point about quality assurance\n\n## Conclusion\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n---\n*Created for testing purposes*",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:27:48.425Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "613c7809-e2e1-4952-a57f-134c4a88f19d",
+          "groupId": "2a91a214-3c58-42a4-8911-0eb435c21f9c",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Group Blog Post",
+          "content": "# Test Blog Post jjn42l\n\nThis is a comprehensive test blog post created on 2026-03-29T23:27:47.699Z.\n\n## Introduction\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n## Main Content\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n### Key Points\n1. First important point about testing\n2. Second point about automation\n3. Third point about quality assurance\n\n## Conclusion\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n---\n*Created for testing purposes*",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:27:47.704Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "5d130f13-b291-41c9-84aa-2bae2bab67bc",
+          "groupId": "8e6a0589-5dda-4dc3-bcc6-4be9994fd40e",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Introduction to Algorithms",
+          "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:27:41.506Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        },
+        {
+          "id": "9a6fba55-2534-4f74-886f-080ad6c20a9f",
+          "groupId": "8caa132d-e337-435e-9485-6416f17016ef",
+          "tutorId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "studentId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "title": "Introduction to Algorithms",
+          "content": "# Introduction to Algorithms\n\nThis is a comprehensive guide to understanding algorithms.\n\n## What is an Algorithm?\nAn algorithm is a step-by-step procedure for solving a problem.\n\n## Types of Algorithms\n1. Sorting algorithms\n2. Searching algorithms\n3. Graph algorithms\n4. Dynamic programming\n\n## Conclusion\nUnderstanding algorithms is fundamental to computer science.",
+          "sorting": null,
+          "createdAt": "2026-03-29T23:27:40.784Z",
+          "createdBy": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "tutor": {
+            "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": {
+            "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com"
+          },
+          "commentCount": 0
+        }
+      ]
+    }
+  },
+  "duration": "8ms",
+  "timestamp": "2026-03-30T00:42:18.074Z"
+}

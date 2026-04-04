@@ -1,0 +1,41 @@
+{
+  "testId": "TC-MEET-01",
+  "title": "Create Meeting (Tutor)",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/meetings",
+    "body": {
+      "studentId": "46861a95-afe2-41a8-adfd-4f1866e54f20",
+      "title": "Weekly Progress Review",
+      "description": "Discussing assignment progress and clarifications",
+      "scheduledAt": "2026-03-31T14:00:00.000Z",
+      "duration": 120,
+      "type": "hybrid",
+      "location": null,
+      "meetingLink": null
+    },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzIxM2YxZS1iYWM1LTRmMDYtYWYwZC03NWM0YTEyMTRhOGUiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzQ4MzEzMzcsImV4cCI6MTc3NDgzMjIzN30.MGCB7ebwQv-lLuZrJkFsHn65g5PgOdD02ofBGqhByN8"
+    }
+  },
+  "response": {
+    "status": 403,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "58",
+      "etag": "W/\"3a-yFUaGkuNkOJoOwbrPT5WVIcjn1c\"",
+      "date": "Mon, 30 Mar 2026 00:42:17 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "error": "Tutor can schedule only with assigned students"
+    }
+  },
+  "duration": "4ms",
+  "timestamp": "2026-03-30T00:42:17.619Z"
+}

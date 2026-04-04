@@ -1,0 +1,32 @@
+{
+  "testId": "TC-ADMIN-09",
+  "title": "Admin View As Invalid User",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/admin/view-as/student/00000000-0000-0000-0000-000000000000/dashboard",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YzI4YzAyOS1iNGM1LTQyOTAtOTcxMS1jOGExNjcyMWYzMzUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzQ4MzEzMzYsImV4cCI6MTc3NDgzMjIzNn0.wfUt-399C-tGM4jPTB97OYhCdv0Yp96851smYvwCsKM"
+    }
+  },
+  "response": {
+    "status": 404,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "29",
+      "etag": "W/\"1d-/w9leX+CSVwScG3mclc8pAqpxGg\"",
+      "date": "Mon, 30 Mar 2026 00:42:16 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "error": "Student not found"
+    }
+  },
+  "duration": "4ms",
+  "timestamp": "2026-03-30T00:42:16.440Z"
+}

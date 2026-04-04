@@ -1,0 +1,27 @@
+{
+  "testId": "TC-STUD-04",
+  "title": "Update Student",
+  "request": {
+    "method": "PUT",
+    "url": "http://localhost:8080/api/students/c76d8914-1a35-4797-bbb8-665a01d51f8c",
+    "body": {
+      "name": "Updated Student"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "c76d8914-1a35-4797-bbb8-665a01d51f8c",
+        "email": "student_1774831340971@test.com",
+        "name": "Updated Student",
+        "role": "student",
+        "degreeProgram": "BSc CS",
+        "isActive": true,
+        "createdAt": "2026-03-30T00:42:21.026Z"
+      }
+    }
+  },
+  "duration": "7ms",
+  "timestamp": "2026-03-30T00:42:21.076Z"
+}

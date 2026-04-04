@@ -1,0 +1,103 @@
+{
+  "testId": "TC-ADM-07",
+  "title": "Tutor Dashboard Oversight",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/admin/view-as/tutor/d1c69c44-7ee9-45c9-a5ea-f8dd32030b83/dashboard",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZWFlNzc0ZC1kYzk5LTRkODAtODk2Zi0xNmRjY2U1ZGFhNDAiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzUzMjgwODIsImV4cCI6MTc3NTMyODk4Mn0.HY52-Fw6PfRLEKmhyy2b2lLHNUD2qcKbzjucxuuXZS8"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9728",
+      "ratelimit-reset": "430",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "1400",
+      "etag": "W/\"578-XOYeJc6PvWtrxWdGeXswvFXlkhY\"",
+      "date": "Sat, 04 Apr 2026 18:41:22 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "studentsCount": 5,
+        "tuteesWithUnread": 0,
+        "upcomingMeetingsCount": 0,
+        "upcomingMeetings": [],
+        "unreadMessagesCount": 0,
+        "recentMessages": [],
+        "tutees": [
+          {
+            "id": "ce70d07c-ae39-480b-b8ad-c503c5a436df",
+            "name": "Updated Student Name",
+            "email": "test@test.com",
+            "degreeProgram": "CS",
+            "allocatedAt": "2026-04-04T18:26:52.044Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "5f8c51ff-1404-4637-9ce6-131f8768d17d",
+            "name": "Updated Student Name",
+            "email": "student_1775317366609@test.com",
+            "degreeProgram": "BSc Computer Science",
+            "allocatedAt": "2026-04-04T18:26:52.015Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "bc7c4696-9ebc-4fb9-8830-c4cf7218daaf",
+            "name": "Updated Student Name",
+            "email": "student_1775317392485@test.com",
+            "degreeProgram": "BSc Computer Science",
+            "allocatedAt": "2026-04-04T18:26:52.013Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "b59f3372-06cd-4446-a616-30be31a29498",
+            "name": "Updated Student Name",
+            "email": "admin_test_student_1775326494689@test.com",
+            "degreeProgram": "BSc Computer Science",
+            "allocatedAt": "2026-04-04T18:26:52.007Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "e7b1d1c7-1daa-4a19-bebc-a98030255bd8",
+            "name": "Updated Student Name",
+            "email": "admin_test_student_1775326502207@test.com",
+            "degreeProgram": "BSc Computer Science",
+            "allocatedAt": "2026-04-04T18:26:52.006Z",
+            "unreadFromStudent": 0
+          }
+        ],
+        "viewAs": {
+          "userId": "d1c69c44-7ee9-45c9-a5ea-f8dd32030b83",
+          "name": "Test Tutor Admin",
+          "email": "admin_test_tutor_1775327098887@test.com",
+          "role": "tutor",
+          "isActive": true
+        }
+      }
+    }
+  },
+  "duration": "10ms",
+  "timestamp": "2026-04-04T18:41:22.735Z"
+}

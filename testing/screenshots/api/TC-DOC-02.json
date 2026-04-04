@@ -1,0 +1,49 @@
+{
+  "testId": "TC-DOC-02",
+  "title": "Document Commenting",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/documents/0a5462ef-d94f-4a06-9e30-c56930d8ccdd/comments",
+    "body": {
+      "content": "Great document!"
+    },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYjlhMjE0Ni03NzA5LTQxYjEtYTQzMS03YzZlNDc2ZjgwMjkiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NTMyODMzMSwiZXhwIjoxNzc1MzI5MjMxfQ.lbaFRWn6Xm6PbNqawi4B6ojZu3Gu_W7PmMIKlkdYMFw"
+    }
+  },
+  "response": {
+    "status": 400,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9634",
+      "ratelimit-reset": "181",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "36",
+      "etag": "W/\"24-FQ7ukJImn/3iA3LCl22Cjsgw4p0\"",
+      "date": "Sat, 04 Apr 2026 18:45:31 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "error": "Comment text is required"
+    }
+  },
+  "duration": "9ms",
+  "timestamp": "2026-04-04T18:45:31.864Z"
+}

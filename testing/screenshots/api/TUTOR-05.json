@@ -1,0 +1,174 @@
+{
+  "testId": "TUTOR-05",
+  "title": "List Tutors",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/tutors",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZWFlNzc0ZC1kYzk5LTRkODAtODk2Zi0xNmRjY2U1ZGFhNDAiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzUzMTc1ODgsImV4cCI6MTc3NTMxODQ4OH0.CHuogbokHiBHbyDFXrHAR9OCvZHkrmezvS89RBspcTk"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "8682",
+      "ratelimit-reset": "154",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "2777",
+      "etag": "W/\"ad9-64ZczOKDhg6eFNWuutJ1NCgdGp0\"",
+      "date": "Sat, 04 Apr 2026 15:46:28 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": [
+        {
+          "id": "9961a9aa-c22d-407f-8456-4719968b9211",
+          "email": "tutor_1775317588774@test.com",
+          "name": "Updated Tutor Name",
+          "role": "tutor",
+          "degreeProgram": null,
+          "department": "Computer Science",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:46:28.820Z",
+          "studentCount": 0,
+          "maxStudents": 15
+        },
+        {
+          "id": "1e9421ed-73c9-444c-a8f5-bc6bd03720e4",
+          "email": "tutor_1775317568331@test.com",
+          "name": "Updated Tutor Name",
+          "role": "tutor",
+          "degreeProgram": null,
+          "department": "Computer Science",
+          "isActive": false,
+          "createdAt": "2026-04-04T15:46:08.380Z",
+          "studentCount": 0,
+          "maxStudents": 15
+        },
+        {
+          "id": "ae77cacf-96ae-4cd9-8823-58441b1db51f",
+          "email": "tutor_1775317555555@test.com",
+          "name": "Updated Tutor Name",
+          "role": "tutor",
+          "degreeProgram": null,
+          "department": "Computer Science",
+          "isActive": false,
+          "createdAt": "2026-04-04T15:45:55.604Z",
+          "studentCount": 0,
+          "maxStudents": 15
+        },
+        {
+          "id": "8a8d457c-b38f-4205-9309-2c3f3f177125",
+          "email": "tutor_1775317515644@test.com",
+          "name": "Updated Tutor Name",
+          "role": "tutor",
+          "degreeProgram": null,
+          "department": "Computer Science",
+          "isActive": false,
+          "createdAt": "2026-04-04T15:45:15.694Z",
+          "studentCount": 0,
+          "maxStudents": 15
+        },
+        {
+          "id": "280894ef-1cbb-4329-b08e-5cbdb712f79e",
+          "email": "tutor_1775317499610@test.com",
+          "name": "Updated Tutor Name",
+          "role": "tutor",
+          "degreeProgram": null,
+          "department": "Computer Science",
+          "isActive": false,
+          "createdAt": "2026-04-04T15:44:59.660Z",
+          "studentCount": 0,
+          "maxStudents": 15
+        },
+        {
+          "id": "467cecc7-d1fb-4109-8337-c3bd78db5d8f",
+          "email": "tutor_1775317465023@test.com",
+          "name": "Updated Tutor Name",
+          "role": "tutor",
+          "degreeProgram": null,
+          "department": "Computer Science",
+          "isActive": false,
+          "createdAt": "2026-04-04T15:44:25.072Z",
+          "studentCount": 0,
+          "maxStudents": 15
+        },
+        {
+          "id": "1b92aea6-a0ea-4fe0-a711-b37d5d20cdf3",
+          "email": "tutor_1775317449287@test.com",
+          "name": "Updated Tutor Name",
+          "role": "tutor",
+          "degreeProgram": null,
+          "department": "Computer Science",
+          "isActive": false,
+          "createdAt": "2026-04-04T15:44:09.339Z",
+          "studentCount": 0,
+          "maxStudents": 15
+        },
+        {
+          "id": "753093de-a61d-475e-9273-5182d99e3cb2",
+          "email": "tutor_1775317395265@test.com",
+          "name": "Updated Tutor Name",
+          "role": "tutor",
+          "degreeProgram": null,
+          "department": "Computer Science",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:43:15.328Z",
+          "studentCount": 0,
+          "maxStudents": 15
+        },
+        {
+          "id": "e2a6f20a-e706-44d7-8d9d-b668b00c77c4",
+          "email": "tutor_1775317369191@test.com",
+          "name": "Updated Tutor Name",
+          "role": "tutor",
+          "degreeProgram": null,
+          "department": "Computer Science",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:42:49.245Z",
+          "studentCount": 0,
+          "maxStudents": 15
+        },
+        {
+          "id": "83200e71-2b96-4fee-a595-4787e538d1a0",
+          "email": "tutor_1775317334987@test.com",
+          "name": "Updated Tutor Name",
+          "role": "tutor",
+          "degreeProgram": null,
+          "department": "Computer Science",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:42:15.039Z",
+          "studentCount": 0,
+          "maxStudents": 15
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 10,
+        "total": 18,
+        "totalPages": 2
+      }
+    }
+  },
+  "duration": "4ms",
+  "timestamp": "2026-04-04T15:46:28.858Z"
+}

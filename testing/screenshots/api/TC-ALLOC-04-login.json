@@ -1,0 +1,27 @@
+{
+  "testId": "TC-ALLOC-04-login",
+  "title": "Login",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/login",
+    "body": {
+      "email": "admin1@etutor.com",
+      "password": "admin123"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YzI4YzAyOS1iNGM1LTQyOTAtOTcxMS1jOGExNjcyMWYzMzUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzQ4MjA4MTksImV4cCI6MTc3NDgyMTcxOX0.Zvcx9JcGMiZUSpWcSuLEf0w6EllgLttTmCwyKNZ5c8E",
+      "user": {
+        "id": "9c28c029-b4c5-4290-9711-c8a16721f335",
+        "email": "admin1@etutor.com",
+        "name": "Alice Admin",
+        "role": "ADMIN"
+      },
+      "lastLoginAt": "2026-03-29T21:46:59.638Z"
+    }
+  },
+  "duration": "81ms",
+  "timestamp": "2026-03-29T21:46:59.905Z"
+}

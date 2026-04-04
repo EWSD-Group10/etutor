@@ -1,0 +1,18 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "accessToken",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzIxM2YxZS1iYWM1LTRmMDYtYWYwZC03NWM0YTEyMTRhOGUiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzQ4MzE2MDcsImV4cCI6MTc3NDgzMjUwN30.pwPR8Wy_DlEk50zCkaElLoRLy_w-_eTgXxNU5cCB8Eg"
+        },
+        {
+          "name": "user",
+          "value": "{\"id\":\"97213f1e-bac5-4f06-af0d-75c4a1214a8e\",\"email\":\"tutor1@etutor.com\",\"name\":\"Dr. Sarah Chen\",\"role\":\"TUTOR\"}"
+        }
+      ]
+    }
+  ]
+}

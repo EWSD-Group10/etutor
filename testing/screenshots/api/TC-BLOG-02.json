@@ -1,0 +1,35 @@
+{
+  "testId": "TC-BLOG-02",
+  "title": "Create Blog (Student - Forbidden)",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/blogs",
+    "body": {
+      "title": "Blog Post: ct3cqv",
+      "content": "# Test Blog Post ct3cqv\n\nThis is a comprehensive test blog post created on 2026-03-30T00:42:18.045Z.\n\n## Introduction\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n\n## Main Content\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\n### Key Points\n1. First important point about testing\n2. Second point about automation\n3. Third point about quality assurance\n\n## Conclusion\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n---\n*Created for testing purposes*",
+      "category": "Tutorial",
+      "isPublished": true
+    },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTBkOGYyMS04YzY1LTQyNTktYWY4Ni1iNmE3OGE4ZmNhOWIiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NDgzMTMzOCwiZXhwIjoxNzc0ODMyMjM4fQ.hEmbjT5xcZzUxvNIBp5WA7Z_ZT9-mR1CgfX8sSthRMk"
+    }
+  },
+  "response": {
+    "status": 403,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "text/plain; charset=utf-8",
+      "content-length": "9",
+      "etag": "W/\"9-PatfYBLj4Um1qTm5zrukoLhNyPU\"",
+      "date": "Mon, 30 Mar 2026 00:42:18 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": "Forbidden"
+  },
+  "duration": "4ms",
+  "timestamp": "2026-03-30T00:42:18.051Z"
+}

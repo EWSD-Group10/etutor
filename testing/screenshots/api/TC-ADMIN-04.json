@@ -1,0 +1,59 @@
+{
+  "testId": "TC-ADMIN-04",
+  "title": "Get Most Active Users",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/admin/reports/most-active-users",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YzI4YzAyOS1iNGM1LTQyOTAtOTcxMS1jOGExNjcyMWYzMzUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzQ4MzEzMzYsImV4cCI6MTc3NDgzMjIzNn0.wfUt-399C-tGM4jPTB97OYhCdv0Yp96851smYvwCsKM"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "485",
+      "etag": "W/\"1e5-kTT3/BqwQ1xwhUaI+5BpjmN08fU\"",
+      "date": "Mon, 30 Mar 2026 00:42:16 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "windowDays": 7,
+        "limit": 10,
+        "since": "2026-03-23T00:00:00.000Z",
+        "topUsers": [
+          {
+            "userId": "9c28c029-b4c5-4290-9711-c8a16721f335",
+            "eventCount": 377,
+            "name": "Alice Admin",
+            "email": "admin1@etutor.com",
+            "role": "admin"
+          },
+          {
+            "userId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+            "eventCount": 129,
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com",
+            "role": "student"
+          },
+          {
+            "userId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+            "eventCount": 127,
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com",
+            "role": "tutor"
+          }
+        ]
+      }
+    }
+  },
+  "duration": "22ms",
+  "timestamp": "2026-03-30T00:42:16.310Z"
+}

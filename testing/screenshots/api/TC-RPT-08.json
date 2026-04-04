@@ -1,0 +1,117 @@
+{
+  "testId": "TC-RPT-08",
+  "title": "View All Tutees List",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/tutors/me/dashboard",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjBhMjIyZC05ZmYyLTQwNjktYWQ5Zi0yYjc4ODVmYjcxNTIiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzUzMjk5MTYsImV4cCI6MTc3NTMzMDgxNn0.yei1CXcTovxIAHhjSCik6Rh-i3ttWE7NaXfQCUTedU8"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9940",
+      "ratelimit-reset": "718",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "1498",
+      "etag": "W/\"5da-j23W2BcEt1jEHpWOj8Uwu28y60c\"",
+      "date": "Sat, 04 Apr 2026 19:11:56 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "studentsCount": 4,
+        "tuteesWithUnread": 0,
+        "upcomingMeetingsCount": 9,
+        "upcomingMeetings": [
+          {
+            "id": "22b29122-a136-4552-aac1-41b81332bc7a",
+            "time": "03:28 PM",
+            "date": "Apr 6",
+            "location": "Virtual",
+            "subject": "Liam Johnson"
+          },
+          {
+            "id": "b6ea4538-12d2-4d6b-a00d-0667011635e3",
+            "time": "03:29 PM",
+            "date": "Apr 6",
+            "location": "Virtual",
+            "subject": "Liam Johnson"
+          },
+          {
+            "id": "765c2a0c-3cbc-4d2c-92d3-266185ff1468",
+            "time": "03:33 PM",
+            "date": "Apr 6",
+            "location": "Virtual",
+            "subject": "Liam Johnson"
+          }
+        ],
+        "unreadMessagesCount": 0,
+        "recentMessages": [
+          {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "sender": "Liam Johnson",
+            "message": "Hi Dr. Chen, I have a question about the assignment deadline.",
+            "unreadCount": 0
+          }
+        ],
+        "tutees": [
+          {
+            "id": "3ecc4090-39a7-4fc0-854c-0ae40224e8ba",
+            "name": "Evelyn Thompson",
+            "email": "student16@etutor.com",
+            "degreeProgram": "BSc Mathematics",
+            "allocatedAt": "2026-04-04T15:27:20.291Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "cce066cd-2865-4458-bb64-c38999babb9a",
+            "name": "Henry Thomas",
+            "email": "student11@etutor.com",
+            "degreeProgram": "BEng Electrical Engineering",
+            "allocatedAt": "2026-04-04T15:27:20.235Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "d5a319e0-da6d-4778-bd99-c514b25b3c47",
+            "name": "Ava Rodriguez",
+            "email": "student6@etutor.com",
+            "degreeProgram": "BEng Software Engineering",
+            "allocatedAt": "2026-04-04T15:27:20.224Z",
+            "unreadFromStudent": 0
+          },
+          {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "email": "student1@etutor.com",
+            "degreeProgram": "BSc Computer Science",
+            "allocatedAt": "2026-04-04T15:27:20.210Z",
+            "unreadFromStudent": 0
+          }
+        ]
+      }
+    }
+  },
+  "duration": "6ms",
+  "timestamp": "2026-04-04T19:11:56.159Z"
+}

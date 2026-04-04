@@ -1,0 +1,35 @@
+{
+  "testId": "TC-ADMIN-05",
+  "title": "Get Allocation Stats",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/allocations/stats",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YzI4YzAyOS1iNGM1LTQyOTAtOTcxMS1jOGExNjcyMWYzMzUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzQ4MzEzMzYsImV4cCI6MTc3NDgzMjIzNn0.wfUt-399C-tGM4jPTB97OYhCdv0Yp96851smYvwCsKM"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "94",
+      "etag": "W/\"5e-G13hBqQc1FbMAEOZl8JoOsDplhA\"",
+      "date": "Mon, 30 Mar 2026 00:42:16 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "totalAllocations": 201,
+      "unassignedStudents": 189,
+      "activeTutors": 50,
+      "avgStudentsPerTutor": 4.02
+    }
+  },
+  "duration": "13ms",
+  "timestamp": "2026-03-30T00:42:16.380Z"
+}

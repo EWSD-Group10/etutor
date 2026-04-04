@@ -1,0 +1,30 @@
+{
+  "testId": "ALLOC-tutor",
+  "title": "Create Tutor",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/tutors",
+    "body": {
+      "name": "Alloc Tutor",
+      "email": "alloc_t_1774831341425@test.com",
+      "department": "IT"
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "data": {
+        "id": "f52da701-a5ec-431b-9cbb-1380189c16c6",
+        "email": "alloc_t_1774831341425@test.com",
+        "name": "Alloc Tutor",
+        "role": "tutor",
+        "degreeProgram": null,
+        "department": "IT",
+        "isActive": true,
+        "createdAt": "2026-03-30T00:42:21.482Z"
+      }
+    }
+  },
+  "duration": "61ms",
+  "timestamp": "2026-03-30T00:42:21.487Z"
+}

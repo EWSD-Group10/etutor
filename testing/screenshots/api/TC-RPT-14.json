@@ -1,0 +1,112 @@
+{
+  "testId": "TC-RPT-14",
+  "title": "View Recent Documents & Blogs",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/students/me/dashboard",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYjlhMjE0Ni03NzA5LTQxYjEtYTQzMS03YzZlNDc2ZjgwMjkiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NTMyOTk5MSwiZXhwIjoxNzc1MzMwODkxfQ.EigwAF1iSc-9mfSyd1JFnZnEf0YjDqwPbuyb-KYMd24"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9926",
+      "ratelimit-reset": "642",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "1370",
+      "etag": "W/\"55a-X/dRsYqQEknFHdIWLaDUtB4vLUY\"",
+      "date": "Sat, 04 Apr 2026 19:13:12 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "degreeProgram": "BSc Computer Science",
+        "summary": {
+          "unreadMessages": 0,
+          "messagesLast7Days": 6,
+          "upcomingMeetingsCount": 6
+        },
+        "nextMeeting": {
+          "id": "22b29122-a136-4552-aac1-41b81332bc7a",
+          "scheduledAt": "2026-04-06T15:28:06.073Z",
+          "title": null,
+          "location": null,
+          "meetingLink": "https://meet.etutor.com/room-101",
+          "meetingType": "virtual"
+        },
+        "assignedTutor": {
+          "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "name": "Dr. Sarah Chen",
+          "department": "Computer Science"
+        },
+        "recentDocuments": [
+          {
+            "id": "b1f4e76e-8f01-4ffc-9391-97163341e648",
+            "label": "Credential Verification _ CertMetrics.pdf"
+          },
+          {
+            "id": "0a5462ef-d94f-4a06-9e30-c56930d8ccdd",
+            "label": "assignment1.pdf"
+          },
+          {
+            "id": "4fbf8d92-0e9d-45b1-8b9f-80094f9ff07e",
+            "label": "assignment1.pdf"
+          },
+          {
+            "id": "82eb52ba-20b9-4dc0-940b-e43534d631f6",
+            "label": "assignment1.pdf"
+          }
+        ],
+        "recentBlogPosts": [
+          {
+            "id": "24d655a4-ce77-4488-9b31-93ce08ba80e8",
+            "title": "asdfg",
+            "createdAt": "2026-04-04T18:49:21.136Z"
+          },
+          {
+            "id": "50b86d9b-b3ec-474f-a813-1e93013779ed",
+            "title": "Test Blog Post 1775328231943",
+            "createdAt": "2026-04-04T18:43:51.953Z"
+          },
+          {
+            "id": "76eb2507-7813-4a7d-b33d-35a5881673ce",
+            "title": "Updated Blog Title",
+            "createdAt": "2026-04-04T18:41:28.305Z"
+          },
+          {
+            "id": "232d5944-ad22-4ae3-aba2-5778f60337c7",
+            "title": "Updated Blog Title",
+            "createdAt": "2026-04-04T18:40:31.330Z"
+          },
+          {
+            "id": "9b99f79f-1c82-4476-b92c-c6495c272c9e",
+            "title": "Updated Blog Title",
+            "createdAt": "2026-04-04T18:40:05.487Z"
+          }
+        ]
+      }
+    }
+  },
+  "duration": "14ms",
+  "timestamp": "2026-04-04T19:13:12.090Z"
+}

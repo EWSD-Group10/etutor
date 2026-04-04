@@ -1,0 +1,68 @@
+{
+  "testId": "TC-MEET-02",
+  "title": "Create Meeting (Student)",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/meetings",
+    "body": {
+      "studentId": "46861a95-afe2-41a8-adfd-4f1866e54f20",
+      "title": "Student Requested Meeting",
+      "description": "Requesting help with coursework",
+      "scheduledAt": "2026-04-05T15:00:00.000Z",
+      "duration": 60,
+      "type": "hybrid",
+      "location": null,
+      "meetingLink": null
+    },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTBkOGYyMS04YzY1LTQyNTktYWY4Ni1iNmE3OGE4ZmNhOWIiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NDgzMTMzOSwiZXhwIjoxNzc0ODMyMjM5fQ.pnulE4rkSLwt_pWhpxujBqYKHG0SQU2fVVoLWXFmCRM"
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "628",
+      "etag": "W/\"274-crQ9cHZLLb2E8ftpaxpkP3MnnHA\"",
+      "date": "Mon, 30 Mar 2026 00:42:19 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "id": "a30e9e18-aecd-4af0-ae98-ed2cb6f07598",
+        "meetingType": "virtual",
+        "meetingStatus": "scheduled",
+        "scheduledDate": "2026-04-05T15:00:00.000Z",
+        "durationMinutes": 30,
+        "location": null,
+        "meetingLink": null,
+        "meetingName": null,
+        "createdAt": "2026-03-30T00:42:19.313Z",
+        "student": {
+          "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "name": "Liam Johnson",
+          "email": "student1@etutor.com"
+        },
+        "tutor": {
+          "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "name": "Dr. Sarah Chen",
+          "email": "tutor1@etutor.com"
+        },
+        "createdBy": {
+          "id": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "name": "Liam Johnson",
+          "role": "student"
+        },
+        "scheduledAt": "2026-04-05T15:00:00.000Z",
+        "notes": null
+      }
+    }
+  },
+  "duration": "8ms",
+  "timestamp": "2026-03-30T00:42:19.318Z"
+}

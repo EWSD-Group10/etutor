@@ -1,0 +1,17 @@
+{
+  "testId": "TC-STUD-06",
+  "title": "Delete Student",
+  "request": {
+    "method": "DELETE",
+    "url": "http://localhost:8080/api/students/c76d8914-1a35-4797-bbb8-665a01d51f8c",
+    "body": null
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "message": "Student deactivated successfully"
+    }
+  },
+  "duration": "7ms",
+  "timestamp": "2026-03-30T00:42:21.104Z"
+}

@@ -1,0 +1,62 @@
+{
+  "testId": "TC-ALC-04",
+  "title": "Allocation Notification",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/allocations",
+    "body": {
+      "studentId": "ce70d07c-ae39-480b-b8ad-c503c5a436df",
+      "tutorId": "a525b55d-416d-44c9-af19-3a4e406546d1",
+      "reason": "Notification test"
+    },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZWFlNzc0ZC1kYzk5LTRkODAtODk2Zi0xNmRjY2U1ZGFhNDAiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzUzMjgwODMsImV4cCI6MTc3NTMyODk4M30.ez-4ucYQLUzrW_QSzypkKXzZP0H4Synk333BRdpknwk"
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9718",
+      "ratelimit-reset": "428",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "391",
+      "etag": "W/\"187-oO3CFqTlTI1Qo13J9+abgkj+TLE\"",
+      "date": "Sat, 04 Apr 2026 18:41:24 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "id": "4cbbb2e6-a9ac-44d0-9b21-8842841fe518",
+        "studentId": "ce70d07c-ae39-480b-b8ad-c503c5a436df",
+        "studentName": "Updated Student Name",
+        "studentEmail": "test@test.com",
+        "tutorId": "a525b55d-416d-44c9-af19-3a4e406546d1",
+        "tutorName": "Test Tutor Admin",
+        "tutorEmail": "admin_test_tutor_1775328082610@test.com",
+        "reason": "Notification test",
+        "notes": null,
+        "allocatedAt": "2026-04-04T18:41:24.056Z"
+      }
+    }
+  },
+  "duration": "4ms",
+  "timestamp": "2026-04-04T18:41:24.060Z"
+}

@@ -1,0 +1,68 @@
+{
+  "testId": "MSG-03",
+  "title": "Get Inbox",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/messages/inbox",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYjlhMjE0Ni03NzA5LTQxYjEtYTQzMS03YzZlNDc2ZjgwMjkiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NTMxNzU5MSwiZXhwIjoxNzc1MzE4NDkxfQ.Fbc7l0X8MSHoRIN_2p1PRLXgeKauR5RATT_Pjie-__E"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "8659",
+      "ratelimit-reset": "151",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "616",
+      "etag": "W/\"268-9mBUg50VJmmfeBd2KaesqUqP7zs\"",
+      "date": "Sat, 04 Apr 2026 15:46:31 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": [
+        {
+          "peer": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor",
+            "email": "tutor1@etutor.com"
+          },
+          "lastMessage": {
+            "id": "7e453a0f-3606-43b4-bcc1-76389e1b403c",
+            "senderId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "recipientId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "content": "Hi Liam, the deadline is next Friday. Let me know if you need an extension.",
+            "createdAt": "2026-04-04T15:33:51.528Z",
+            "readAt": "2026-04-04T15:33:51.527Z",
+            "messageBody": "Hi Liam, the deadline is next Friday. Let me know if you need an extension.",
+            "sentAt": "2026-04-04T15:33:51.528Z",
+            "isRead": true
+          },
+          "unreadCount": 0
+        }
+      ]
+    }
+  },
+  "duration": "4ms",
+  "timestamp": "2026-04-04T15:46:31.776Z"
+}

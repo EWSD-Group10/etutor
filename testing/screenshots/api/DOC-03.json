@@ -1,0 +1,568 @@
+{
+  "testId": "DOC-03",
+  "title": "List Documents",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/documents",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjBhMjIyZC05ZmYyLTQwNjktYWQ5Zi0yYjc4ODVmYjcxNTIiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzUzMTc1OTMsImV4cCI6MTc3NTMxODQ5M30.j4kxazqBZtHzIEf-phYQ1XwZIB9YCrjrG5nEOZaI_6s"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "8630",
+      "ratelimit-reset": "149",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "12536",
+      "etag": "W/\"30f8-guKFW/b/JHAm3neJWsLvGJvnais\"",
+      "date": "Sat, 04 Apr 2026 15:46:33 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": [
+        {
+          "id": "8565ecbc-67ea-4813-a223-872cb6ae9c2e",
+          "fileName": "test-doc-1775317592250.txt",
+          "filePath": "documents/1775317592249-l8nl7eors2.txt",
+          "fileSize": 21,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:46:32.251Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "5ec3cf85-1e42-4f13-bac6-bced4d1cca60",
+          "fileName": "delete-doc-1775317574044.txt",
+          "filePath": "documents/1775317574046-mbldrysiu3.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:46:14.047Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "23073f5f-b6a6-4386-9a33-52711f61329b",
+          "fileName": "delete-doc-1775317573304.txt",
+          "filePath": "documents/1775317573306-edwqx3h2mj.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:46:13.309Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "5dfcaeae-019e-4b2c-909c-fa84bdd95e57",
+          "fileName": "test-doc-1775317571821.txt",
+          "filePath": "documents/1775317571823-1vgfybphn7.txt",
+          "fileSize": 21,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:46:11.825Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "56261025-1e45-47c6-9284-8fb733ce2fd8",
+          "fileName": "delete-doc-1775317561308.txt",
+          "filePath": "documents/1775317561310-9gwrkic6fn.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:46:01.312Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "653fa638-f8af-4e99-a18a-ade08713662a",
+          "fileName": "delete-doc-1775317560591.txt",
+          "filePath": "documents/1775317560593-jz43c55ox6.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:46:00.594Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "cee1b0ea-7d41-47ee-9c27-52aff0c830c2",
+          "fileName": "test-doc-1775317559078.txt",
+          "filePath": "documents/1775317559079-brt8hi2h23.txt",
+          "fileSize": 21,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:45:59.081Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "7f669525-3d8c-4b6c-88ac-aee160fbb046",
+          "fileName": "delete-doc-1775317525815.txt",
+          "filePath": "documents/1775317525817-zukh6uc48w.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:45:25.820Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "7b808123-9c20-4905-a546-aa658a7616fd",
+          "fileName": "delete-doc-1775317525083.txt",
+          "filePath": "documents/1775317525085-d6qw2bhy1m.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:45:25.088Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "d353bf03-fa17-4ded-817c-f6a3b47cbb4d",
+          "fileName": "test-doc-1775317523583.txt",
+          "filePath": "documents/1775317523585-jtukgcyrd4.txt",
+          "fileSize": 21,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:45:23.587Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "aa74b37d-d9af-48a0-b0b0-3e410938018d",
+          "fileName": "delete-doc-1775317509604.txt",
+          "filePath": "documents/1775317509606-t3ivpt431t.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:45:09.608Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "a1e69a37-d917-46c0-8dae-3d9f7987cc55",
+          "fileName": "delete-doc-1775317508892.txt",
+          "filePath": "documents/1775317508893-9e1ecbmnyo.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:45:08.895Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "b97b3905-ed9e-46f9-aee6-52f913a87930",
+          "fileName": "test-doc-1775317507426.txt",
+          "filePath": "documents/1775317507428-69ub6rtakv.txt",
+          "fileSize": 21,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:45:07.432Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "1f7cee6e-629e-4b38-932a-9927daa85746",
+          "fileName": "delete-doc-1775317475159.txt",
+          "filePath": "documents/1775317475161-59dxc1b7d9.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:44:35.163Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "477e318a-0e2b-4734-8d33-22a5d10d19f3",
+          "fileName": "delete-doc-1775317474422.txt",
+          "filePath": "documents/1775317474424-d99ymol2cg.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:44:34.427Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "63c28bbc-7909-4c21-9e4c-1a75bd218bde",
+          "fileName": "test-doc-1775317472892.txt",
+          "filePath": "documents/1775317472893-hapgbzuczp.txt",
+          "fileSize": 21,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:44:32.895Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "1f389f83-0bdf-4dba-b91c-8248a7896a40",
+          "fileName": "delete-doc-1775317459372.txt",
+          "filePath": "documents/1775317459374-rp3qpjxql1.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:44:19.377Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "f4836ee6-f800-4617-85e8-c385b1179ea1",
+          "fileName": "delete-doc-1775317458639.txt",
+          "filePath": "documents/1775317458640-85qjln6pyx.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:44:18.643Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "75b8bbd3-81a3-44e0-a62a-62154467a080",
+          "fileName": "test-doc-1775317457139.txt",
+          "filePath": "documents/1775317457141-g2j0dm2cmd.txt",
+          "fileSize": 21,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:44:17.143Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "5c3222a9-cca8-40fe-bafe-28ac1c299009",
+          "fileName": "delete-doc-1775317411289.txt",
+          "filePath": "documents/1775317411291-aqylwt05qo.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:43:31.295Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "8c915383-f23b-40a4-b65f-150667a6497a",
+          "fileName": "delete-doc-1775317410557.txt",
+          "filePath": "documents/1775317410560-m2kcz9079q.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:43:30.563Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "e11798a4-f585-4db1-80be-0de2f4d47e20",
+          "fileName": "test-doc-1775317409069.txt",
+          "filePath": "documents/1775317409070-ofuq7qqket.txt",
+          "fileSize": 21,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:43:29.074Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "66ad3ebe-7467-4f25-ab71-2ed571642104",
+          "fileName": "delete-doc-1775317384745.txt",
+          "filePath": "documents/1775317384746-njsu3jj2s4.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:43:04.749Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "dc7b561b-96cb-4067-a072-2369b30c4271",
+          "fileName": "delete-doc-1775317384019.txt",
+          "filePath": "documents/1775317384021-i448t9kz12.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:43:04.023Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "c7fa20f0-c5ad-413b-a9ed-a403a0e9df83",
+          "fileName": "test-doc-1775317382492.txt",
+          "filePath": "documents/1775317382497-icelcs2vwc.txt",
+          "fileSize": 21,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:43:02.501Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "8a1f56e3-d6f8-4d7d-9f1e-61358952e898",
+          "fileName": "delete-doc-1775317349488.txt",
+          "filePath": "documents/1775317349489-lmd48uhq05.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:42:29.491Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "666c6fca-37ae-43d4-a740-84887f98189a",
+          "fileName": "delete-doc-1775317348775.txt",
+          "filePath": "documents/1775317348778-02h5kmttth.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:42:28.780Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "33da7080-0529-4b0c-ab01-56505d84341e",
+          "fileName": "test-doc-1775317347330.txt",
+          "filePath": "documents/1775317347331-x69x4cgokr.txt",
+          "fileSize": 21,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:42:27.334Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "667b483e-988c-4351-9a47-bc674f72d50d",
+          "fileName": "delete-doc-1775316860522.txt",
+          "filePath": "documents/1775316860524-0shqlud9rh.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:34:20.527Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "b43f3da3-a215-4371-8ec7-62e756cf5d40",
+          "fileName": "delete-doc-1775316859741.txt",
+          "filePath": "documents/1775316859743-zhz1vs0v5h.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:34:19.745Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "a2ac1174-7785-4bce-a5e6-d5f89469cd99",
+          "fileName": "test-doc-1775316858254.txt",
+          "filePath": "documents/1775316858257-5raqmlill2.txt",
+          "fileSize": 21,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:34:18.266Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "4a4aa635-1264-4353-aa3d-6b78387dc2b0",
+          "fileName": "syllabus-cs101.pdf",
+          "filePath": "/uploads/syllabus-cs101.pdf",
+          "fileSize": 512000,
+          "fileFormat": "application/pdf",
+          "uploadedAt": "2026-04-04T15:33:51.519Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "0a5462ef-d94f-4a06-9e30-c56930d8ccdd",
+          "fileName": "assignment1.pdf",
+          "filePath": "/uploads/assignment1.pdf",
+          "fileSize": 204800,
+          "fileFormat": "application/pdf",
+          "uploadedAt": "2026-04-04T15:33:51.516Z",
+          "uploader": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          }
+        },
+        {
+          "id": "d15e9c61-c462-42f0-9fe7-e46375025bec",
+          "fileName": "delete-doc-1775316583773.txt",
+          "filePath": "documents/1775316583782-7wcvwpqnd6.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:29:43.787Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "9f9a7400-98ac-4e85-9926-7b0d341c930f",
+          "fileName": "delete-doc-1775316581827.txt",
+          "filePath": "documents/1775316581828-zfox604g75.txt",
+          "fileSize": 18,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:29:41.831Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "7ec78130-cdbe-4e0e-a6b4-62881fb5a07e",
+          "fileName": "test-doc-1775316580058.txt",
+          "filePath": "documents/1775316580060-i16ibwrw52.txt",
+          "fileSize": 21,
+          "fileFormat": "text/plain",
+          "uploadedAt": "2026-04-04T15:29:40.065Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "deccadbe-dbbf-4b8d-9800-3f591d7f4e90",
+          "fileName": "syllabus-cs101.pdf",
+          "filePath": "/uploads/syllabus-cs101.pdf",
+          "fileSize": 512000,
+          "fileFormat": "application/pdf",
+          "uploadedAt": "2026-04-04T15:29:12.895Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "4fbf8d92-0e9d-45b1-8b9f-80094f9ff07e",
+          "fileName": "assignment1.pdf",
+          "filePath": "/uploads/assignment1.pdf",
+          "fileSize": 204800,
+          "fileFormat": "application/pdf",
+          "uploadedAt": "2026-04-04T15:29:12.891Z",
+          "uploader": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          }
+        },
+        {
+          "id": "393aed94-89eb-49d5-89af-84472a9d6867",
+          "fileName": "syllabus-cs101.pdf",
+          "filePath": "/uploads/syllabus-cs101.pdf",
+          "fileSize": 512000,
+          "fileFormat": "application/pdf",
+          "uploadedAt": "2026-04-04T15:28:06.060Z",
+          "uploader": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "role": "tutor"
+          }
+        },
+        {
+          "id": "82eb52ba-20b9-4dc0-940b-e43534d631f6",
+          "fileName": "assignment1.pdf",
+          "filePath": "/uploads/assignment1.pdf",
+          "fileSize": 204800,
+          "fileFormat": "application/pdf",
+          "uploadedAt": "2026-04-04T15:28:06.058Z",
+          "uploader": {
+            "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "name": "Liam Johnson",
+            "role": "student"
+          }
+        }
+      ]
+    }
+  },
+  "duration": "4ms",
+  "timestamp": "2026-04-04T15:46:33.698Z"
+}

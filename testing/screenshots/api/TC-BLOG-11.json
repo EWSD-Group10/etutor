@@ -1,0 +1,30 @@
+{
+  "testId": "TC-BLOG-11",
+  "title": "Delete Blog (Student - Forbidden)",
+  "request": {
+    "method": "DELETE",
+    "url": "http://localhost:8080/api/blogs/undefined",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTBkOGYyMS04YzY1LTQyNTktYWY4Ni1iNmE3OGE4ZmNhOWIiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NDgzMTMzOSwiZXhwIjoxNzc0ODMyMjM5fQ.pnulE4rkSLwt_pWhpxujBqYKHG0SQU2fVVoLWXFmCRM"
+    }
+  },
+  "response": {
+    "status": 403,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "text/plain; charset=utf-8",
+      "content-length": "9",
+      "etag": "W/\"9-PatfYBLj4Um1qTm5zrukoLhNyPU\"",
+      "date": "Mon, 30 Mar 2026 00:42:20 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": "Forbidden"
+  },
+  "duration": "6ms",
+  "timestamp": "2026-03-30T00:42:20.010Z"
+}

@@ -1,0 +1,156 @@
+{
+  "testId": "TC-BLG-01",
+  "title": "Create Blog (Tutor Only)",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/blogs",
+    "body": {
+      "title": "Test Blog Post 1775328231943",
+      "content": "This is a test blog post content.",
+      "isPublished": true
+    },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjBhMjIyZC05ZmYyLTQwNjktYWQ5Zi0yYjc4ODVmYjcxNTIiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzUzMjgyMzEsImV4cCI6MTc3NTMyOTEzMX0.mB42eDQPIDka5MUpU8InAwX64piPOwb2mm7I8DF1C00"
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9649",
+      "ratelimit-reset": "280",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "2922",
+      "etag": "W/\"b6a-Bywf4hdOzHIqpXgD2giWaLliB6c\"",
+      "date": "Sat, 04 Apr 2026 18:43:51 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "master": {
+          "id": "5056209b-d2f6-4b49-8d0f-d301bfde1631",
+          "groupId": "1d811eaa-7164-48b5-a430-4278fad45bc4",
+          "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "studentId": null,
+          "title": "Test Blog Post 1775328231943",
+          "content": "This is a test blog post content.",
+          "sorting": null,
+          "createdAt": "2026-04-04T18:43:51.952Z",
+          "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "tutor": {
+            "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "name": "Dr. Sarah Chen",
+            "email": "tutor1@etutor.com"
+          },
+          "student": null
+        },
+        "copies": [
+          {
+            "id": "50b86d9b-b3ec-474f-a813-1e93013779ed",
+            "groupId": "1d811eaa-7164-48b5-a430-4278fad45bc4",
+            "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "studentId": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+            "title": "Test Blog Post 1775328231943",
+            "content": "This is a test blog post content.",
+            "sorting": null,
+            "createdAt": "2026-04-04T18:43:51.953Z",
+            "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "tutor": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+              "name": "Liam Johnson",
+              "email": "student1@etutor.com"
+            }
+          },
+          {
+            "id": "a4619b3e-28ed-4ca4-8fcc-5b3d953c1352",
+            "groupId": "1d811eaa-7164-48b5-a430-4278fad45bc4",
+            "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "studentId": "d5a319e0-da6d-4778-bd99-c514b25b3c47",
+            "title": "Test Blog Post 1775328231943",
+            "content": "This is a test blog post content.",
+            "sorting": null,
+            "createdAt": "2026-04-04T18:43:51.954Z",
+            "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "tutor": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "d5a319e0-da6d-4778-bd99-c514b25b3c47",
+              "name": "Ava Rodriguez",
+              "email": "student6@etutor.com"
+            }
+          },
+          {
+            "id": "a1491887-d53e-4dc9-8fcd-f5817879ab39",
+            "groupId": "1d811eaa-7164-48b5-a430-4278fad45bc4",
+            "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "studentId": "cce066cd-2865-4458-bb64-c38999babb9a",
+            "title": "Test Blog Post 1775328231943",
+            "content": "This is a test blog post content.",
+            "sorting": null,
+            "createdAt": "2026-04-04T18:43:51.954Z",
+            "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "tutor": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "cce066cd-2865-4458-bb64-c38999babb9a",
+              "name": "Henry Thomas",
+              "email": "student11@etutor.com"
+            }
+          },
+          {
+            "id": "c478ef27-08f1-4a74-9430-a92d24bc4e6d",
+            "groupId": "1d811eaa-7164-48b5-a430-4278fad45bc4",
+            "tutorId": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "studentId": "3ecc4090-39a7-4fc0-854c-0ae40224e8ba",
+            "title": "Test Blog Post 1775328231943",
+            "content": "This is a test blog post content.",
+            "sorting": null,
+            "createdAt": "2026-04-04T18:43:51.954Z",
+            "createdBy": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+            "tutor": {
+              "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+              "name": "Dr. Sarah Chen",
+              "email": "tutor1@etutor.com"
+            },
+            "student": {
+              "id": "3ecc4090-39a7-4fc0-854c-0ae40224e8ba",
+              "name": "Evelyn Thompson",
+              "email": "student16@etutor.com"
+            }
+          }
+        ],
+        "totalStudents": 4
+      }
+    }
+  },
+  "duration": "14ms",
+  "timestamp": "2026-04-04T18:43:51.957Z"
+}

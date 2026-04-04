@@ -1,0 +1,18 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "accessToken",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTBkOGYyMS04YzY1LTQyNTktYWY4Ni1iNmE3OGE4ZmNhOWIiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NDgzMTYwNywiZXhwIjoxNzc0ODMyNTA3fQ.7xyBca0cZ6KpWzykD_7q2YzuyY0uP92v5-O1PAHIaQ8"
+        },
+        {
+          "name": "user",
+          "value": "{\"id\":\"150d8f21-8c65-4259-af86-b6a78a8fca9b\",\"email\":\"student1@etutor.com\",\"name\":\"Liam Johnson\",\"role\":\"STUDENT\"}"
+        }
+      ]
+    }
+  ]
+}

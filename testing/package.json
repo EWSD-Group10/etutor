@@ -1,0 +1,32 @@
+{
+  "name": "etutor-playwright-tests",
+  "version": "2.0.0",
+  "description": "Playwright automated tests for eTutor System – EWSD project",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:setup": "playwright test tests/auth.setup.js --project=setup",
+    "test:api": "playwright test --project=all-api",
+    "test:api:sprint0-1": "playwright test tests/api/sprint0-1.spec.js --project=api",
+    "test:api:messages": "playwright test tests/api/messages.spec.js --project=api-messages",
+    "test:api:meetings": "playwright test tests/api/meetings.spec.js --project=api-meetings",
+    "test:api:blogs": "playwright test tests/api/blogs.spec.js --project=api-blogs",
+    "test:api:documents": "playwright test tests/api/documents.spec.js --project=api-documents",
+    "test:api:admin": "playwright test tests/api/admin.spec.js --project=api-admin",
+    "test:api:integration": "playwright test tests/api/integration.spec.js --project=api-integration",
+    "test:ui": "playwright test --project=all-ui",
+    "test:ui:login": "playwright test tests/ui/login.spec.js --project=ui-login",
+    "test:ui:dashboard": "playwright test tests/ui/dashboard.spec.js --project=ui-dashboard",
+    "test:smoke": "playwright test --project=api --project=ui-login",
+    "test:full": "playwright test --project=all-api --project=all-ui",
+    "report": "playwright show-report",
+    "report:html": "playwright show-report playwright-report",
+    "clean": "rm -rf screenshots/api screenshots/ui test-results playwright-report auth",
+    "clean:screenshots": "rm -rf screenshots/api screenshots/ui",
+    "lint": "echo 'No linter configured'",
+    "typecheck": "echo 'No type checker configured'"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0"
+  }
+}

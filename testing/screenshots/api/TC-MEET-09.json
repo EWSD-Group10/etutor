@@ -1,0 +1,30 @@
+{
+  "testId": "TC-MEET-09",
+  "title": "Tutor Access Admin Meetings",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/admin/meetings",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NzIxM2YxZS1iYWM1LTRmMDYtYWYwZC03NWM0YTEyMTRhOGUiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzQ4MzEzNDcsImV4cCI6MTc3NDgzMjI0N30.4u5y3yJwmpt_ItDOT1J_BJPJeglBdemonyNx2Ck3e8M"
+    }
+  },
+  "response": {
+    "status": 403,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "text/plain; charset=utf-8",
+      "content-length": "9",
+      "etag": "W/\"9-PatfYBLj4Um1qTm5zrukoLhNyPU\"",
+      "date": "Mon, 30 Mar 2026 00:42:28 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": "Forbidden"
+  },
+  "duration": "7ms",
+  "timestamp": "2026-03-30T00:42:28.042Z"
+}

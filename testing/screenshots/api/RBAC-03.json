@@ -1,0 +1,144 @@
+{
+  "testId": "RBAC-03",
+  "title": "Admin Admin Access",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/students",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZWFlNzc0ZC1kYzk5LTRkODAtODk2Zi0xNmRjY2U1ZGFhNDAiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzUzMTc1OTUsImV4cCI6MTc3NTMxODQ5NX0.6FUbHCB7CY0Au3a4DdHN-JTeiVfFg-4X36tYXvs71n0"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "8606",
+      "ratelimit-reset": "147",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "2290",
+      "etag": "W/\"8f2-EAsFBC7VBnjsrmie7Dp4Wy3qG8Y\"",
+      "date": "Sat, 04 Apr 2026 15:46:35 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": [
+        {
+          "id": "bc7c4696-9ebc-4fb9-8830-c4cf7218daaf",
+          "email": "student_1775317392485@test.com",
+          "name": "Updated Student Name",
+          "role": "student",
+          "degreeProgram": "BSc Computer Science",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:43:12.535Z"
+        },
+        {
+          "id": "5f8c51ff-1404-4637-9ce6-131f8768d17d",
+          "email": "student_1775317366609@test.com",
+          "name": "Updated Student Name",
+          "role": "student",
+          "degreeProgram": "BSc Computer Science",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:42:46.658Z"
+        },
+        {
+          "id": "5c9a2ead-c74e-4859-af09-288a49dd8529",
+          "email": "student_1775317332385@test.com",
+          "name": "Updated Student Name",
+          "role": "student",
+          "degreeProgram": "BSc Computer Science",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:42:12.436Z"
+        },
+        {
+          "id": "05e46b5f-8ba2-4aef-8eab-ee6cb18f90fa",
+          "email": "student_1775316842868@test.com",
+          "name": "Updated Student Name",
+          "role": "student",
+          "degreeProgram": "BSc Computer Science",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:34:02.921Z"
+        },
+        {
+          "id": "1087e13f-047f-4769-8940-cc2e9b31befd",
+          "email": "student_1775316565265@test.com",
+          "name": "Updated Student Name",
+          "role": "student",
+          "degreeProgram": "BSc Computer Science",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:29:25.315Z"
+        },
+        {
+          "id": "265ee692-07cd-4f3c-a2c1-6bee7b509f3b",
+          "email": "student_1775316505238@test.com",
+          "name": "Updated Student Name",
+          "role": "student",
+          "degreeProgram": "BSc Computer Science",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:28:25.290Z"
+        },
+        {
+          "id": "588c2a3c-d7e8-4ecc-b37e-3bcf3b572578",
+          "email": "student20@etutor.com",
+          "name": "Ella Walker",
+          "role": "student",
+          "degreeProgram": "BSc Computer Science",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:27:20.208Z"
+        },
+        {
+          "id": "2d6dfa89-63ad-4005-87f7-b6596c1a8aaa",
+          "email": "student19@etutor.com",
+          "name": "Daniel Lewis",
+          "role": "student",
+          "degreeProgram": "BEng Software Engineering",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:27:20.206Z"
+        },
+        {
+          "id": "00a41da0-f445-49e3-a0d3-eb7ea31c09b7",
+          "email": "student18@etutor.com",
+          "name": "Abigail Clark",
+          "role": "student",
+          "degreeProgram": "BSc Data Science",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:27:20.204Z"
+        },
+        {
+          "id": "7c78b403-e8f7-438d-b0d5-65bd6c85c762",
+          "email": "student17@etutor.com",
+          "name": "Alexander Moore",
+          "role": "student",
+          "degreeProgram": "BEng Electrical Engineering",
+          "isActive": true,
+          "createdAt": "2026-04-04T15:27:20.199Z"
+        }
+      ],
+      "pagination": {
+        "page": 1,
+        "limit": 10,
+        "total": 26,
+        "totalPages": 3
+      }
+    }
+  },
+  "duration": "4ms",
+  "timestamp": "2026-04-04T15:46:35.708Z"
+}

@@ -1,0 +1,27 @@
+{
+  "testId": "TUT-setup",
+  "title": "Login",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/login",
+    "body": {
+      "email": "admin1@etutor.com",
+      "password": "admin123"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YzI4YzAyOS1iNGM1LTQyOTAtOTcxMS1jOGExNjcyMWYzMzUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzQ4MzEzNDEsImV4cCI6MTc3NDgzMjI0MX0.RoLr3jQHHfSEb_-dlPiN6ioRzmKFiD2MeMcQxwN0fkg",
+      "user": {
+        "id": "9c28c029-b4c5-4290-9711-c8a16721f335",
+        "email": "admin1@etutor.com",
+        "name": "Alice Admin",
+        "role": "ADMIN"
+      },
+      "lastLoginAt": "2026-03-30T00:42:20.954Z"
+    }
+  },
+  "duration": "57ms",
+  "timestamp": "2026-03-30T00:42:21.168Z"
+}

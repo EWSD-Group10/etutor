@@ -1,0 +1,77 @@
+{
+  "testId": "TC-MTG-02",
+  "title": "Accept/Update Meeting",
+  "request": {
+    "method": "PUT",
+    "url": "http://localhost:8080/api/meetings/c46ae23f-5702-4329-8ea3-f3ba048b0f71",
+    "body": {
+      "status": "confirmed",
+      "meetingLink": "https://meet.example.com/123"
+    },
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MjBhMjIyZC05ZmYyLTQwNjktYWQ5Zi0yYjc4ODVmYjcxNTIiLCJyb2xlIjoiVFVUT1IiLCJpYXQiOjE3NzUzMjgwODYsImV4cCI6MTc3NTMyODk4Nn0.96l0kBqL0VHg-eOAFJTZYTDLTDDc4lUQBcKs5WUj5R8"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-security-policy": "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+      "cross-origin-opener-policy": "same-origin",
+      "cross-origin-resource-policy": "same-origin",
+      "origin-agent-cluster": "?1",
+      "referrer-policy": "no-referrer",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-download-options": "noopen",
+      "x-frame-options": "SAMEORIGIN",
+      "x-permitted-cross-domain-policies": "none",
+      "x-xss-protection": "0",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "ratelimit-policy": "10000;w=900",
+      "ratelimit-limit": "10000",
+      "ratelimit-remaining": "9694",
+      "ratelimit-reset": "426",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "652",
+      "etag": "W/\"28c-OcNMhbUVGENhTJjM/tY9Gw6bZg0\"",
+      "date": "Sat, 04 Apr 2026 18:41:26 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "id": "c46ae23f-5702-4329-8ea3-f3ba048b0f71",
+        "meetingType": "virtual",
+        "meetingStatus": "pending",
+        "scheduledDate": "2026-04-11T18:41:26.863Z",
+        "durationMinutes": 30,
+        "location": null,
+        "meetingLink": "https://meet.example.com/123",
+        "meetingName": null,
+        "createdAt": "2026-04-04T18:41:26.865Z",
+        "student": {
+          "id": "eb9a2146-7709-41b1-a431-7c6e476f8029",
+          "name": "Liam Johnson",
+          "email": "student1@etutor.com"
+        },
+        "tutor": {
+          "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "name": "Dr. Sarah Chen",
+          "email": "tutor1@etutor.com"
+        },
+        "createdBy": {
+          "id": "620a222d-9ff2-4069-ad9f-2b7885fb7152",
+          "name": "Dr. Sarah Chen",
+          "role": "tutor"
+        },
+        "scheduledAt": "2026-04-11T18:41:26.863Z",
+        "notes": null
+      }
+    }
+  },
+  "duration": "6ms",
+  "timestamp": "2026-04-04T18:41:26.888Z"
+}

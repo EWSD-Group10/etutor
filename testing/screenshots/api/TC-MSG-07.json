@@ -1,0 +1,33 @@
+{
+  "testId": "TC-MSG-07",
+  "title": "Send Message Without Auth",
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:8080/api/messages",
+    "body": {
+      "receiverId": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+      "content": "Test"
+    },
+    "headers": {}
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "24",
+      "etag": "W/\"18-XPDV80vbMk4yY1/PADG4jYM4rSI\"",
+      "date": "Mon, 30 Mar 2026 00:42:20 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "error": "Unauthorized"
+    }
+  },
+  "duration": "2ms",
+  "timestamp": "2026-03-30T00:42:20.595Z"
+}

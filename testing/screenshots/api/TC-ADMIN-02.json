@@ -1,0 +1,96 @@
+{
+  "testId": "TC-ADMIN-02",
+  "title": "Admin View As Student",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/admin/view-as/student/150d8f21-8c65-4259-af86-b6a78a8fca9b/dashboard",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5YzI4YzAyOS1iNGM1LTQyOTAtOTcxMS1jOGExNjcyMWYzMzUiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NzQ4MzEzMzYsImV4cCI6MTc3NDgzMjIzNn0.wfUt-399C-tGM4jPTB97OYhCdv0Yp96851smYvwCsKM"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "1366",
+      "etag": "W/\"556-+DByDks54F70u93PqaapWePVa+A\"",
+      "date": "Mon, 30 Mar 2026 00:42:16 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": {
+      "data": {
+        "degreeProgram": "BSc Computer Science",
+        "summary": {
+          "unreadMessages": 1,
+          "messagesLast7Days": 2,
+          "upcomingMeetingsCount": 4
+        },
+        "nextMeeting": {
+          "id": "2d145d28-5e9e-40ac-bb4c-1e66f521dfcd",
+          "scheduledAt": "2026-03-30T21:36:36.195Z",
+          "title": null,
+          "location": null,
+          "meetingLink": "https://meet.etutor.com/room-101",
+          "meetingType": "virtual"
+        },
+        "assignedTutor": {
+          "id": "97213f1e-bac5-4f06-af0d-75c4a1214a8e",
+          "name": "Dr. Sarah Chen",
+          "department": "Computer Science"
+        },
+        "recentDocuments": [
+          {
+            "id": "d6d6929d-dc0a-4c96-b47d-e5012b0aa07a",
+            "label": "assignment1.pdf"
+          },
+          {
+            "id": "3896fc94-1168-4dee-8a5a-56032b2eaa1b",
+            "label": "assignment1.pdf"
+          }
+        ],
+        "recentBlogPosts": [
+          {
+            "id": "1a7961a4-4eb0-4892-b0ed-cf3a674969da",
+            "title": "Blog for Student Delete Test",
+            "createdAt": "2026-03-29T23:34:11.065Z"
+          },
+          {
+            "id": "4391e5ef-b5c9-4ef6-9013-b74eaf66ce0c",
+            "title": "Blog to Delete",
+            "createdAt": "2026-03-29T23:34:11.000Z"
+          },
+          {
+            "id": "fcc5d866-3e90-4040-a799-bdc6c846b951",
+            "title": "Integration Test Blog Post",
+            "createdAt": "2026-03-29T23:34:10.502Z"
+          },
+          {
+            "id": "953c8082-ef77-49fe-86ea-e0ef88fbe0fc",
+            "title": "Group Blog Post",
+            "createdAt": "2026-03-29T23:34:10.158Z"
+          },
+          {
+            "id": "2f7a082d-5649-439d-8ffd-1a7bb4d90db6",
+            "title": "Integration Test Blog Post",
+            "createdAt": "2026-03-29T23:34:09.494Z"
+          }
+        ],
+        "viewAs": {
+          "userId": "150d8f21-8c65-4259-af86-b6a78a8fca9b",
+          "name": "Liam Johnson",
+          "email": "student1@etutor.com",
+          "role": "student",
+          "isActive": true
+        }
+      }
+    }
+  },
+  "duration": "28ms",
+  "timestamp": "2026-03-30T00:42:16.231Z"
+}

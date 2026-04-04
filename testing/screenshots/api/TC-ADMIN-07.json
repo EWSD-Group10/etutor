@@ -1,0 +1,30 @@
+{
+  "testId": "TC-ADMIN-07",
+  "title": "Student Access Admin Dashboard",
+  "request": {
+    "method": "GET",
+    "url": "http://localhost:8080/api/admin/dashboard",
+    "body": null,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNTBkOGYyMS04YzY1LTQyNTktYWY4Ni1iNmE3OGE4ZmNhOWIiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3NDgzMTMzNiwiZXhwIjoxNzc0ODMyMjM2fQ.8vAqX1qBacl8uKWjQFNreDtzQ3ht1olj7JpgwStVAqg"
+    }
+  },
+  "response": {
+    "status": 403,
+    "headers": {
+      "x-powered-by": "Express",
+      "access-control-allow-origin": "http://localhost:3000",
+      "vary": "Origin",
+      "access-control-allow-credentials": "true",
+      "content-type": "text/plain; charset=utf-8",
+      "content-length": "9",
+      "etag": "W/\"9-PatfYBLj4Um1qTm5zrukoLhNyPU\"",
+      "date": "Mon, 30 Mar 2026 00:42:16 GMT",
+      "connection": "keep-alive",
+      "keep-alive": "timeout=5"
+    },
+    "body": "Forbidden"
+  },
+  "duration": "4ms",
+  "timestamp": "2026-03-30T00:42:16.409Z"
+}
