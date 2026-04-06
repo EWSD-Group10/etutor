@@ -94,10 +94,18 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 
-const allowedOrigin = process.env.FRONTEND_ORIGIN || "http://localhost:3000";
+const allowedOrigins = (process.env.FRONTEND_ORIGIN || "http://localhost:3000,http://localhost:3001")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: allowedOrigin,
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      callback(new Error(`CORS origin denied: ${origin}`));
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   }),
