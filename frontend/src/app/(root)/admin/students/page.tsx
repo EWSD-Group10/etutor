@@ -7,6 +7,7 @@ import { StudentTable } from "@/app/components/StudentTable";
 import AddStudentDialog, {
   StudentFormValues,
 } from "@/app/components/AddStudentDialog";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 import { useStudents } from "@/app/hooks/students/useStudents";
 import {
   useCreateStudent,
@@ -29,6 +30,8 @@ export default function StudentPage() {
   const createMutation = useCreateStudent();
   const updateMutation = useUpdateStudent();
   const deleteMutation = useDeleteStudent();
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [deleteStudentId, setDeleteStudentId] = useState<string | null>(null);
 
   const openAdd = () => {
     setEditing(null);
@@ -50,9 +53,16 @@ export default function StudentPage() {
   };
 
   const openDelete = (studentId: string) => {
-    if (confirm("Are you sure you want to delete this student?")) {
-      deleteMutation.mutate(studentId);
+    setDeleteStudentId(studentId);
+    setConfirmDeleteOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (deleteStudentId) {
+      deleteMutation.mutate(deleteStudentId);
     }
+    setConfirmDeleteOpen(false);
+    setDeleteStudentId(null);
   };
 
   const handleSubmit = (values: StudentFormValues) => {
@@ -90,6 +100,16 @@ export default function StudentPage() {
         onSubmit={handleSubmit}
         initialValues={editing || undefined}
         isEdit={Boolean(editing && editing.id)}
+      />
+
+      <ConfirmationDialog
+        open={confirmDeleteOpen}
+        title="Delete student"
+        message="Are you sure you want to delete this student?"
+        confirmLabel="Delete"
+        confirmColor="error"
+        onClose={() => setConfirmDeleteOpen(false)}
+        onConfirm={handleConfirmDelete}
       />
     </Box>
   );

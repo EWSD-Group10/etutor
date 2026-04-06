@@ -19,6 +19,7 @@ import {
   Divider,
   Avatar,
 } from "@mui/material";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -32,9 +33,8 @@ import {
   useBlog,
   useAddBlogComment,
   useUpdateBlog,
-  BlogPost,
-  BlogGroup,
 } from "@/app/hooks/blogs/useBlogs";
+import { BlogPost, BlogGroup } from "@/app/hooks/blogs/query";
 
 // Type for view levels
 type ViewLevel = "list" | "students" | "conversation";
@@ -43,7 +43,9 @@ export default function BlogPage() {
   const [viewLevel, setViewLevel] = useState<ViewLevel>("list");
   const [selectedGroupId, setSelectedGroupId] = useState<string | null>(null);
   const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
-  const [selectedStudentName, setSelectedStudentName] = useState<string | null>(null);
+  const [selectedStudentName, setSelectedStudentName] = useState<string | null>(
+    null,
+  );
 
   // Create dialog state
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -58,11 +60,17 @@ export default function BlogPage() {
 
   // Comment input state
   const [newComment, setNewComment] = useState("");
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [deleteGroupId, setDeleteGroupId] = useState<string | null>(null);
 
   // Queries & Mutations
   const { data: blogsData, isLoading: blogsLoading } = useBlogs();
-  const { data: groupData, isLoading: groupLoading } = useBlogGroup(selectedGroupId || "");
-  const { data: blogData, isLoading: blogLoading } = useBlog(selectedBlogId || "");
+  const { data: groupData, isLoading: groupLoading } = useBlogGroup(
+    selectedGroupId || "",
+  );
+  const { data: blogData, isLoading: blogLoading } = useBlog(
+    selectedBlogId || "",
+  );
 
   const createBlogMutation = useCreateBlog();
   const deleteBlogMutation = useDeleteBlog();
@@ -104,16 +112,25 @@ export default function BlogPage() {
   };
 
   // Handle: Delete blog
-  const handleDeleteBlog = async (groupId: string) => {
-    if (!confirm("This will delete this blog for ALL students. Continue?")) return;
+  const handleDeleteBlog = (groupId: string) => {
+    setDeleteGroupId(groupId);
+    setConfirmDeleteOpen(true);
+  };
 
-    // Find a blog in the group to delete
-    const blogInGroup = groupData?.data.find((b) => b.groupId === groupId);
+  const handleConfirmDeleteBlog = async () => {
+    if (!deleteGroupId) return;
+
+    const blogInGroup = groupData?.data.find(
+      (b) => b.groupId === deleteGroupId,
+    );
     if (blogInGroup) {
       await deleteBlogMutation.mutateAsync(blogInGroup.id);
       setViewLevel("list");
       setSelectedGroupId(null);
     }
+
+    setConfirmDeleteOpen(false);
+    setDeleteGroupId(null);
   };
 
   // Handle: Open edit dialog
@@ -184,7 +201,10 @@ export default function BlogPage() {
           mb: 4,
         }}
       >
-        <Typography variant="h4" sx={{ fontWeight: 800, color: "text.primary" }}>
+        <Typography
+          variant="h4"
+          sx={{ fontWeight: 800, color: "text.primary" }}
+        >
           Blog Posts
         </Typography>
         <Button
@@ -232,7 +252,11 @@ export default function BlogPage() {
             borderColor: alpha("#000", 0.1),
           }}
         >
-          <Typography variant="subtitle1" color="text.secondary" sx={{ fontWeight: 600 }}>
+          <Typography
+            variant="subtitle1"
+            color="text.secondary"
+            sx={{ fontWeight: 600 }}
+          >
             No blog posts found
           </Typography>
           <Typography variant="body2" color="text.disabled">
@@ -285,7 +309,13 @@ export default function BlogPage() {
                 }}
                 onClick={() => handleStudentClick(studentBlog)}
               >
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                     <Avatar sx={{ bgcolor: "#1976d2" }}>
                       {studentBlog.student?.name?.[0]?.toUpperCase() || "S"}
@@ -355,10 +385,19 @@ export default function BlogPage() {
                 sx={{
                   p: 2,
                   borderRadius: 2,
-                  bgcolor: comment.commenter.role === "tutor" ? alpha("#1976d2", 0.05) : alpha("#000", 0.02),
+                  bgcolor:
+                    comment.commenter.role === "tutor"
+                      ? alpha("#1976d2", 0.05)
+                      : alpha("#000", 0.02),
                 }}
               >
-                <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    mb: 1,
+                  }}
+                >
                   <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                     {comment.commenter.name || "Unknown"}
                   </Typography>
@@ -378,7 +417,9 @@ export default function BlogPage() {
               placeholder="Write a comment..."
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleAddComment()}
+              onKeyDown={(e) =>
+                e.key === "Enter" && !e.shiftKey && handleAddComment()
+              }
               multiline
               maxRows={3}
             />
@@ -386,7 +427,11 @@ export default function BlogPage() {
               color="primary"
               onClick={handleAddComment}
               disabled={!newComment.trim() || addCommentMutation.isPending}
-              sx={{ bgcolor: "primary.main", color: "white", "&:hover": { bgcolor: "primary.dark" } }}
+              sx={{
+                bgcolor: "primary.main",
+                color: "white",
+                "&:hover": { bgcolor: "primary.dark" },
+              }}
             >
               <SendIcon />
             </IconButton>
@@ -403,7 +448,12 @@ export default function BlogPage() {
       {viewLevel === "conversation" && renderConversation()}
 
       {/* Create Blog Dialog */}
-      <Dialog open={createDialogOpen} onClose={() => setCreateDialogOpen(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={createDialogOpen}
+        onClose={() => setCreateDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle sx={{ fontWeight: 700 }}>Create New Blog Post</DialogTitle>
         <DialogContent>
           <TextField
@@ -430,7 +480,11 @@ export default function BlogPage() {
           <Button
             variant="contained"
             onClick={handleCreateBlog}
-            disabled={createBlogMutation.isPending || !newTitle.trim() || !newContent.trim()}
+            disabled={
+              createBlogMutation.isPending ||
+              !newTitle.trim() ||
+              !newContent.trim()
+            }
           >
             {createBlogMutation.isPending ? "Creating..." : "Create"}
           </Button>
@@ -438,7 +492,12 @@ export default function BlogPage() {
       </Dialog>
 
       {/* Edit Blog Dialog */}
-      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)} maxWidth="sm" fullWidth>
+      <Dialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle sx={{ fontWeight: 700 }}>Edit Blog Post</DialogTitle>
         <DialogContent>
           <TextField
@@ -465,12 +524,26 @@ export default function BlogPage() {
           <Button
             variant="contained"
             onClick={handleSaveEdit}
-            disabled={updateBlogMutation.isPending || !editTitle.trim() || !editContent.trim()}
+            disabled={
+              updateBlogMutation.isPending ||
+              !editTitle.trim() ||
+              !editContent.trim()
+            }
           >
             {updateBlogMutation.isPending ? "Saving..." : "Save Changes"}
           </Button>
         </DialogActions>
       </Dialog>
+
+      <ConfirmationDialog
+        open={confirmDeleteOpen}
+        title="Delete blog"
+        message="This will delete this blog for ALL students. Continue?"
+        confirmLabel="Delete"
+        confirmColor="error"
+        onClose={() => setConfirmDeleteOpen(false)}
+        onConfirm={handleConfirmDeleteBlog}
+      />
     </Box>
   );
 }
@@ -500,20 +573,49 @@ function BlogListItem({ blog, onClick, onDelete, onEdit }: BlogListItemProps) {
       }}
       onClick={onClick}
     >
-      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <Box>
-          <Typography variant="subtitle1" sx={{ fontWeight: 700, color: "text.primary", mb: 0.5 }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: 700, color: "text.primary", mb: 0.5 }}
+          >
             {blog.title}
           </Typography>
           <Stack direction="row" spacing={1} alignItems="center">
-            <Typography variant="caption" sx={{ color: "text.secondary", fontWeight: 500 }}>
+            <Typography
+              variant="caption"
+              sx={{ color: "text.secondary", fontWeight: 500 }}
+            >
               By {blog.tutor?.name || "Tutor"}
             </Typography>
-            <Box sx={{ width: 4, height: 4, borderRadius: "50%", bgcolor: "text.disabled" }} />
-            <Typography variant="caption" sx={{ color: "text.secondary", fontWeight: 500 }}>
+            <Box
+              sx={{
+                width: 4,
+                height: 4,
+                borderRadius: "50%",
+                bgcolor: "text.disabled",
+              }}
+            />
+            <Typography
+              variant="caption"
+              sx={{ color: "text.secondary", fontWeight: 500 }}
+            >
               {new Date(blog.createdAt).toLocaleDateString()}
             </Typography>
-            <Box sx={{ width: 4, height: 4, borderRadius: "50%", bgcolor: "text.disabled" }} />
+            <Box
+              sx={{
+                width: 4,
+                height: 4,
+                borderRadius: "50%",
+                bgcolor: "text.disabled",
+              }}
+            />
             <Chip
               label={`${blog.commentCount || 0} comments`}
               size="small"

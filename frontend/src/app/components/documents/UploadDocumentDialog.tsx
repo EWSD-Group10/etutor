@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -11,6 +11,7 @@ import {
   CircularProgress,
   Typography,
 } from "@mui/material";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { DocumentRecord } from "@/app/hooks/documents/query";
 
@@ -37,6 +38,7 @@ const UploadDocumentDialog: React.FC<UploadDocumentDialogProps> = ({
   validateBeforeUpload,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
   const handlePick = () => inputRef.current?.click();
 
@@ -48,7 +50,7 @@ const UploadDocumentDialog: React.FC<UploadDocumentDialogProps> = ({
     if (validateBeforeUpload) {
       const validationError = validateBeforeUpload(file);
       if (validationError) {
-        window.alert(validationError);
+        setAlertMessage(validationError);
         return;
       }
     }
@@ -59,7 +61,7 @@ const UploadDocumentDialog: React.FC<UploadDocumentDialogProps> = ({
     } catch (err) {
       console.error(err);
       const msg = err instanceof Error ? err.message : "Upload failed";
-      window.alert(msg);
+      setAlertMessage(msg);
     }
   };
 
@@ -113,6 +115,16 @@ const UploadDocumentDialog: React.FC<UploadDocumentDialogProps> = ({
         </Button>
       </DialogActions>
     </Dialog>
+
+    <ConfirmationDialog
+      open={Boolean(alertMessage)}
+      title="Upload error"
+      message={alertMessage ?? ""}
+      showCancel={false}
+      confirmLabel="OK"
+      onClose={() => setAlertMessage(null)}
+      onConfirm={() => setAlertMessage(null)}
+    />
   );
 };
 

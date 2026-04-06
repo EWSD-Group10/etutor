@@ -15,6 +15,7 @@ import {
   Chip,
   CircularProgress,
 } from "@mui/material";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 import { useDocumentComments } from "@/app/hooks/documents/useDocuments";
 import { useAddDocumentComment } from "@/app/hooks/documents/useDocumentMutations";
 
@@ -32,6 +33,7 @@ export default function DocumentCommentsDialog({
   onClose,
 }: DocumentCommentsDialogProps) {
   const [newComment, setNewComment] = useState("");
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
   const { data, isLoading, isError, refetch } = useDocumentComments(
     documentId || "",
@@ -58,7 +60,7 @@ export default function DocumentCommentsDialog({
       refetch();
     } catch (err) {
       console.error("Failed to send document comment", err);
-      window.alert("Failed to send comment. Please try again.");
+      setAlertMessage("Failed to send comment. Please try again.");
     }
   };
 
@@ -154,5 +156,15 @@ export default function DocumentCommentsDialog({
         </Button>
       </DialogActions>
     </Dialog>
+
+    <ConfirmationDialog
+      open={Boolean(alertMessage)}
+      title="Failed to send comment"
+      message={alertMessage ?? ""}
+      showCancel={false}
+      confirmLabel="OK"
+      onClose={() => setAlertMessage(null)}
+      onConfirm={() => setAlertMessage(null)}
+    />
   );
 }

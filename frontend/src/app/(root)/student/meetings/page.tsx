@@ -14,6 +14,7 @@ import {
   CircularProgress,
   Pagination,
 } from "@mui/material";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 import SearchIcon from "@mui/icons-material/Search";
 import EventIcon from "@mui/icons-material/Event";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -46,6 +47,12 @@ export default function StudentMeetingsPage() {
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedMeeting, setSelectedMeeting] = useState<Meeting | null>(null);
+  const [confirmMeetingOpen, setConfirmMeetingOpen] = useState(false);
+  const [confirmMeetingId, setConfirmMeetingId] = useState<string | null>(null);
+  const [confirmMeetingStatus, setConfirmMeetingStatus] = useState<
+    "completed" | "cancelled" | null
+  >(null);
+  const [confirmMeetingMessage, setConfirmMeetingMessage] = useState("");
 
   const createMeeting = useCreateMeeting();
   const updateMeeting = useUpdateMeeting();
@@ -85,6 +92,21 @@ export default function StudentMeetingsPage() {
     value: number,
   ) => {
     setPage(value);
+  };
+
+  const handleConfirmMeeting = () => {
+    if (!confirmMeetingId || !confirmMeetingStatus) {
+      setConfirmMeetingOpen(false);
+      return;
+    }
+
+    updateMeeting.mutate({
+      meetingId: confirmMeetingId,
+      input: { meetingStatus: confirmMeetingStatus },
+    });
+    setConfirmMeetingOpen(false);
+    setConfirmMeetingId(null);
+    setConfirmMeetingStatus(null);
   };
 
   // Filter by search query (client-side)
@@ -130,27 +152,19 @@ export default function StudentMeetingsPage() {
   };
 
   const handleCompleteMeeting = (id: string) => {
-    if (
-      typeof window !== "undefined" &&
-      window.confirm("Are you sure you want to mark this meeting as completed?")
-    ) {
-      updateMeeting.mutate({
-        meetingId: id,
-        input: { meetingStatus: "completed" },
-      });
-    }
+    setConfirmMeetingId(id);
+    setConfirmMeetingStatus("completed");
+    setConfirmMeetingMessage(
+      "Are you sure you want to mark this meeting as completed?",
+    );
+    setConfirmMeetingOpen(true);
   };
 
   const handleCancelMeetingFromList = (id: string) => {
-    if (
-      typeof window !== "undefined" &&
-      window.confirm("Are you sure you want to cancel this meeting?")
-    ) {
-      updateMeeting.mutate({
-        meetingId: id,
-        input: { meetingStatus: "cancelled" },
-      });
-    }
+    setConfirmMeetingId(id);
+    setConfirmMeetingStatus("cancelled");
+    setConfirmMeetingMessage("Are you sure you want to cancel this meeting?");
+    setConfirmMeetingOpen(true);
   };
 
   return (
@@ -218,6 +232,16 @@ export default function StudentMeetingsPage() {
         meeting={selectedMeeting}
         onSubmit={handleSaveEdit}
         isLoading={updateMeeting.isPending}
+      />
+
+      <ConfirmationDialog
+        open={confirmMeetingOpen}
+        title="Confirm meeting action"
+        message={confirmMeetingMessage}
+        confirmLabel="Confirm"
+        confirmColor="primary"
+        onClose={() => setConfirmMeetingOpen(false)}
+        onConfirm={handleConfirmMeeting}
       />
 
       {/* Stats row */}

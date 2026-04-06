@@ -9,6 +9,7 @@ import {
   Stack,
   CircularProgress,
 } from "@mui/material";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DocumentsToolbar, {
   type DocumentsFilterValue,
@@ -53,6 +54,7 @@ export default function TutorStudentDocumentsPage() {
     id: string;
     fileName: string;
   }>(null);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
   const { data: students, isLoading: studentsLoading } = useTutorMyStudents();
 
@@ -94,7 +96,7 @@ export default function TutorStudentDocumentsPage() {
       await downloadDocumentFile(row.id, row.fileName);
     } catch (e) {
       console.error(e);
-      window.alert("Could not download file.");
+      setAlertMessage("Could not download file.");
     }
   };
 
@@ -209,6 +211,16 @@ export default function TutorStudentDocumentsPage() {
           setCommentDialogOpen(false);
           setSelectedDocument(null);
         }}
+      />
+
+      <ConfirmationDialog
+        open={Boolean(alertMessage)}
+        title="Download failed"
+        message={alertMessage ?? ""}
+        showCancel={false}
+        confirmLabel="OK"
+        onClose={() => setAlertMessage(null)}
+        onConfirm={() => setAlertMessage(null)}
       />
     </Box>
   );

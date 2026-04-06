@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
   Box,
@@ -15,6 +15,7 @@ import {
 import { ArrowBack, Edit, Delete } from "@mui/icons-material";
 import { useTutor } from "@/app/hooks/tutors/useTutor";
 import { useDeleteTutor } from "@/app/hooks/tutors/useTutorsMutations";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 
 export default function TutorDetailPage() {
   const params = useParams();
@@ -23,15 +24,20 @@ export default function TutorDetailPage() {
 
   const { data: tutor, isLoading, error } = useTutor(tutorId);
   const deleteTutorMutation = useDeleteTutor();
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   const handleDelete = async () => {
-    if (confirm("Are you sure you want to delete this tutor?")) {
-      try {
-        await deleteTutorMutation.mutateAsync(tutorId);
-        router.push("/tutors");
-      } catch (err) {
-        console.error("Delete failed:", err);
-      }
+    setConfirmDeleteOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteTutorMutation.mutateAsync(tutorId);
+      router.push("/tutors");
+    } catch (err) {
+      console.error("Delete failed:", err);
+    } finally {
+      setConfirmDeleteOpen(false);
     }
   };
 
@@ -132,6 +138,16 @@ export default function TutorDetailPage() {
           </Stack>
         </CardContent>
       </Card>
+
+      <ConfirmationDialog
+        open={confirmDeleteOpen}
+        title="Delete tutor"
+        message="Are you sure you want to delete this tutor?"
+        confirmLabel="Delete"
+        confirmColor="error"
+        onClose={() => setConfirmDeleteOpen(false)}
+        onConfirm={handleConfirmDelete}
+      />
     </Box>
   );
 }

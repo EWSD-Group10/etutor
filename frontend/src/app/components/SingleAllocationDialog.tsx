@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -15,6 +15,7 @@ import {
   Stack,
   CircularProgress,
 } from "@mui/material";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 import { useTutors } from "@/app/hooks/tutors/useTutors";
 import { useUnassignedStudents } from "@/app/hooks/allocations/useAllocations";
 import { Allocation } from "@/app/hooks/allocations/query";
@@ -47,6 +48,7 @@ export const SingleAllocationDialog: React.FC<SingleAllocationDialogProps> = ({
   const [studentId, setStudentId] = React.useState("");
   const [reason, setReason] = React.useState("");
   const [notes, setNotes] = React.useState("");
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
   React.useEffect(() => {
     if (editingAllocation) {
@@ -64,7 +66,7 @@ export const SingleAllocationDialog: React.FC<SingleAllocationDialogProps> = ({
 
   const handleSubmit = () => {
     if (!tutorId || !studentId) {
-      alert("Please select both tutor and student");
+      setAlertMessage("Please select both tutor and student");
       return;
     }
 
@@ -77,86 +79,98 @@ export const SingleAllocationDialog: React.FC<SingleAllocationDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>
-        {editingAllocation?.tutorId
-          ? "Reallocate Student"
-          : "Assign Tutor to Student"}
-      </DialogTitle>
-      <DialogContent>
-        <Stack spacing={3} sx={{ mt: 2 }}>
-          <FormControl fullWidth>
-            <FormLabel>Tutor *</FormLabel>
-            <Select
-              value={tutorId}
-              onChange={(e) => setTutorId(e.target.value)}
-              disabled={tutorsLoading || isLoading}
-            >
-              <MenuItem value="">
-                {tutorsLoading ? "Loading tutors..." : "Select a tutor"}
-              </MenuItem>
-              {tutorsData?.data.map((tutor: any) => (
-                <MenuItem key={tutor.id} value={tutor.id}>
-                  {tutor.name} ({tutor.email})
+    <>
+      <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+        <DialogTitle>
+          {editingAllocation?.tutorId
+            ? "Reallocate Student"
+            : "Assign Tutor to Student"}
+        </DialogTitle>
+        <DialogContent>
+          <Stack spacing={3} sx={{ mt: 2 }}>
+            <FormControl fullWidth>
+              <FormLabel>Tutor *</FormLabel>
+              <Select
+                value={tutorId}
+                onChange={(e) => setTutorId(e.target.value)}
+                disabled={tutorsLoading || isLoading}
+              >
+                <MenuItem value="">
+                  {tutorsLoading ? "Loading tutors..." : "Select a tutor"}
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+                {tutorsData?.data.map((tutor: any) => (
+                  <MenuItem key={tutor.id} value={tutor.id}>
+                    {tutor.name} ({tutor.email})
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-          <FormControl fullWidth>
-            <FormLabel>Student *</FormLabel>
-            <Select
-              value={studentId}
-              onChange={(e) => setStudentId(e.target.value)}
-              disabled={
-                studentsLoading || isLoading || !!editingAllocation?.studentId
-              }
-            >
-              <MenuItem value="">
-                {studentsLoading ? "Loading students..." : "Select a student"}
-              </MenuItem>
-              {studentsData?.data.map((student) => (
-                <MenuItem key={student.id} value={student.id}>
-                  {student.name} ({student.email})
+            <FormControl fullWidth>
+              <FormLabel>Student *</FormLabel>
+              <Select
+                value={studentId}
+                onChange={(e) => setStudentId(e.target.value)}
+                disabled={
+                  studentsLoading || isLoading || !!editingAllocation?.studentId
+                }
+              >
+                <MenuItem value="">
+                  {studentsLoading ? "Loading students..." : "Select a student"}
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+                {studentsData?.data.map((student) => (
+                  <MenuItem key={student.id} value={student.id}>
+                    {student.name} ({student.email})
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-          <TextField
-            label="Reason"
-            multiline
-            rows={2}
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            placeholder="Reason for allocation"
-            disabled={isLoading}
-          />
+            <TextField
+              label="Reason"
+              multiline
+              rows={2}
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="Reason for allocation"
+              disabled={isLoading}
+            />
 
-          <TextField
-            label="Notes"
-            multiline
-            rows={2}
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            placeholder="Additional notes"
-            disabled={isLoading}
-          />
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} disabled={isLoading}>
-          Cancel
-        </Button>
-        <Button
-          onClick={handleSubmit}
-          variant="contained"
-          color="primary"
-          disabled={isLoading || !tutorId || !studentId}
-        >
-          {isLoading ? <CircularProgress size={24} /> : "Submit"}
-        </Button>
-      </DialogActions>
-    </Dialog>
+            <TextField
+              label="Notes"
+              multiline
+              rows={2}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Additional notes"
+              disabled={isLoading}
+            />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose} disabled={isLoading}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            variant="contained"
+            color="primary"
+            disabled={isLoading || !tutorId || !studentId}
+          >
+            {isLoading ? <CircularProgress size={24} /> : "Submit"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <ConfirmationDialog
+        open={Boolean(alertMessage)}
+        title="Missing information"
+        message={alertMessage ?? ""}
+        showCancel={false}
+        confirmLabel="OK"
+        onClose={() => setAlertMessage(null)}
+        onConfirm={() => setAlertMessage(null)}
+      />
+    </>
   );
 };

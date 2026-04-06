@@ -12,11 +12,11 @@ import {
   InputAdornment,
   Button,
 } from "@mui/material";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 import AllocationStatsCard from "@/app/components/AllocationStatsCard";
 import { AssignedStudentsTable } from "@/app/components/AssignedStudentsTable";
 import { UnassignedStudentsTable } from "@/app/components/UnassignedStudentsTable";
 import { AllocationDetailsDialog } from "@/app/components/AllocationDetailsDialog";
-import { SingleAllocationDialog } from "@/app/components/SingleAllocationDialog";
 import { BulkAllocationDialog } from "@/app/components/BulkAllocationDialog";
 import {
   useAllocations,
@@ -45,7 +45,6 @@ export default function AllocationPage() {
   const [limit, setLimit] = useState(20);
   const [tabStatus, setTabStatus] = useState<TabStatus>("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [singleDialogOpen, setSingleDialogOpen] = useState(false);
   const [bulkDialogOpen, setBulkDialogOpen] = useState(false);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
   const [editingAllocation, setEditingAllocation] = useState<Allocation | null>(
@@ -62,6 +61,10 @@ export default function AllocationPage() {
   const bulkAllocateMutation = useBulkCreateAllocations();
   const updateAllocationMutation = useUpdateAllocation();
   const deleteAllocationMutation = useDeleteAllocation();
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [deleteAllocationId, setDeleteAllocationId] = useState<string | null>(
+    null,
+  );
 
   const handleOpenAllocationDialog = () => {
     setEditingAllocation(null);
@@ -74,9 +77,16 @@ export default function AllocationPage() {
   };
 
   const handleDeleteAllocation = (allocationId: string) => {
-    if (confirm("Are you sure you want to remove this allocation?")) {
-      deleteAllocationMutation.mutate(allocationId);
+    setDeleteAllocationId(allocationId);
+    setConfirmDeleteOpen(true);
+  };
+
+  const handleConfirmDeleteAllocation = () => {
+    if (deleteAllocationId) {
+      deleteAllocationMutation.mutate(deleteAllocationId);
     }
+    setConfirmDeleteOpen(false);
+    setDeleteAllocationId(null);
   };
 
   const handleReallocateAllocation = (
@@ -87,25 +97,6 @@ export default function AllocationPage() {
       id: allocationId,
       tutorId: newTutorId,
     });
-  };
-
-  const handleSubmitSingleAllocation = (data: {
-    tutorId: string;
-    studentId: string;
-    reason?: string;
-    notes?: string;
-  }) => {
-    if (editingAllocation) {
-      updateAllocationMutation.mutate({
-        id: editingAllocation.id,
-        tutorId: data.tutorId,
-        reason: data.reason,
-        notes: data.notes,
-      });
-    } else {
-      createAllocationMutation.mutate(data);
-    }
-    setSingleDialogOpen(false);
   };
 
   const handleSubmitBulkAllocation = (data: {
@@ -323,18 +314,14 @@ export default function AllocationPage() {
         }
       />
 
-      <SingleAllocationDialog
-        open={singleDialogOpen}
-        onClose={() => {
-          setSingleDialogOpen(false);
-          setEditingAllocation(null);
-        }}
-        onSubmit={handleSubmitSingleAllocation}
-        isLoading={
-          createAllocationMutation.isPending ||
-          updateAllocationMutation.isPending
-        }
-        editingAllocation={editingAllocation}
+      <ConfirmationDialog
+        open={confirmDeleteOpen}
+        title="Remove allocation"
+        message="Are you sure you want to remove this allocation?"
+        confirmLabel="Remove"
+        confirmColor="error"
+        onClose={() => setConfirmDeleteOpen(false)}
+        onConfirm={handleConfirmDeleteAllocation}
       />
 
       <BulkAllocationDialog

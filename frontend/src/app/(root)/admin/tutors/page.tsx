@@ -7,6 +7,7 @@ import { TutorTable } from "@/app/components/TutorTable";
 import AddTutorDialog, {
   TutorFormValues,
 } from "@/app/components/AddTutorDialog";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 import { useTutors } from "@/app/hooks/tutors/useTutors";
 import {
   useCreateTutor,
@@ -29,6 +30,8 @@ export default function TutorsPage() {
   const createMutation = useCreateTutor();
   const updateMutation = useUpdateTutor();
   const deleteMutation = useDeleteTutor();
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [deleteTutorId, setDeleteTutorId] = useState<string | null>(null);
 
   const openAdd = () => {
     setEditing(null);
@@ -40,9 +43,16 @@ export default function TutorsPage() {
   };
 
   const openDelete = (tutorId: string) => {
-    if (confirm("Are you sure you want to delete this tutor?")) {
-      deleteMutation.mutate(tutorId);
+    setDeleteTutorId(tutorId);
+    setConfirmDeleteOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (deleteTutorId) {
+      deleteMutation.mutate(deleteTutorId);
     }
+    setConfirmDeleteOpen(false);
+    setDeleteTutorId(null);
   };
 
   const openEdit = (tutor: any) => {
@@ -91,6 +101,16 @@ export default function TutorsPage() {
         onSubmit={handleSubmit}
         initialValues={editing || undefined}
         isEdit={Boolean(editing && editing.id)}
+      />
+
+      <ConfirmationDialog
+        open={confirmDeleteOpen}
+        title="Delete tutor"
+        message="Are you sure you want to delete this tutor?"
+        confirmLabel="Delete"
+        confirmColor="error"
+        onClose={() => setConfirmDeleteOpen(false)}
+        onConfirm={handleConfirmDelete}
       />
     </Box>
   );

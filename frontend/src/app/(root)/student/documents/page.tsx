@@ -10,6 +10,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import UploadIcon from "@mui/icons-material/Upload";
+import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 import DescriptionIcon from "@mui/icons-material/Description";
 import StorageIcon from "@mui/icons-material/Storage";
 import ScheduleIcon from "@mui/icons-material/Schedule";
@@ -62,6 +63,9 @@ export default function StudentDocumentsPage() {
     id: string;
     fileName: string;
   }>(null);
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [deleteDocumentId, setDeleteDocumentId] = useState<string | null>(null);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
   const { data, isLoading } = useDocuments();
   const uploadMutation = useUploadDocument();
@@ -102,13 +106,21 @@ export default function StudentDocumentsPage() {
       await downloadDocumentFile(row.id, row.fileName);
     } catch (e) {
       console.error(e);
-      window.alert("Could not download file.");
+      setAlertMessage("Could not download file.");
     }
   };
 
   const handleDelete = (row: DocumentTableRow) => {
-    if (!window.confirm(`Delete "${row.fileName}"?`)) return;
-    deleteMutation.mutate(row.id);
+    setDeleteDocumentId(row.id);
+    setConfirmDeleteOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (deleteDocumentId) {
+      deleteMutation.mutate(deleteDocumentId);
+    }
+    setConfirmDeleteOpen(false);
+    setDeleteDocumentId(null);
   };
 
   const formatStorage = (bytes: number) => {
@@ -173,6 +185,26 @@ export default function StudentDocumentsPage() {
             ? null
             : "Only PDF, Word (.doc, .docx), Excel (.xls, .xlsx), and PowerPoint (.ppt, .pptx) are allowed."
         }
+      />
+
+      <ConfirmationDialog
+        open={confirmDeleteOpen}
+        title="Delete document"
+        message="Are you sure you want to delete this document?"
+        confirmLabel="Delete"
+        confirmColor="error"
+        onClose={() => setConfirmDeleteOpen(false)}
+        onConfirm={handleConfirmDelete}
+      />
+
+      <ConfirmationDialog
+        open={Boolean(alertMessage)}
+        title="Notice"
+        message={alertMessage ?? ""}
+        showCancel={false}
+        confirmLabel="OK"
+        onClose={() => setAlertMessage(null)}
+        onConfirm={() => setAlertMessage(null)}
       />
 
       <Grid container spacing={2} sx={{ mb: 4 }}>
